@@ -159,7 +159,7 @@ dependencies {
 
     //IntelliJ용
     //IntelliJ에서는 하기 annotationProcessor를 쓰면 별도의 querydsl 플러그인 및 플러그인 설정이 불필요.
-    //annotationProcessor("com.querydsl:querydsl-apt:${querydslVer}:jpa")
+    annotationProcessor("com.querydsl:querydsl-apt:${querydslVer}:jpa")
 
     implementation("com.squareup.retrofit2:retrofit:2.7.1")
     implementation("com.squareup.retrofit2:converter-jackson:2.7.1")
