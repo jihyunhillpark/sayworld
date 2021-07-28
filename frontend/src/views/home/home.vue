@@ -1,6 +1,11 @@
 <template>
   <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-    <li v-for="i in state.count" @click="clickConference(i)" class="infinite-list-item" :key="i" >
+    <li
+      v-for="i in state.count"
+      @click="clickConference(i)"
+      class="infinite-list-item"
+      :key="i"
+    >
       <conference />
     </li>
   </ul>
@@ -31,38 +36,38 @@
 }
 </style>
 <script>
-import Conference from './components/conference'
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import Conference from "../../components/home/conference";
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
-  name: 'Home',
+  name: "Home",
 
   components: {
     Conference
   },
 
-  setup () {
-    const router = useRouter()
+  setup() {
+    const router = useRouter();
 
     const state = reactive({
       count: 12
-    })
+    });
 
-    const load = function () {
-      state.count += 4
-    }
+    const load = function() {
+      state.count += 4;
+    };
 
-    const clickConference = function (id) {
+    const clickConference = function(id) {
       router.push({
-        name: 'conference-detail',
+        name: "conference-detail",
         params: {
           conferenceId: id
         }
-      })
-    }
+      });
+    };
 
-    return { state, load, clickConference }
+    return { state, load, clickConference };
   }
-}
+};
 </script>
