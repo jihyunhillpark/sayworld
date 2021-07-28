@@ -1,22 +1,19 @@
 <template>
-  <h1>
-    초기페이지
+  <el-container class="main-wrapper">
     <button @click="goHome">메인으로 가자</button>
-    <router-link to="/test">Test</router-link>
-  </h1>
+  </el-container>
 </template>
 
 <script>
 import { useRouter } from "vue-router";
-
 export default {
   name: "Start",
-
+  components: {},
   setup() {
     const router = useRouter();
     const goHome = function() {
       router.push({
-        name: "test"
+        name: "main"
       });
     };
     return { goHome };

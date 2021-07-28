@@ -1,6 +1,5 @@
 <template>
-  <h1>??</h1>
-  <!-- <el-container class="main-wrapper">
+  <el-container class="main-wrapper">
     <main-header :height="`70px`" @openLoginDialog="onOpenLoginDialog" />
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="240px">
@@ -15,7 +14,7 @@
   <login-dialog
     :open="loginDialogOpen"
     @closeLoginDialog="onCloseLoginDialog"
-  /> -->
+  />
 </template>
 <style>
 @import "https://unpkg.com/element-plus/lib/theme-chalk/index.css";
