@@ -1,20 +1,13 @@
 <template>
-  <!-- main 으로 시작 -->
-  <Main/>
+  <router-view />
 </template>
 
 <script>
-import Main from './views/main/main.vue'
-
 export default {
-  name: 'App',
-
-  components: {
-    Main,
-  },
+  name: "App",
 
   data: () => ({
     //
-  }),
-}
+  })
+};
 </script>
