@@ -29,7 +29,7 @@ import MainSidebar from "../../components/main/main-sidebar";
 import MainFooter from "../../components/main/main-footer";
 
 export default {
-  name: "main",
+  name: "Main",
   components: {
     MainHeader,
     MainSidebar,
