@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/home/home";
-import Main from "@/views/main/main";
-import Start from "@/views/start/start";
+import Main from "@/views/main/Main";
+import Start from "@/views/start/Start";
 import ConferencesDetail from "@/views/conferences/conference-detail";
 import History from "@/views/history/history";
 
@@ -30,20 +30,22 @@ import History from "@/views/history/history";
 // }
 
 // const routes = makeRoutesFromMenu();
+const routes = [
+  {
+    path: "/",
+    name: "Start",
+    component: Start
+  },
+  {
+    path: "/main",
+    name: "Main",
+    component: Main
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [
-    {
-      path: "/",
-      component: Start
-    },
-    {
-      path: "/main",
-      name: "main",
-      component: Main
-    }
-  ]
+  routes,
 });
 
 router.afterEach(to => {
