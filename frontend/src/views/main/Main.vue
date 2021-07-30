@@ -34,7 +34,7 @@ export default {
     MainHeader,
     MainSidebar,
     MainFooter,
-    LoginDialog
+    LoginDialog,
   },
   data() {
     return {

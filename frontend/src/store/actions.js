@@ -12,3 +12,10 @@ export function requestSignup ({ state }, payload) {
   let body = payload
   return $axios.post(url, body)
 }
+
+export function requestUserInfo ({ state }) {
+  let token = localStorage.getItem("token")
+  const url = "/users/userInfo"
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+  return $axios.get(url)
+}
