@@ -1,7 +1,13 @@
 <template>
-  <el-container class="main-wrapper">
-    <button @click="goHome">메인으로 가자</button>
-    <button @click="onOpenSignupDialog">회원가입</button>
+  <el-container>
+    <el-header>Header</el-header>
+    <el-main>
+      <el-row>
+        <el-col :span="14">카드</el-col>
+        <el-col :span="10"><Login @openSignupDialog="onOpenSignupDialog"/></el-col>
+      </el-row>
+    </el-main>
+    <!-- <button @click="onOpenSignupDialog">회원가입</button> -->
   </el-container>
   <SignupDialog
     :open="signupDialogOpen"
@@ -10,13 +16,14 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router"
 import SignupDialog from "@/components/start/SignupDialog"
+import Login from "@/components/start/Login"
 
 export default {
   name: "Start",
   components: {
-    SignupDialog
+    SignupDialog,
+    Login,
   },
   data() {
     return {
