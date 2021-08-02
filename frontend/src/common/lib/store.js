@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import root from '@/views/main/store';
+import root from "@/store";
 
 export default createStore({
   modules: { root }
