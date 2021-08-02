@@ -19,20 +19,25 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final StringPath age = createString("age");
 
-    public final StringPath department = createString("department");
+    public final StringPath defaultPage = createString("defaultPage");
 
-    //inherited
-    public final NumberPath<Long> id = _super.id;
+    public final StringPath email = createString("email");
 
-    public final StringPath name = createString("name");
+    public final StringPath gender = createString("gender");
+
+    public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
 
-    public final StringPath position = createString("position");
+    public final StringPath profileImg = createString("profileImg");
 
-    public final StringPath userId = createString("userId");
+    public final StringPath tierBook = createString("tierBook");
+
+    public final StringPath tierMovie = createString("tierMovie");
+
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
