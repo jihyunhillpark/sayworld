@@ -38,7 +38,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
+
+
+	// 회원 가입
 	@PostMapping("/signup")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
     @ApiResponses({
@@ -55,8 +57,10 @@ public class UserController {
 		
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
-	
-	@GetMapping("/me")
+
+
+	// 이메일로 회원정보 조회
+	@GetMapping("/userInfo")
 	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -70,8 +74,9 @@ public class UserController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		String userId = userDetails.getUsername();
-		User user = userService.getUserByUserId(userId);
+//		String userId = userDetails.getUsername();
+		String userEmail = userDetails.getUserEmail();
+		User user = userService.getUserByEmail(userEmail);
 		
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
