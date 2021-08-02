@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.UserFixPutReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,22 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
+
+	// 유저 정보 수정
+	@Override
+	public User fixUser(UserFixPutReq userFixInfo) {
+		User user = getUserByEmail(userFixInfo.getEmail());
+		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
+		user.setPassword(passwordEncoder.encode(userFixInfo.getPassword()));
+		user.setNickname(userFixInfo.getNickname());
+		user.setGender(userFixInfo.getGender());
+		user.setAge(userFixInfo.getAge());
+		user.setDefaultPage(userFixInfo.getDefaultPage());
+		user.setProfileImg(userFixInfo.getProfileImg());
+
+		return userRepository.save(user);
+
+	}
 
 	// 유저 정보 조회
 	@Override
