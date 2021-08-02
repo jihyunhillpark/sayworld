@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 유저 모델 정의.
@@ -17,9 +15,11 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
+//@DynamicUpdate // update 할때 변경된 필드만 적용. 없으면 변경하지 않은 값들은 전부 null로 들어감
 @Table(name = "user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성
     @Column(name = "user_id")
     long userId;
 
@@ -32,13 +32,13 @@ public class User {
     @Column(name = "gender")
     String gender;
     @Column(name = "age")
-    String age;
+    int age;
     @Column(name = "default_page")
     String defaultPage;
     @Column(name = "tier_book")
-    String tierBook;
+    int tierBook;
     @Column(name = "tier_movie")
-    String tierMovie;
+    int tierMovie;
     @Column(name = "profile_img")
     String profileImg;
 

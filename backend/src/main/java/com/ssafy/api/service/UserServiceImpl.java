@@ -22,16 +22,28 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
+
+
+	// 회원가입
 	@Override
 	public User createUser(UserRegisterPostReq userRegisterInfo) {
 		User user = new User();
 		user.setEmail(userRegisterInfo.getEmail());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
+		user.setNickname(userRegisterInfo.getNickname());
+		user.setGender(userRegisterInfo.getGender());
+		user.setAge(userRegisterInfo.getAge());
+		user.setDefaultPage(userRegisterInfo.getDefaultPage());
+		user.setTierBook(userRegisterInfo.getTierBook());
+		user.setTierMovie(userRegisterInfo.getTierMovie());
+		user.setProfileImg(userRegisterInfo.getProfileImg());
+
 		return userRepository.save(user);
 	}
 
+
+	// 유저 정보 조회
 	@Override
 	public User getUserByUserId(String email) {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).

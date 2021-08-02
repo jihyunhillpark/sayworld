@@ -19,7 +19,7 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final StringPath age = createString("age");
+    public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
     public final StringPath defaultPage = createString("defaultPage");
 
@@ -33,9 +33,9 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath profileImg = createString("profileImg");
 
-    public final StringPath tierBook = createString("tierBook");
+    public final NumberPath<Integer> tierBook = createNumber("tierBook", Integer.class);
 
-    public final StringPath tierMovie = createString("tierMovie");
+    public final NumberPath<Integer> tierMovie = createNumber("tierMovie", Integer.class);
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
