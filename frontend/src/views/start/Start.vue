@@ -1,6 +1,10 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header class="main-header">
+      <div>
+        <div class="logo"></div>
+      </div>
+    </el-header>
     <el-main class="main-container">
       <el-row>
         <el-col :span="14"><ServiceCarousel /></el-col>
@@ -52,5 +56,15 @@ export default {
   width: 100%;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.logo {
+  display: inline-block;
+  margin: 0 calc(50% - 51px);
+  width: 200px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/images/sayworld-logo.png");
 }
 </style>
