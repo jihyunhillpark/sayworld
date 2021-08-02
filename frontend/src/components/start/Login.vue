@@ -1,6 +1,6 @@
 <template>
   <el-card class="login" shadow="hover">
-    <h2>로고삽입</h2>
+    <h2>로그인</h2>
     <el-form class="login-form" :model="state.form" :rules="state.rules" ref="loginForm" :label-position="state.form.align" @change="checkButton">
       <el-form-item prop="email">
         <el-input v-model="state.form.email" placeholder="이메일을 입력하세요." prefix-icon="el-icon-message"></el-input>
@@ -109,7 +109,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .login-button {
   width: 100%;
   margin-top: 40px;
@@ -123,6 +122,10 @@ export default {
 .el-card {
   margin-bottom: 0;
 }
+.el-card__body > h2 {
+  margin-bottom: 40px;
+}
+
 </style>
 <style lang="scss">
 $teal: rgb(0, 124, 137);
