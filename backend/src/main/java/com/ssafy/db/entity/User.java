@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -15,13 +18,16 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
 //@DynamicUpdate // update 할때 변경된 필드만 적용. 없으면 변경하지 않은 값들은 전부 null로 들어감
+@DynamicInsert
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성
     @Column(name = "user_id")
-    long userId;
+    Long userId;
 
     @Column(name = "password")
     String password;
