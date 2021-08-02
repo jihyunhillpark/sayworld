@@ -1,5 +1,7 @@
 package com.ssafy.api.response;
 import com.ssafy.common.model.response.BaseResponseBody;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.http.HttpStatus;
 
 
@@ -11,27 +13,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ApiModel("RoomResponseBody")
 public class RoomResponseBody extends BaseResponseBody {
-    String message = null;
-    Integer statusCode = null;
-    String roomToken = null; //필수 값
+    @ApiModelProperty(name="openVidu 인증 토큰", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN...")
+    String roomToken; //필수 값
 
-    public RoomResponseBody() {}
-
-    public RoomResponseBody(Integer statusCode){
-        this.statusCode = statusCode;
-    }
-
-    public RoomResponseBody(Integer statusCode, String message){
-        this.statusCode = statusCode;
-        this.message = message;
-    }
-
-    public static RoomResponseBody of(Integer statusCode, String message, String roomToken) {
-        RoomResponseBody body = new RoomResponseBody();
-        body.roomToken = roomToken;
-        body.message = message;
-        body.statusCode = statusCode;
-        return body;
+    public static UserLoginPostRes of(Integer statusCode, String message, String roomToken) {
+        UserLoginPostRes res = new UserLoginPostRes();
+        res.setStatusCode(statusCode);
+        res.setMessage(message);
+        res.setAccessToken(roomToken);
+        return res;
     }
 }

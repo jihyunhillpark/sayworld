@@ -1,7 +1,12 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.RoomCreatePostRequest;
+import com.ssafy.api.response.UserLoginPostRes;
 import io.openvidu.java.client.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/api/v1/rooms")
+@Api(value = "방정보 API", tags = {"Rooms "})
 public class RoomController {
 
 	// OpenVidu object as entrypoint of the SDK
@@ -43,6 +49,13 @@ public class RoomController {
 	 * TO DO - 호스트 id에 대한 처리 필요
 	 */
 	@GetMapping
+	@ApiOperation(value = "방조회", notes = "openVidu서버에서 방리스트를 얻어온다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
 	public ResponseEntity<List<Session>> getRoomList(){
 		List<Session> RoomsInServer = this.openVidu.getActiveSessions();
 		return ResponseEntity.status(200).body(RoomsInServer);
@@ -52,6 +65,13 @@ public class RoomController {
 	 * TO DO - 같은 방제를 허용하려면 호스트 id 를 사용해서 식별자 처리해야할까!?
 	 */
 	@PostMapping(value = "/get-token")
+	@ApiOperation(value = "방 생성", notes = "openVidu서버에서 방을 생성한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
 	public ResponseEntity<? extends BaseResponseBody> createRoom(@RequestBody RoomCreatePostRequest roomCreatePostRequest , HttpSession httpSession) throws Exception {
 		// 로그인 체크
 		checkUserLogged(httpSession);
@@ -170,6 +190,13 @@ public class RoomController {
 //	}
 
 	@RequestMapping(value = "/remove-user", method = RequestMethod.POST)
+	@ApiOperation(value = "room 삭제", notes = "회원을 삭제한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
 	public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
 			throws Exception {
 
