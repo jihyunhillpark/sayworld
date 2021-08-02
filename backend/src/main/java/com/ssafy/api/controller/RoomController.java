@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.openvidu.practice.request.RoomCreatePostRequest;
+import com.ssafy.api.request.RoomCreatePostRequest;
 import io.openvidu.java.client.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import response.BaseResponseBody;
-import response.RoomResponseBody;
+import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.api.response.RoomResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

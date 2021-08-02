@@ -96,8 +96,8 @@ processResources {
 
 
 dependencies {
-    implementation 'io.openvidu:openvidu-java-client:2.19.0'
-    implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation ("io.openvidu:openvidu-java-client:2.19.0")
+    implementation ("com.googlecode.json-simple:json-simple:1.1")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")
