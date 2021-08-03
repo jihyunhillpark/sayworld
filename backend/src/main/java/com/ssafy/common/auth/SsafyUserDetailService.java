@@ -31,8 +31,4 @@ public class SsafyUserDetailService implements UserDetailsService{
     		return null;
     }
 
-    public UserDetails loadUserByUserEmail() {
-
-    	return null;
-	}
 }
