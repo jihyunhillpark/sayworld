@@ -13,8 +13,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ApiModel("RoomResponseBody")
-public class RoomResponseBody extends BaseResponseBody {
+@ApiModel("RoomCreatePostRes")
+public class RoomCreatePostRes extends BaseResponseBody {
     @ApiModelProperty(name="openVidu 인증 토큰", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN...")
     String roomToken; //필수 값
 
