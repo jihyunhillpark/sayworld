@@ -35,7 +35,7 @@ import { reactive } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'main-footer',
+  name: 'MainFooter',
 
   props: {
     height: {
