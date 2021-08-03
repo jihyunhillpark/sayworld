@@ -45,7 +45,7 @@ public class Room {
     private String openviduToken;
 
     @ManyToMany
-    @JoinTable(name = "room_keword",
+    @JoinTable(name = "room_keyword",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name="keyword_id"))
     final private List<Tag> tags = new ArrayList<Tag>();
