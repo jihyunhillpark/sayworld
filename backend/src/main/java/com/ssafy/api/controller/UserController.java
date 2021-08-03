@@ -1,8 +1,13 @@
 package com.ssafy.api.controller;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.ssafy.api.request.CulturePostReq;
 import com.ssafy.api.request.UserFixPutReq;
+import com.ssafy.api.response.CultureListRes;
+import com.ssafy.api.service.CultureService;
+import com.ssafy.db.entity.Culture;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +31,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
@@ -37,6 +44,8 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	CultureService cultureService;
 
 	// 회원 가입
 	@PostMapping("/signup")
@@ -115,5 +124,36 @@ public class UserController {
 		userService.deleteUser(userEmail);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
+	}
+
+	@PostMapping("/culture")
+	@ApiOperation(value = "회원 문화력 등록", notes = "사용자가 본 영화나 책 제목을 등록한다.")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> culturePost(@RequestBody @ApiParam(value = "문화력 정보",required = true) CulturePostReq culturePostReq){
+
+		String email = "culsu@naver.com";
+
+		cultureService.postCulture(culturePostReq, email);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+
+	@GetMapping("/culture")
+	@ApiOperation(value = "회원 문화력 조회", notes = "사용자가 본 영화나 책정보(제목)을 조회한다")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<List<Culture>> getCulture(){
+		String email = "culsu@naver.com";
+
+		return new ResponseEntity(cultureService.getCultureInfo(email) , HttpStatus.OK);
 	}
 }
