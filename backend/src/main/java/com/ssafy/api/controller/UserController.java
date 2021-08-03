@@ -1,15 +1,12 @@
 package com.ssafy.api.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.api.request.UserFixPutReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
@@ -99,5 +96,24 @@ public class UserController {
 		User user = userService.getUserByEmail(userEmail);
 		
 		return ResponseEntity.status(200).body(UserRes.of(user));
+	}
+
+
+	// 회원 탈퇴
+	@DeleteMapping("/userDelete")
+	@ApiOperation(value = "회원 탈퇴", notes = "로그인한 회원 본인이 서비스에서 탈퇴 한다.")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> userDelete(){
+
+		String userEmail = "helloculsu@naver.com";
+
+		userService.deleteUser(userEmail);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
 	}
 }

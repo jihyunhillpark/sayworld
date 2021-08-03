@@ -72,4 +72,12 @@ public class UserServiceImpl implements UserService {
 		Optional<User> user = userRepository.findByEmail(email);
 		return user.get();
 	}
+
+
+	// 회원 탈퇴
+	@Override
+	public void deleteUser(String email){
+		User user = getUserByEmail(email);
+		userRepository.delete(user);
+	}
 }
