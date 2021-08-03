@@ -137,10 +137,12 @@ export default {
               password: state.form.password,
               nickname: state.form.nickname,
               age: state.form.age,
-              password: state.form.gender,
-              age: state.form.default_page,
+              gender: state.form.gender,
+              default_page: state.form.default_page,
           })
+          alert('여기까진 실행 잘됨')
           .then(function ( ) {
+            alert('여기는 실행이 안되네?')
             handleClose()
             alert('회원 가입이 완료되었습니다.')
             store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
@@ -154,6 +156,7 @@ export default {
           })
           .catch(function ( ) {
             alert('회원 가입에 실패하였습니다.')
+
           })
         } else {
           alert('Validate error!')

@@ -70,22 +70,4 @@ public class AuthController {
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
 	}
-
-	@PostMapping("/signup")
-	public ResponseEntity<Integer> signup(@RequestBody UserRegisterPostReq userRegisterPostReq) {
-		int success = 0;
-		HttpStatus status = null;
-		try {
-			// 사용자에게 전달할 정보이다.
-			//success = userService.createUser();
-			status = HttpStatus.OK;
-			// 보너스로 토큰에 담긴 정보도 전달해보자. 서버에서 토큰을 사용하는 방법임을 알 수 있다.
-		} catch (RuntimeException e) {
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Integer>(success,status);
-	}
-
-
-
 }
