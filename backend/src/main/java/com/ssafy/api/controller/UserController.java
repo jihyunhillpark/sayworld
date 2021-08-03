@@ -104,6 +104,7 @@ public class UserController {
 		String userEmail = userDetails.getUserEmail();
 		User user = userService.getUserByEmail(userEmail);
 		
+		
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 
