@@ -1,9 +1,7 @@
 <template>
   <el-container>
     <el-header class="main-header">
-      <div>
-        <div class="logo"></div>
-      </div>
+      <div class="logo"></div>
     </el-header>
     <el-main class="main-container">
       <el-row>
