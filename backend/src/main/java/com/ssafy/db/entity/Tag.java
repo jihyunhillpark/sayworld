@@ -3,13 +3,14 @@ package com.ssafy.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @Entity
+@Table(name="keyword")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
@@ -24,5 +25,5 @@ public class Tag {
 
     /* 추천알고리즘에서 사용될 것 같아 넣었지만, 현재로서는 keyword에서 room을 탐색할 필요가 없어서 안 넣어도 된다. */
     @ManyToMany(mappedBy = "tags")
-    final private List<Room> rooms = new ArrayList<>();
+    final private Set<Room> rooms = new HashSet<>();
 }

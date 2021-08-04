@@ -3,8 +3,7 @@ package com.ssafy.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -41,13 +40,23 @@ public class Room {
     @Column(name="room_img")
     private String roomImg;
 
-    @Column(name="openvidu_token", nullable = false)
-    private String openviduToken;
+    @Column(name="session_id", nullable = false)
+    private String sessionId;
 
     @ManyToMany
     @JoinTable(name = "room_keyword",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name="keyword_id"))
-    final private List<Tag> tags = new ArrayList<Tag>();
+    final private Set<Tag> tags = new HashSet<Tag>();
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getRooms().add(this);
+    }
+
+    public void removeTag(Tag tag){
+        tags.remove(tag);
+        tag.getRooms().remove(this);
+    }
 
 }

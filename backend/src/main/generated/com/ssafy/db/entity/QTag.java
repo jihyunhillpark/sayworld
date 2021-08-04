@@ -20,7 +20,7 @@ public class QTag extends EntityPathBase<Tag> {
 
     public static final QTag tag = new QTag("tag");
 
-    public final ListPath<Room, QRoom> rooms = this.<Room, QRoom>createList("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
+    public final SetPath<Room, QRoom> rooms = this.<Room, QRoom>createSet("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> tagId = createNumber("tagId", Integer.class);
 
