@@ -137,12 +137,12 @@ export default {
               password: state.form.password,
               nickname: state.form.nickname,
               age: state.form.age,
-              password: state.form.gender,
-              age: state.form.default_page,
+              gender: state.form.gender,
+              default_page: state.form.default_page,
           })
           .then(function ( ) {
             handleClose()
-            alert('회원 가입이 완료되었습니다.')
+            console.log('회원 가입이 완료되었습니다.')
             store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
             .then(function (result) {
               localStorage.setItem('token', result.data.accessToken)
@@ -152,7 +152,8 @@ export default {
               alert(err)
             })
           })
-          .catch(function ( ) {
+          .catch(function (err) {
+            console.log(err)
             alert('회원 가입에 실패하였습니다.')
           })
         } else {
