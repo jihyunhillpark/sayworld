@@ -20,8 +20,8 @@
 </style>
 <script>
 import MainHeader from "@/components/main/MainHeader";
-import MainSidebar from "../../components/main/MainSidebar";
-import MainFooter from "../../components/main/MainFooter";
+import MainSidebar from "@/components/main/MainSidebar";
+import MainFooter from "@/components/main/MainFooter";
 
 export default {
   name: "Main",

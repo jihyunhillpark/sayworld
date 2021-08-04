@@ -82,7 +82,8 @@ export default {
           store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
           .then(function (result) {
             localStorage.setItem('token', result.data.accessToken)
-            router.push({ name: 'Main' })
+            // router.push({ name: 'Main' })
+            window.location.reload()
           })
           .catch(function (err) {
             console.log(err)
