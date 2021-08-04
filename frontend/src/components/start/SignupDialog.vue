@@ -140,9 +140,10 @@ export default {
               gender: state.form.gender,
               default_page: state.form.default_page,
           })
-          alert('여기까진 실행 잘됨')
+          console.log('여기까진 실행 잘됨')
+
           .then(function ( ) {
-            alert('여기는 실행이 안되네?')
+            console.log('여기는 실행이 안되네?')
             handleClose()
             alert('회원 가입이 완료되었습니다.')
             store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
@@ -154,6 +155,7 @@ export default {
               alert(err)
             })
           })
+
           .catch(function ( ) {
             alert('회원 가입에 실패하였습니다.')
 
