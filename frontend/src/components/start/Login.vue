@@ -1,6 +1,6 @@
 <template>
   <el-card class="login" shadow="hover">
-    <h2>로고삽입</h2>
+    <h2>로그인</h2>
     <el-form class="login-form" :model="state.form" :rules="state.rules" ref="loginForm" :label-position="state.form.align" @change="checkButton">
       <el-form-item prop="email">
         <el-input v-model="state.form.email" placeholder="이메일을 입력하세요." prefix-icon="el-icon-message"></el-input>
@@ -9,7 +9,7 @@
         <el-input v-model="state.form.password" placeholder="비밀번호를 입력하세요." type="password" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button class="login-button" type="primary" :disabled="state.loginButton" v-loading.fullscreen.lock="state.fullscreenLoading" @click="clickLogin">로그인</el-button>
+        <el-button class="login-button" type="primary" :disabled="state.loginButton" @click="clickLogin">로그인</el-button>
       </el-form-item>
       <span>계정이 없으신가요? <a class="signup-link" @click="clickSignup">가입하기</a></span>
     </el-form>
@@ -19,15 +19,16 @@
 <script>
 import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
   setup(props, { emit }) {
     const store = useStore()
+    const router = useRouter()
     const loginForm = ref(null)
     const state = reactive({
       loginButton: true,
-      fullscreenLoading: false,
       form: {
         email: '',
         password: '',
@@ -36,7 +37,12 @@ export default {
       rules: {
         email: [
           { required: true, message: '필수 입력 항목입니다.', trigger: 'blur' },
-          { max: 16, message: '최대 16자까지 입력 가능합니다.', trigger: 'change' }
+          // { max: 16, message: '최대 16자까지 입력 가능합니다.', trigger: 'change' },
+          {
+            pattern: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+            message: '올바른 형식으로 입력해주세요.',
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '필수 입력 항목입니다.', trigger: 'blur' },
@@ -66,38 +72,27 @@ export default {
     }
 
     const clickSignup = () => {
-      console.log("회원가입")
       emit('openSignupDialog')
     }
 
     const clickLogin = function () {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
-      state.fullscreenLoading = true;
-      setTimeout(() => {
-        state.fullscreenLoading = false;
-        loginForm.value.validate((valid) => {
-          if (valid) {
-            store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
-            .then(function (result) {
-              store.commit('root/setLogin', true)
-              localStorage.setItem('token', result.data.accessToken)
-              store.dispatch('root/requestUserInfo')
-              .then(function (result){
-                console.log(result)
-                localStorage.setItem('email', result.data.email)
-                localStorage.setItem('nickname', result.data.nickname)
-              })
-            })
-            .catch(function (err) {
-              alert(err)
-            })
-          } else {
-            alert('Validate error!')
-          }
-        });
-      }, 1000);
+      loginForm.value.validate((valid) => {
+        if (valid) {
+          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+          .then(function (result) {
+            localStorage.setItem('token', result.data.accessToken)
+            router.push({ name: 'Main' })
+          })
+          .catch(function (err) {
+            console.log(err)
+          })
+        } else {
+          alert('올바른 정보를 다시 입력해주세요.')
+        }
+      })
     }
-    return { loginForm, state, clickSignup, checkButton }
+    return { loginForm, state, clickSignup, clickLogin, checkButton }
   }
 }
 </script>
@@ -109,7 +104,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .login-button {
   width: 100%;
   margin-top: 40px;
@@ -123,6 +117,10 @@ export default {
 .el-card {
   margin-bottom: 0;
 }
+.el-card__body > h2 {
+  margin-bottom: 40px;
+}
+
 </style>
 <style lang="scss">
 $teal: rgb(0, 124, 137);
