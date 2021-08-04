@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/home/home";
 import Main from "@/views/main/Main";
 import Start from "@/views/start/Start";
+import UserCategory from "@/views/user/UserCategory";
 import ConferencesDetail from "@/views/conferences/conference-detail";
 import History from "@/views/history/history";
 import CreateRoom from "@/components/webrtc/CreateRoom";
@@ -33,14 +34,9 @@ import CreateRoom from "@/components/webrtc/CreateRoom";
 // const routes = makeRoutesFromMenu();
 const routes = [
   {
-    path: "/",
-    name: "Start",
-    component: Start
-  },
-  {
-    path: "/main",
-    name: "Main",
-    component: Main
+    path: "/register",
+    name: "UserCategory",
+    component: UserCategory
   },
   {
     path: "/rooms",

@@ -3,7 +3,7 @@
     <MainHeader />
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="240px">
-        <main-sidebar :width="`240px`" />
+        <MainSidebar />
       </el-aside>
       <el-main>
         <router-view></router-view>
@@ -20,8 +20,8 @@
 </style>
 <script>
 import MainHeader from "@/components/main/MainHeader";
-import MainSidebar from "../../components/main/main-sidebar";
-import MainFooter from "../../components/main/MainFooter";
+import MainSidebar from "@/components/main/MainSidebar";
+import MainFooter from "@/components/main/MainFooter";
 
 export default {
   name: "Main",
@@ -32,16 +32,10 @@ export default {
   },
   data() {
     return {
-      loginDialogOpen: false
     };
   },
   methods: {
-    onOpenLoginDialog() {
-      this.loginDialogOpen = true;
-    },
-    onCloseLoginDialog() {
-      this.loginDialogOpen = false;
-    }
+
   }
 };
 </script>

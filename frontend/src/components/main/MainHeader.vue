@@ -24,7 +24,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item icon="el-icon-user-solid">마이페이지</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-moon">로그아웃</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-moon" @click="clickLogout">로그아웃</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -41,7 +41,7 @@ import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
 export default {
-  name: "MainHeader",
+  name: 'MainHeader',
   data() {
     return {
       toggle: true,
@@ -68,7 +68,17 @@ export default {
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     })
-    return { state }
+
+    const clickLogout = () => {
+      if (confirm("로그아웃 하시겠습니까?")) {
+        console.log('로그아웃')
+        localStorage.removeItem('token')
+        router.push({
+          name: 'Start'
+        })
+      }
+    }
+    return { state, clickLogout }
 
   }
 
