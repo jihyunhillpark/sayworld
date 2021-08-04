@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.UserRegisterPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.HttpStatus;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
@@ -22,6 +23,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
@@ -31,28 +39,41 @@ import io.swagger.annotations.ApiResponse;
 public class AuthController {
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/login")
-	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-    })
-	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
-		String email = loginInfo.getEmail();
 
+	@PostMapping("/login")
+	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo, HttpServletResponse res) {
+		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
-		
 		User user = userService.getUserByEmail(email);
+
+		String token = "";
+		Map<String, Object> resultMap = new HashMap<>();
+
+		if (user == null)
+			return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Not Existing User", null));
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-		if(passwordEncoder.matches(password, user.getPassword())) {
+		if (passwordEncoder.matches(password, user.getPassword())) {
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(email)));
+
+			// 여기부터! 토큰 정보는 request의 헤더로 보내고, 토큰 정보 확인해보기위해 map에 담아주려고함.
+			token = JwtTokenUtil.getToken(email); //토큰 생성하고
+			res.setHeader("jwt-auth-token", token); //request 헤더로 보내고
+			System.out.println(user.getEmail());
+
+			resultMap.put("auth_token", token); //token 잘 들어갔나 확인
+			System.out.println(resultMap);
+
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", token));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));

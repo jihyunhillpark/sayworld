@@ -39,7 +39,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" :disabled="state.signupButton" v-loading.fullscreen.lock="state.fullscreenLoading" @click="clickSignup">가입하기</el-button>
+        <el-button type="primary" :disabled="state.signupButton" @click="clickSignup">가입하기</el-button>
       </span>
     </template>
   </el-dialog>
@@ -61,8 +61,7 @@ export default {
     // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
     const signupForm = ref(null)
     const state = reactive({
-     signupButton: true,
-      fullscreenLoading: false,
+      signupButton: true,
       form: {
         email: '',
         password: '',
@@ -70,13 +69,18 @@ export default {
         nickname: '',
         age: '',
         gender: '',
-        default_page: 'B',
+        default_page: '',
         align: 'left',
       },
       rules: {
         email: [
           { required: true, message: '필수 입력 항목입니다.', trigger: 'change' },
-          { max: 16, message: '최대 16자까지 입력 가능합니다.', trigger: 'change' }
+          // { max: 16, message: '최대 16자까지 입력 가능합니다.', trigger: 'change' },
+          {
+            pattern: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+            message: '올바른 형식으로 입력해주세요.',
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '필수 입력 항목입니다.', trigger: 'change' },
@@ -115,11 +119,6 @@ export default {
       // console.log(signupForm.value)
     })
 
-    const checkDuplicate = function () {
-      // 아이디 중복 API 호출
-      console.log('check')
-    }
-
     const checkButton = function () {
       signupForm.value.validate((valid) => {
         if (valid) {
@@ -131,31 +130,36 @@ export default {
 
     const clickSignup = function () {
       // 회원가입 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
-      state.fullscreenLoading = true;
-      setTimeout(() => {
-        state.fullscreenLoading = false;
-        signupForm.value.validate((valid) => {
-          if (valid) {
-            store.dispatch('root/requestSignup',
-                { email: state.form.email,
-                  password: state.form.password,
-                  nickname: state.form.nickname,
-                  age: state.form.age,
-                  password: state.form.gender,
-                  age: state.form.default_page,
-              })
-              .then(function ( ) {
-                handleClose()
-                alert('회원 가입이 완료되었습니다.')
-              })
-              .catch(function ( ) {
-                alert('회원 가입에 실패하였습니다.')
-              })
-            } else {
-              alert('Validate error!')
-          }
-        });
-      }, 1000);
+      signupForm.value.validate((valid) => {
+        if (valid) {
+          store.dispatch('root/requestSignup',
+            { email: state.form.email,
+              password: state.form.password,
+              nickname: state.form.nickname,
+              age: state.form.age,
+              gender: state.form.gender,
+              default_page: state.form.default_page,
+          })
+          .then(function ( ) {
+            handleClose()
+            alert('회원 가입이 완료되었습니다.')
+            // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+            // .then(function (result) {
+            //   localStorage.setItem('token', result.data.accessToken)
+            //   router.push({ name: 'Main' })
+            // })
+            // .catch(function (err) {
+            //   alert(err)
+            // })
+          })
+          .catch(function (err) {
+            console.log(err)
+            alert('회원 가입에 실패하였습니다.')
+          })
+        } else {
+          alert('Validate error!')
+        }
+      })
     }
 
     const handleClose = function () {
@@ -169,7 +173,7 @@ export default {
       emit('closeSignupDialog')
     }
 
-    return { signupForm, state, clickSignup, handleClose, checkButton, checkDuplicate }
+    return { signupForm, state, clickSignup, handleClose, checkButton }
   }
 }
 </script>
@@ -177,7 +181,7 @@ export default {
 <style>
 .signup-dialog {
   width: 430px !important;
-  height: 575;
+  height: 575px;
 }
 .signup-dialog .el-dialog__headerbtn {
   float: right;
