@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -20,27 +19,20 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final NumberPath<Integer> age = createNumber("age", Integer.class);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
+    public final StringPath department = createString("department");
 
-    public final StringPath defaultPage = createString("defaultPage");
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
-    public final StringPath email = createString("email");
-
-    public final StringPath gender = createString("gender");
-
-    public final StringPath nickname = createString("nickname");
+    public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
 
-    public final StringPath profileImg = createString("profileImg");
+    public final StringPath position = createString("position");
 
-    public final NumberPath<Integer> tierBook = createNumber("tierBook", Integer.class);
-
-    public final NumberPath<Integer> tierMovie = createNumber("tierMovie", Integer.class);
-
-    public final NumberPath<Long> userId = createNumber("userId", Long.class);
+    public final StringPath userId = createString("userId");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
