@@ -3,7 +3,7 @@
     <MainHeader />
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="240px">
-        <MainSidebar :width="`240px`" />
+        <MainSidebar />
       </el-aside>
       <el-main>
         <router-view></router-view>

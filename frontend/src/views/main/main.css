@@ -1,19 +1,19 @@
 /* 공통으로 적용되어야할 css */
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   .main-container {
     height: calc(100% - 275px) !important;
   }
-}
+} */
 
 #app, .main-wrapper {
   height: 100%;
   display: block !important;
 }
 
-.el-row.main-sidebar {
+/* .main-sidebar {
   height: 100%;
   display: inline-block;
-}
+} */
 
 .main-container {
   height: calc(100% - 195px);
