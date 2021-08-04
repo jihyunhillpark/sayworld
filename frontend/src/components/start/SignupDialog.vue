@@ -145,18 +145,23 @@ export default {
           .then(function ( ) {
             console.log('여기는 실행이 안되네?')
             handleClose()
-            alert('회원 가입이 완료되었습니다.')
-            store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
-            .then(function (result) {
-              localStorage.setItem('token', result.data.accessToken)
-              router.push({ name: 'Main' })
-            })
-            .catch(function (err) {
-              alert(err)
-            })
+            console.log('회원 가입이 완료되었습니다.')
+            // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+            // .then(function (result) {
+            //   localStorage.setItem('token', result.data.accessToken)
+            //   router.push({ name: 'Main' })
+            // })
+            // .catch(function (err) {
+            //   alert(err)
+            // })
           })
+<<<<<<< HEAD
 
           .catch(function ( ) {
+=======
+          .catch(function (err) {
+            console.log(err)
+>>>>>>> 5307b976779667b258714225aefb6eaf6ac763a0
             alert('회원 가입에 실패하였습니다.')
 
           })

@@ -11,4 +11,5 @@ public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User fixUser(UserFixPutReq userFixInfo);
 	User getUserByEmail(String email);
+	void deleteUser(String email);
 }

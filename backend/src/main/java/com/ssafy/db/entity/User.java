@@ -11,6 +11,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 유저 모델 정의.
@@ -48,7 +50,9 @@ public class User {
     @Column(name = "profile_img")
     String profileImg;
 
-
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id" )
+    List<Culture> cultures = new ArrayList();
 
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
