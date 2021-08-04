@@ -10,6 +10,15 @@
   display: block !important;
 }
 
+.el-row.main-header {
+  width: 100%;
+  display: block;
+  max-width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-bottom: 1px solid #dcdfe6;
+}
+
 .el-row.main-sidebar {
   height: 100%;
   display: inline-block;
