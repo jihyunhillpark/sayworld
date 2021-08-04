@@ -10,4 +10,5 @@ import java.util.List;
 public interface CultureService {
     List<CultureListRes> getCultureInfo(String email);
     void postCulture(CulturePostReq culturePostReq, String email);
+    void deleteCulture(String email, String cultureTitle, char cultureCategory);
 }

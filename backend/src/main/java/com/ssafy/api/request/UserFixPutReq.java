@@ -13,8 +13,7 @@ import lombok.Setter;
 @ApiModel("UserFixPutRequest")
 public class UserFixPutReq {
 
-    @ApiModelProperty(name = "본인 이메일", example = "helloculsu@naver.com")
-    String email;
+
     @ApiModelProperty(name = "바꾸는 비밀번호", example = "12345")
     String password;
     @ApiModelProperty(name = "바꾸는 별명", example = "영의정영희")

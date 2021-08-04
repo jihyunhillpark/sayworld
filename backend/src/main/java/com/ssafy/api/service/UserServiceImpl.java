@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserFixPutReq;
+import com.ssafy.api.response.FriendBlackRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,10 @@ import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -48,8 +52,8 @@ public class UserServiceImpl implements UserService {
 
 	// 유저 정보 수정
 	@Override
-	public User fixUser(UserFixPutReq userFixInfo) {
-		User user = getUserByEmail(userFixInfo.getEmail());
+	public User fixUser(String myEmail, UserFixPutReq userFixInfo) {
+		User user = getUserByEmail(myEmail);
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userFixInfo.getPassword()));
 		user.setNickname(userFixInfo.getNickname());
@@ -79,5 +83,70 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(String email){
 		User user = getUserByEmail(email);
 		userRepository.delete(user);
+	}
+
+
+
+	// 친구목록 조회
+	@Override
+	public List<FriendBlackRes> getFriendList(String myEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		Set<User> friendList = me.getFriends();
+
+		List<FriendBlackRes> list = new ArrayList<>();
+		for(User friend: friendList){
+			list.add(FriendBlackRes.create(friend));
+		}
+
+		return list;
+	}
+	// 친구추가
+	@Override
+	public void addFriend(String myEmail, String friendEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		User friend = userRepository.findByEmail(friendEmail).get();
+		Set<User> friendList = me.getFriends();
+		friendList.add(friend);
+		userRepository.save(me);
+	}
+	// 친구삭제
+	@Override
+	public void deleteFriend(String myEmail, String friendEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		User friend = userRepository.findByEmail(friendEmail).get();
+		Set<User> friendList = me.getFriends();
+		friendList.remove(friend);
+		userRepository.save(me);
+	}
+	// 차단목록 조회
+	@Override
+	public List<FriendBlackRes> getBlackList(String myEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		Set<User> blackList = me.getBlacks();
+
+		List<FriendBlackRes> list = new ArrayList<>();
+		for(User friend: blackList){
+			list.add(FriendBlackRes.create(friend));
+		}
+
+		return list;
+	}
+	// 차단추가
+	@Override
+	public void addBlack(String myEmail, String blackEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		User black = userRepository.findByEmail(blackEmail).get();
+		Set<User> blackList = me.getBlacks();
+		blackList.add(black);
+		userRepository.save(me);
+	}
+	// 차단해제
+	@Override
+	public void deleteBlack(String myEmail, String blackEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		User black = userRepository.findByEmail(blackEmail).get();
+		Set<User> blackList = me.getBlacks();
+		blackList.remove(black);
+		userRepository.save(me);
 	}
 }

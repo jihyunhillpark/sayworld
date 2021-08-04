@@ -4,6 +4,7 @@ import com.ssafy.api.request.CulturePostReq;
 import com.ssafy.api.response.CultureListRes;
 import com.ssafy.db.entity.Culture;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.CultureRepository;
 import com.ssafy.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class CultureServiceImpl implements CultureService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CultureRepository cultureRepository;
 
 
     @Override
@@ -46,6 +50,13 @@ public class CultureServiceImpl implements CultureService{
         userCultures.add(culture);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void deleteCulture(String email, String cultureTitle, char cultureCategory){
+        User user = userRepository.findByEmail(email).get();
+        List<Culture> list = user.getCultures();
+        list.remove(cultureRepository.findByCultureTitleAndCultureCategory(cultureTitle, cultureCategory).get());
     }
 
 }
