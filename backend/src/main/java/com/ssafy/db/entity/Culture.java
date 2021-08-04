@@ -2,6 +2,7 @@ package com.ssafy.db.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @DynamicInsert
+@NoArgsConstructor
 @Table(name = "culture_power")
 public class Culture {
 

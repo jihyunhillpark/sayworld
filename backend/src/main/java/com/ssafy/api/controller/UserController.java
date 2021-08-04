@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.api.request.CulturePostReq;
 import com.ssafy.api.request.UserFixPutReq;
 import com.ssafy.api.response.CultureListRes;
+import com.ssafy.api.response.FriendBlackRes;
 import com.ssafy.api.service.CultureService;
 import com.ssafy.db.entity.Culture;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +26,10 @@ import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepositorySupport;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -102,6 +100,8 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 //		String userId = userDetails.getUsername();
 		String userEmail = userDetails.getUserEmail();
+
+		userEmail = "culsu@naver.com";
 		User user = userService.getUserByEmail(userEmail);
 		
 		
@@ -157,4 +157,20 @@ public class UserController {
 
 		return new ResponseEntity(cultureService.getCultureInfo(email) , HttpStatus.OK);
 	}
+
+	// 사용자의 친구목록 조회
+	@GetMapping("/friendList")
+	@ApiOperation(value = "회원 친구목록 조회", notes = "사용자의 친구목록의 친구(사용자) 정보목록 조회")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<List<FriendBlackRes>> getFriendList(){
+		String email = "culsu@naver.com";
+
+		return new ResponseEntity(userService.getFriendList(email), HttpStatus.OK);
+	}
+
 }
