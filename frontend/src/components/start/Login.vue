@@ -85,7 +85,7 @@ export default {
             router.push({ name: 'Main' })
           })
           .catch(function (err) {
-            alert(err)
+            console.log(err)
           })
         } else {
           alert('올바른 정보를 다시 입력해주세요.')

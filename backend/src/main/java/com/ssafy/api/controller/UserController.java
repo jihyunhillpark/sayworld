@@ -38,7 +38,7 @@ import java.util.List;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 	
 	@Autowired
