@@ -22,11 +22,15 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
+    public final SetPath<User, QUser> blacks = this.<User, QUser>createSet("blacks", User.class, QUser.class, PathInits.DIRECT2);
+
     public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
 
     public final StringPath defaultPage = createString("defaultPage");
 
     public final StringPath email = createString("email");
+
+    public final SetPath<User, QUser> friends = this.<User, QUser>createSet("friends", User.class, QUser.class, PathInits.DIRECT2);
 
     public final StringPath gender = createString("gender");
 
@@ -41,8 +45,6 @@ public class QUser extends EntityPathBase<User> {
     public final NumberPath<Integer> tierMovie = createNumber("tierMovie", Integer.class);
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
-
-    public final ListPath<User, QUser> users = this.<User, QUser>createList("users", User.class, QUser.class, PathInits.DIRECT2);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
