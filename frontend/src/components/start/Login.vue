@@ -82,6 +82,10 @@ export default {
           store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
           .then(function (result) {
             localStorage.setItem('token', result.data.accessToken)
+            localStorage.setItem('email', state.form.email)
+
+            //밑에 처럼 getItem함수를 쓰면 키값으로 value를 알아낼수있음
+            //localStorage.getItem('email')
             router.push({ name: 'Main' })
           })
           .catch(function (err) {

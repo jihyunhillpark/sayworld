@@ -37,39 +37,32 @@ import java.util.List;
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "유저 API", tags = {"User"})
-@CrossOrigin(origins = "http://localhost:8443")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
 
-<<<<<<< HEAD
-=======
 	@Autowired
 	CultureService cultureService;
 
->>>>>>> 5307b976779667b258714225aefb6eaf6ac763a0
 	// 회원 가입
 	@PostMapping("/signup")
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
-    })
+	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
 	public ResponseEntity<? extends BaseResponseBody> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-		
+
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 		User user = userService.createUser(registerInfo);
-		//User userInfo = userService.getUserByEmail(user.getEmail());
-		//return new ResponseEntity(userInfo, HttpStatus.OK);
-		return new ResponseEntity(user, HttpStatus.OK);
 
-		//return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
 
@@ -94,13 +87,13 @@ public class UserController {
 
 	// 이메일로 회원정보 조회
 	@GetMapping("/userInfo")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
-    })
+	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
 	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -110,8 +103,7 @@ public class UserController {
 //		String userId = userDetails.getUsername();
 		String userEmail = userDetails.getUserEmail();
 		User user = userService.getUserByEmail(userEmail);
-		
-		
+
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 
