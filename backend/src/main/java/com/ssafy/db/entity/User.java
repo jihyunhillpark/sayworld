@@ -56,6 +56,10 @@ public class User {
     @JoinColumn(name = "user_id" )
     List<Culture> cultures = new ArrayList();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    List<Blog> blogs = new ArrayList();
+
     @ManyToMany
     @JoinTable(name = "friend_list",
             joinColumns = @JoinColumn(name = "user_id"),
