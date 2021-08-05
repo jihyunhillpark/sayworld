@@ -23,7 +23,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item icon="el-icon-user-solid">마이페이지</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-user-solid" @click="clickMyPage">마이페이지</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-moon" @click="clickLogout">로그아웃</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -68,6 +68,13 @@ export default {
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     })
+
+    const clickMyPage = () => {
+      router.push({
+        name: 'MyPage'
+      })
+    }
+
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
