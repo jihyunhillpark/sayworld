@@ -25,7 +25,7 @@ public class Culture {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)// 양방향 관계에서 한쪽은 읽기만 할수있게 설정.
-    private User user;
+    User user;
 
     @Column(name = "culture_category")
     char cultureCategory;
