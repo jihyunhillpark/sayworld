@@ -21,12 +21,28 @@ public class QUser extends EntityPathBase<User> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+<<<<<<< HEAD
     public final StringPath department = createString("department");
+=======
+    public final SetPath<User, QUser> blacks = this.<User, QUser>createSet("blacks", User.class, QUser.class, PathInits.DIRECT2);
+
+    public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
+>>>>>>> 11aec8f9994454f92f9e5575ec41ab6d05f56107
 
     //inherited
     public final NumberPath<Long> id = _super.id;
 
+<<<<<<< HEAD
     public final StringPath name = createString("name");
+=======
+    public final StringPath email = createString("email");
+
+    public final SetPath<User, QUser> friends = this.<User, QUser>createSet("friends", User.class, QUser.class, PathInits.DIRECT2);
+
+    public final StringPath gender = createString("gender");
+
+    public final StringPath nickname = createString("nickname");
+>>>>>>> 11aec8f9994454f92f9e5575ec41ab6d05f56107
 
     public final StringPath password = createString("password");
 

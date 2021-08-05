@@ -131,31 +131,36 @@ export default {
 
     const clickSignup = function () {
       // 회원가입 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
-      state.fullscreenLoading = true;
-      setTimeout(() => {
-        state.fullscreenLoading = false;
-        signupForm.value.validate((valid) => {
-          if (valid) {
-            store.dispatch('root/requestSignup',
-                { email: state.form.email,
-                  password: state.form.password,
-                  nickname: state.form.nickname,
-                  age: state.form.age,
-                  password: state.form.gender,
-                  age: state.form.default_page,
-              })
-              .then(function ( ) {
-                handleClose()
-                alert('회원 가입이 완료되었습니다.')
-              })
-              .catch(function ( ) {
-                alert('회원 가입에 실패하였습니다.')
-              })
-            } else {
-              alert('Validate error!')
-          }
-        });
-      }, 1000);
+      signupForm.value.validate((valid) => {
+        if (valid) {
+          store.dispatch('root/requestSignup',
+            { email: state.form.email,
+              password: state.form.password,
+              nickname: state.form.nickname,
+              age: state.form.age,
+              gender: state.form.gender,
+              default_page: state.form.default_page,
+          })
+          .then(function ( ) {
+            handleClose()
+            alert('회원 가입이 완료되었습니다.')
+            // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+            // .then(function (result) {
+            //   localStorage.setItem('token', result.data.accessToken)
+            //   router.push({ name: 'Main' })
+            // })
+            // .catch(function (err) {
+            //   alert(err)
+            // })
+          })
+          .catch(function (err) {
+            console.log(err)
+            alert('회원 가입에 실패하였습니다.')
+          })
+        } else {
+          alert('Validate error!')
+        }
+      })
     }
 
     const handleClose = function () {
@@ -177,7 +182,7 @@ export default {
 <style>
 .signup-dialog {
   width: 430px !important;
-  height: 575;
+  height: 575px;
 }
 .signup-dialog .el-dialog__headerbtn {
   float: right;

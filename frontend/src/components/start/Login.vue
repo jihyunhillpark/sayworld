@@ -72,30 +72,23 @@ export default {
 
     const clickLogin = function () {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
-      state.fullscreenLoading = true;
-      setTimeout(() => {
-        state.fullscreenLoading = false;
-        loginForm.value.validate((valid) => {
-          if (valid) {
-            store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
-            .then(function (result) {
-              store.commit('root/setLogin', true)
-              localStorage.setItem('token', result.data.accessToken)
-              store.dispatch('root/requestUserInfo')
-              .then(function (result){
-                console.log(result)
-                localStorage.setItem('email', result.data.email)
-                localStorage.setItem('nickname', result.data.nickname)
-              })
-            })
-            .catch(function (err) {
-              alert(err)
-            })
-          } else {
-            alert('Validate error!')
-          }
-        });
-      }, 1000);
+      loginForm.value.validate((valid) => {
+        if (valid) {
+          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+          .then(function (result) {
+            localStorage.setItem('token', result.data.accessToken)
+            localStorage.setItem('email', state.form.email)
+            //밑에 처럼 getItem함수를 쓰면 키값으로 value를 알아낼수있음
+            //localStorage.getItem('email')
+            window.location.reload()
+          })
+          .catch(function (err) {
+            console.log(err)
+          })
+        } else {
+          alert('올바른 정보를 다시 입력해주세요.')
+        }
+      })
     }
     return { loginForm, state, clickSignup, checkButton }
   }
