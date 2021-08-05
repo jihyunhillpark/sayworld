@@ -61,7 +61,7 @@ export default {
     // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
     const signupForm = ref(null)
     const state = reactive({
-     signupButton: true,
+      signupButton: true,
       fullscreenLoading: false,
       form: {
         email: '',
