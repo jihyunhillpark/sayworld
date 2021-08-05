@@ -71,11 +71,9 @@ export default {
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        console.log('로그아웃')
         localStorage.removeItem('token')
-        router.push({
-          name: 'Start'
-        })
+        // 첫 화면으로 넘어가게 해줘야 한다!!!! (아직 구현 X)
+        window.location.reload()
       }
     }
     return { state, clickLogout }

@@ -85,7 +85,7 @@ export default {
             localStorage.setItem('email', state.form.email)
             //밑에 처럼 getItem함수를 쓰면 키값으로 value를 알아낼수있음
             //localStorage.getItem('email')
-            window.location.reload()
+            router.push({ name: 'Home' })
           })
           .catch(function (err) {
             console.log(err)
