@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/home/home";
+import Home from "@/views/home/Home";
 import Main from "@/views/main/Main";
 import Start from "@/views/start/Start";
 import UserCategory from "@/views/user/UserCategory";
@@ -39,10 +39,10 @@ const routes = [
     component: UserCategory
   },
   {
-    path: "/rooms",
-    name: "rooms",
-    component: CreateRoom
-  }
+    path: "/home",
+    name: "Home",
+    component: Home
+  },
 ]
 
 const router = createRouter({
