@@ -10,6 +10,7 @@ export function requestLogin ({ state }, payload) {
 export function requestSignup ({ state }, payload) {
   const url = '/users/signup'
   let body = payload
+  console.log(payload)
   return $axios.post(url, body)
 }
 

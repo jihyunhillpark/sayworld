@@ -9,7 +9,7 @@ body {
   font-weight: 400;
 }
 
-@media (max-width: 1269px) {
+/* @media (max-width: 1269px) {
   .hide-on-small {
     display: none !important;
   }
@@ -29,7 +29,7 @@ body {
   .hide-on-big {
     display: none !important;
   }
-}
+} */
 
 @font-face {
   font-family: 'SpoqaHanSansNeo';

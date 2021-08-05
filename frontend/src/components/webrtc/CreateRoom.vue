@@ -1,5 +1,4 @@
 <template>
-<router-view></router-view>
 <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
@@ -282,6 +281,9 @@ export default {
 }
 </script>
 <style>
+.room-name{
+    width:80%;
+}
 .el-tag + .el-tag {
     margin-left: 10px;
 }

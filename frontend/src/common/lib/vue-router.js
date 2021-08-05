@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/home/home";
+import Home from "@/views/home/Home";
 import Main from "@/views/main/Main";
 import Start from "@/views/start/Start";
+import UserCategory from "@/views/user/UserCategory";
 import ConferencesDetail from "@/views/conferences/conference-detail";
 import History from "@/views/history/history";
-import CreateRoom from "@/components/webrtc/CreateRoom";
 
 // const fullMenu = require("@/views/main/menu.json");
 // function makeRoutesFromMenu() {
@@ -33,20 +33,15 @@ import CreateRoom from "@/components/webrtc/CreateRoom";
 // const routes = makeRoutesFromMenu();
 const routes = [
   {
-    path: "/",
-    name: "Start",
-    component: Start
+    path: "/register",
+    name: "UserCategory",
+    component: UserCategory
   },
   {
-    path: "/main",
-    name: "Main",
-    component: Main
+    path: "/home",
+    name: "Home",
+    component: Home
   },
-  {
-    path: "/rooms",
-    name: "rooms",
-    component: CreateRoom
-  }
 ]
 
 const router = createRouter({
