@@ -45,7 +45,7 @@ const routes = [
     component: CreateRoom
   },
   {
-    path: "/test",
+    path: "/mypage",
     name: "MyPage",
     component: MyPage
   },
@@ -54,6 +54,12 @@ const routes = [
     name: "Home",
     component: Home
   },
+  {
+    path: "/start",
+    name: "Start",
+    component: Start
+  },
+
 ]
 
 const router = createRouter({

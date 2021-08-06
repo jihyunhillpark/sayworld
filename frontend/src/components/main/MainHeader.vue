@@ -70,19 +70,26 @@ export default {
     })
 
     const clickMyPage = () => {
-      alert("마이페이지?")
+      //alert("마이페이지?")
 
-      router.push( {
-        name: 'MyPage'
-        }
-      )
+      router.push({
+        name: "MyPage"
+      })
     }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.removeItem('token')
+        //localStorage.removeItem('token')
+        //로그아웃 하면 근데 로컬 스토리지에서 제거만 하고 끝내면되나??
+        //localStorage.clear();
         // 첫 화면으로 넘어가게 해줘야 한다!!!! (아직 구현 X)
-        window.location.reload()
+        //window.location.reload()
+
+        //한번 시도해보겟슴다 - > 완료
+        router.push({
+          name: "Start"
+        })
+
       }
     }
     return { state, clickLogout, clickMyPage }
