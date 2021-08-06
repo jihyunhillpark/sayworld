@@ -1,10 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/home/Home";
-import Main from "@/views/main/Main";
-import Start from "@/views/start/Start";
-import UserCategory from "@/views/user/UserCategory";
-import ConferencesDetail from "@/views/conferences/conference-detail";
-import History from "@/views/history/history";
+import { createRouter, createWebHistory } from "vue-router"
+import Home from "@/views/home/Home"
+import UserCategory from "@/views/user/UserCategory"
+import MyPage from "@/components/mypage/MyPage"
 
 // const fullMenu = require("@/views/main/menu.json");
 // function makeRoutesFromMenu() {
@@ -41,6 +38,11 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/mypage",
+    name: "MyPage",
+    component: MyPage,
   },
 ]
 

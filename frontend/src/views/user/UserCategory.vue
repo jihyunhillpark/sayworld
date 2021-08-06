@@ -1,5 +1,6 @@
 <template>
   <p>관심사 등록</p>
+
 </template>
 
 <script>
