@@ -19,7 +19,7 @@
 @import "../../common/css/element-plus.css";
 </style>
 <script>
-import MainHeader from "@/components/main/mainHeader";
+import MainHeader from "@/components/main/MainHeader";
 import MainSidebar from "@/components/main/MainSidebar";
 import MainFooter from "@/components/main/MainFooter";
 

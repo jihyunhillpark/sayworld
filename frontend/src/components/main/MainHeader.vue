@@ -70,11 +70,13 @@ export default {
     })
 
     const clickMyPage = () => {
-      router.push({
-        name: 'MyPage'
-      })
-    }
+      alert("마이페이지?")
 
+      router.push( {
+        name: 'MyPage'
+        }
+      )
+    }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
@@ -85,9 +87,10 @@ export default {
         })
       }
     }
-    return { state, clickLogout }
+    return { state, clickLogout, clickMyPage }
+  },
 
-  }
+
 
 
 }

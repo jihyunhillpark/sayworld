@@ -20,9 +20,26 @@
 </template>
 
 <script>
+
 export default {
-  name: "MyPage"
-}
+  name: "MyPage",
+  data(){
+    return{
+
+    }
+  },
+
+  methods: {
+    getout() {
+      this.localStorage.removeItem('email'); //로컬 스토리지 제거
+      //localStorage.clear();
+      alert('회원탈퇴가 완료되었습니다.');
+      this.$router.push({ name: 'Start' });
+      this.$router.go(); //새로고침 역할
+    }
+  },
+};
+
 </script>
 
 <style scoped>
