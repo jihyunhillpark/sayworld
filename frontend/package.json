@@ -14,6 +14,7 @@
     "element-plus": "^1.0.2-beta.44",
     "element-theme-chalk": "^2.15.3",
     "node-sass": "^6.0.1",
+    "openvidu-browser": "^2.19.0",
     "roboto-fontface": "*",
     "sass-loader": "^10.2.0",
     "stylus-loader": "^3.0.2",

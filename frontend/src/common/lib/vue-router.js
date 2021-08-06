@@ -48,7 +48,12 @@ const routes = [
     path: "/test",
     name: "MyPage",
     component: MyPage
-  }
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home
+  },
 ]
 
 const router = createRouter({

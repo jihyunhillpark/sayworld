@@ -1,14 +1,21 @@
 <template>
-  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
-    <li
-      v-for="i in state.count"
-      @click="clickConference(i)"
-      class="infinite-list-item"
-      :key="i"
-    >
-      <conference />
-    </li>
-  </ul>
+  <div>
+    <!-- 세부 위치 수정 추후에 -->
+    <CreateRoom />
+    <div>
+      <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+        <li
+          v-for="i in state.count"
+          @click="clickConference(i)"
+          class="infinite-list-item"
+          :key="i"
+        >
+          <conference />
+        </li>
+      </ul>
+    </div>
+  </div>
+
 </template>
 <style>
 .infinite-list {
@@ -36,27 +43,27 @@
 }
 </style>
 <script>
-import Conference from "../../components/home/conference";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import Conference from "@/components/home/conference"
+import CreateRoom from "@/components/webrtc/CreateRoom"
+import { reactive } from "vue"
+import { useRouter } from "vue-router"
 
 export default {
   name: "Home",
-
   components: {
-    Conference
+    Conference,
+    CreateRoom,
   },
-
   setup() {
-    const router = useRouter();
+    const router = useRouter()
 
     const state = reactive({
       count: 12
-    });
+    })
 
     const load = function() {
       state.count += 4;
-    };
+    }
 
     const clickConference = function(id) {
       router.push({
@@ -64,8 +71,8 @@ export default {
         params: {
           conferenceId: id
         }
-      });
-    };
+      })
+    }
 
     return { state, load, clickConference };
   }
