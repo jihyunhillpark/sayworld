@@ -1,5 +1,9 @@
 package com.ssafy.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,10 +11,10 @@ import java.util.*;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor //public이라서 추가
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +47,7 @@ public class Room {
     @Column(name="session_id", nullable = false)
     private String sessionId;
 
-    @ManyToMany
+    @ManyToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "room_keyword",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name="keyword_id"))
