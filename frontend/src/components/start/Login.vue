@@ -32,6 +32,7 @@ export default {
       form: {
         email: '',
         password: '',
+        nickname: '',
         align: 'left'
       },
       rules: {
@@ -79,10 +80,11 @@ export default {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       loginForm.value.validate((valid) => {
         if (valid) {
-          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password, nickname: state.form.nickname })
           .then(function (result) {
             localStorage.setItem('token', result.data.accessToken)
             localStorage.setItem('email', state.form.email)
+            localStorage.setItem('nickname', state.form.nickname)
             //밑에 처럼 getItem함수를 쓰면 키값으로 value를 알아낼수있음
             //localStorage.getItem('email')
             router.push({ name: 'Home' })

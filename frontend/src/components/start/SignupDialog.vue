@@ -144,6 +144,8 @@ export default {
             handleClose()
             console.log(res.data)
             alert('회원 가입이 완료되었습니다.')
+
+
             // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
             // .then(function (result) {
             //   localStorage.setItem('token', result.data.accessToken)

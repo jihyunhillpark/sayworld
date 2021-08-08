@@ -11,6 +11,8 @@
     <ul>
         <li>이메일</li>
         <li v-for="e_mail in info">{{ e_mail }}</li>
+      <li>닉네임</li>
+      <li v-for="nickname in info">{{ nickname }}</li>
     </ul>
 </section>
 <row align-h="center">
@@ -39,6 +41,7 @@ export default {
   created() {
 
     this.info.push(localStorage.getItem('email'));
+    this.info.push(localStorage.getItem('nickname'));
 
 
   },
