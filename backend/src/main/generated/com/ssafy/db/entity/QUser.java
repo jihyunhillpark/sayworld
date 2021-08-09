@@ -38,7 +38,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath gender = createString("gender");
 
-    public final SetPath<BookCategory, QBookCategory> movieCategories = this.<BookCategory, QBookCategory>createSet("movieCategories", BookCategory.class, QBookCategory.class, PathInits.DIRECT2);
+    public final SetPath<MovieCategory, QMovieCategory> movieCategories = this.<MovieCategory, QMovieCategory>createSet("movieCategories", MovieCategory.class, QMovieCategory.class, PathInits.DIRECT2);
 
     public final StringPath nickname = createString("nickname");
 
