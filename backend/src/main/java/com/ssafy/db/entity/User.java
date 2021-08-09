@@ -56,6 +56,10 @@ public class User {
     @JoinColumn(name = "user_id" )
     List<Culture> cultures = new ArrayList();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    List<Blog> blogs = new ArrayList();
+
     @ManyToMany
     @JoinTable(name = "friend_list",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -69,7 +73,18 @@ public class User {
     private Set<User> blacks = new HashSet<>();
 
 
+    @ManyToMany
+    @JoinTable(name = "user_book",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_category_id"))
+    private Set<BookCategory> bookCategories = new HashSet<>();
 
+
+    @ManyToMany
+    @JoinTable(name = "user_movie",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
+    private Set<BookCategory> movieCategories = new HashSet<>();
 
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
