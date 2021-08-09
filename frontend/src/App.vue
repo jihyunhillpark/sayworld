@@ -15,8 +15,10 @@ export default {
     Start,
   },
 
-  data: () => ({
-    token: localStorage.getItem('token')
-  }),
+  data() {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
 }
 </script>

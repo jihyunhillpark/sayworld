@@ -1,6 +1,6 @@
 <template>
-<el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
-<el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
+  <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible=true" circle></el-button>
+  <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -53,66 +53,76 @@
         <el-button @click="dialogFormVisible = false">취소</el-button>
     </span>
     </template>
-</el-dialog>
-    <div id="session" v-if="session">
-        <div id="session-header">
-            <h1 id="session-title">{{ mySessionId }}</h1>
-            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
-        </div>
-        <div id="main-video" class="col-md-6">
-            <user-video :stream-manager="mainStreamManager"/>
-        </div>
-        <div id="video-container" class="col-md-6">
-            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-            <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
-        </div>
+  </el-dialog>
+  <div id="session" v-if="session">
+    <div id="session-header">
+      <h1 id="session-title">{{ mySessionId }}</h1>
+      <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
     </div>
+    <div id="main-video" class="col-md-6">
+      <user-video :stream-manager="mainStreamManager"/>
+    </div>
+    <div id="video-container" class="col-md-6">
+      <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+      <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+    </div>
+  </div>
 </template>
 <script>
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from './UserVideo';
 
+import { reactive, computed, ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 export default {
-    name: 'CreateRoom',
-
-    components: {
-		UserVideo,
+  name: 'CreateRoom',
+  components: {
+    UserVideo,
 	},
 
-    data() {
-    return {
-        dynamicTags: ['키워드를', '입력하세요'],
-        inputVisible: false,
-        inputValue: '',
-        checked: false,
-        radio: 'book',
-        num: 1,
-        dialogFormVisible: false,
-        form: {
-            name: ''
-        },
-        isLocked: false,
-        formLabelWidth: '120px',
-        files: [], //업로드용 파일
-        filesPreview: [],
-        uploadImageIndex: 0, // 이미지 업로드를 위한 변수
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+    const state = reactive({
+      dynamicTags: ['키워드를', '입력하세요'],
+      inputVisible: false,
+      inputValue: '',
+      checked: false,
+      radio: 'book',
+      num: 1,
+      dialogFormVisible: false,
+      form: {
+          name: ''
+      },
+      isLocked: false,
+      formLabelWidth: '120px',
+      files: [], //업로드용 파일
+      filesPreview: [],
+      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 
-        OV: undefined,
-        session: undefined,
-        mainStreamManager: undefined,
-        publisher: undefined,
-        subscribers: [],
-    };
-    },
+      OV: undefined,
+      session: undefined,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
+    })
+
+    const handleClose = function(tag) {
+      state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
+    }
+
+    return { state, handleClose,}
+  },
+
     methods: {
-    handleClose(tag) {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-    },
+
 
     showInput() {
         this.inputVisible = true;
@@ -325,3 +335,4 @@ export default {
     border-radius: 5px;
 }
 </style>
+

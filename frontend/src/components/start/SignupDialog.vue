@@ -136,13 +136,12 @@ export default {
             { email: state.form.email,
               password: state.form.password,
               nickname: state.form.nickname,
-              age: state.form.age,
+              age: Number(state.form.age),
               gender: state.form.gender,
               default_page: state.form.default_page,
           })
           .then(function (res) {
             handleClose()
-            console.log(res.data)
             alert('회원 가입이 완료되었습니다.')
             // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
             // .then(function (result) {

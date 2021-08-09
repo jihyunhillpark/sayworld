@@ -21,3 +21,9 @@ export function requestUserInfo ({ state }) {
   }
   return $axios.get(url, {headers: headers})
 }
+
+export function sendCategory ({ state }, payload) {
+  const url = '/users'
+  let body = payload
+  return $axios.post(url, body)
+}
