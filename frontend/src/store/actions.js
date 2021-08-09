@@ -23,7 +23,7 @@ export function requestUserInfo ({ state }) {
 }
 
 export function sendCategory ({ state }, payload) {
-  const url = '/users'
+  const url = `/userCategory/${state.email}`
   let body = payload
   return $axios.post(url, body)
 }

@@ -169,7 +169,7 @@ export default {
       state.form.nickname = ''
       state.form.age = ''
       state.form.gender = ''
-      state.form.default_page = 'B'
+      state.form.default_page = ''
       emit('closeSignupDialog')
     }
 
