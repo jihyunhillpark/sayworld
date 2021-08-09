@@ -42,6 +42,13 @@ export default {
       this.signupDialogOpen = false;
     }
   },
+
+  //메인 페이지로 가면 로컬스토리지에 있는거 다 삭제
+  created() {
+    localStorage.clear()
+  },
+
+
   setup() {
 
   }

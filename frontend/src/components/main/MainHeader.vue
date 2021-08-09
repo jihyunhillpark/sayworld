@@ -21,8 +21,8 @@
               <span class="el-dropdown-link">
                 <el-avatar class="custom-avatar" :size="medium" :src="circleUrl"></el-avatar>
               </span>
-              <template #dropdown>
-                <el-dropdown-menu>
+              <template #dropdown >
+                <el-dropdown-menu >
                   <el-dropdown-item icon="el-icon-user-solid" @click="clickMyPage">마이페이지</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-moon" @click="clickLogout">로그아웃</el-dropdown-item>
                 </el-dropdown-menu>
@@ -79,7 +79,8 @@ export default {
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        //localStorage.removeItem('token')
+       //localStorage.removeItem('token')
+        localStorage.clear();
         //로그아웃 하면 근데 로컬 스토리지에서 제거만 하고 끝내면되나??
         //localStorage.clear();
         // 첫 화면으로 넘어가게 해줘야 한다!!!! (아직 구현 X)
