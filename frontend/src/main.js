@@ -8,6 +8,7 @@ import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./common/lib/vue-router";
 
+
 // import "element-plus/packages/theme-chalk/src/base.scss";
 // import "element-theme-chalk";
 // Element UI Components [시작]
@@ -199,6 +200,7 @@ app.use(VueAxios, axios);
 app.use(store);
 app.use(i18n);
 app.use(router);
+
 
 components.forEach(component => {
   app.component(component.name, component);
