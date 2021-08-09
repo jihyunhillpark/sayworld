@@ -61,12 +61,21 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public void addTags(List<String> keywords, Room room) {
         List<Tag> mappedTags = new ArrayList<>();
+        Optional<Tag> wrappedTag;
+        Tag tag;
 
         for(String keyword: keywords){
-            Tag tag = Tag.builder().tagName(keyword).build();
+            wrappedTag = tagRepository.findByTagName(keyword);
+            if(wrappedTag.isPresent()) {
+                tag = wrappedTag.get();
+                // System.out.println("tag = " + tag.getTagName() + ", id = " + tag.getTagId());
+            }
+            else{
+                tag = Tag.builder().tagName(keyword).build();
+                // System.out.println("tag = " + tag.getTagName() + ", id = " + tag.getTagId());
+                tagRepository.save(tag); //기존에 없던 태그라면 태그 테이블에 추가.
+            }
             mappedTags.add(tag);
-            if(tagRepository.findByTagName(keyword).isPresent()) continue;
-            tagRepository.save(tag); //기존에 없던 태그라면 태그 테이블에 추가.
         }
 
         room.getTags().addAll(mappedTags); //매핑 테이블에 다 저장하기

@@ -30,7 +30,7 @@ public interface UserService {
 
 
 	// 관심사 methods
-	List<InterestRes> getInterest();
-	void addInterest();
-	void fixInterest();
+//	List<InterestRes> getInterest();
+//	void addInterest();
+//	void fixInterest();
 }

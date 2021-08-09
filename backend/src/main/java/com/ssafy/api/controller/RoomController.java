@@ -17,17 +17,8 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.api.response.RoomCreatePostRes;
 
 import javax.servlet.http.HttpSession;
-<<<<<<< HEAD
-import java.util.*;
-=======
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
->>>>>>> dfbc4b63b1ba7e3a29a884461c0474ffffbb1980
 
 @RestController
 @RequestMapping("/api/v1/rooms")

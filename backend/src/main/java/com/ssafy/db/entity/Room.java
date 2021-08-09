@@ -21,6 +21,9 @@ public class Room {
     @Column(name="room_id",nullable = false, updatable = false) //openvidu token 사용해도 될둣..?
     private long roomId;
 
+    //반지의 제왕 - 판타지, 골룸골룸, 반지챡
+    //해리포터 - 판타지, 흑흑, 음음
+
     //시간 안해도 되나!?
 
     @Column(name="room_host_id", nullable = false)

@@ -17,6 +17,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     Optional<Room> findByRoomTitle(String roomTitle);
     Optional<Room> findBySessionId(String SessionId);
     List<Room> findByRoomTitleContains(String roomTitle);
-    @Query("SELECT DISTINCT r FROM Room r JOIN FETCH r.tags tag WHERE tag.tagName = :tagName")
+    @Query("SELECT DISTINCT r FROM Room r JOIN r.tags tag WHERE tag.tagName = :tagName")
     List<Room> findByKeyword(@Param("tagName") String keyword);
 }
