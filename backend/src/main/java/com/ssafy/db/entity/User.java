@@ -84,7 +84,7 @@ public class User {
     @JoinTable(name = "user_movie",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
-    private Set<BookCategory> movieCategories = new HashSet<>();
+    private Set<MovieCategory> movieCategories = new HashSet<>();
 
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
