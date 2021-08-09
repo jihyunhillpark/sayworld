@@ -38,4 +38,6 @@ public class RoomCreatePostRequest {
     @ApiModelProperty(name="이미지url", example="resources/dist/img" )
     String url;
 
+    @ApiModelProperty(name="세션 Id", example="Dfjk_sSBgs_nWdk" )
+    String sessionId;
 }

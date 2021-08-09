@@ -8,6 +8,8 @@ import com.ssafy.db.repository.TagRepository;
 import io.openvidu.java.client.Session;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.expression.spel.ast.OpInc;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,15 @@ public class RoomServiceImpl implements RoomService{
     @Autowired
     TagRepository tagRepository;
 
+
+
     @Override
-    public Room createRoom(RoomCreatePostRequest roomCreateInfo, String sessionId) {
+    public List<Room> getRoomList() {
+        return roomRepository.findAll();
+    }
+
+    @Override
+    public Room createRoom(RoomCreatePostRequest roomCreateInfo) {
         Optional<Room> existingRoom = roomRepository.findByRoomTitle(roomCreateInfo.getRoomName());
         if(existingRoom.isPresent()) {
             return null;
@@ -35,13 +44,13 @@ public class RoomServiceImpl implements RoomService{
                 .bookCategoryId(roomCreateInfo.getBookCategory())
                 .roomPassword(roomCreateInfo.getPassword())
                 .roomImg("request_thumbnail_img")
-                .sessionId(sessionId).build();
+                .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
         return roomRepository.save(room);
     }
 
     @Override
-    public Optional<Room> getRoomByRoomTitle(String roomName) {
-        return roomRepository.findByRoomTitle(roomName);
+    public List<Room> getRoomByRoomTitle(String roomName) {
+        return roomRepository.findByRoomTitleContains(roomName);
     }
 
     @Override
@@ -50,14 +59,27 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public List<Tag> addTags(List<String> keywords, Long roomId) {
+    public void addTags(List<String> keywords, Room room) {
         List<Tag> mappedTags = new ArrayList<>();
+        Optional<Tag> wrappedTag;
+        Tag tag;
+
         for(String keyword: keywords){
-            if(tagRepository.findByTagName(keyword).isPresent()) continue;
-            Tag tag =  tagRepository.save(Tag.builder().tagName(keyword).build()); //새로운거 추가.
+            wrappedTag = tagRepository.findByTagName(keyword);
+            if(wrappedTag.isPresent()) {
+                tag = wrappedTag.get();
+                // System.out.println("tag = " + tag.getTagName() + ", id = " + tag.getTagId());
+            }
+            else{
+                tag = Tag.builder().tagName(keyword).build();
+                // System.out.println("tag = " + tag.getTagName() + ", id = " + tag.getTagId());
+                tagRepository.save(tag); //기존에 없던 태그라면 태그 테이블에 추가.
+            }
             mappedTags.add(tag);
         }
-        return mappedTags;
+
+        room.getTags().addAll(mappedTags); //매핑 테이블에 다 저장하기
+        roomRepository.save(room);
     }
 
     @Override
@@ -68,5 +90,16 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public Optional<Room> detailRoom(String sessionId) {
         return roomRepository.findBySessionId(sessionId);
+    }
+
+    @Override //TO-DO : 유저부분 one-to-many 설정해줘야함.
+    // @Query("SELECT DISTINCT r FROM Room r JOIN FETCH r.roomHostId u WHERE u.nickname = :nickname")
+    public List<Room> getRoomByHostNickname(@Param("nickname") String nickname) {
+        return null;
+    }
+
+    @Override
+    public List<Room> getRoomListByKeyword(String keyword) {
+        return roomRepository.findByKeyword(keyword);
     }
 }
