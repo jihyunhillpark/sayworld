@@ -1,7 +1,7 @@
 <template>
   <Main />
-  <!-- <Main v-if="token"/> -->
-  <!-- <Start v-else/> -->
+  <!-- <Main v-if="token"/> 
+  <Start v-else/> -->
 </template>
 
 <script>

@@ -3,9 +3,9 @@
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-input v-model="form.name"  id="rName" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item prop="keyword" label="키워드" :label-width="formLabelWidth">
+    <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
         <el-tag
         :key="tag"
         v-for="tag in dynamicTags"
@@ -26,8 +26,8 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </el-form-item>
-    <el-form-item prop="roomName" label="인원" :label-width="formLabelWidth">
-        <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
+    <el-form-item prop="personNum" label="인원" :label-width="formLabelWidth">
+        <el-input-number v-model="num" id = "pNum" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
     </el-form-item>
     <el-form-item prop="roomTheme" label="테마" :label-width="formLabelWidth">
         <el-radio v-model="radio" label="book">Book</el-radio>
@@ -37,11 +37,8 @@
         <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
         <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
     </el-form-item>
-    <el-form-item>
-        <!--<input type="file" id="file" ref="files" @change="imageUpload" multiple />-->
-    </el-form-item>
     <div class="image-box">
-        <label for="file">채팅방 사진 등록</label>
+        <label for="file">채팅방 사진 등록하기</label>
         <input type="file" id="file" ref="files" @change="imageUpload" multiple />
     </div>
     </el-form>
@@ -159,31 +156,63 @@ export default {
     },
 //방생성 API
     formRoom(){
-        var roomInfo = {
-            roomName: this.form.name,
-            //hostId: int,
-            keywords :this.dynamicTags,
-            limit: this.num,
-            //bookCategory: name,
-            //movieCategory: name,
-            //roomInviteCode: String, 
-            //password: String,
-            //thumbnailUrl: String,
-        }
+        console.log("formRoom");
+        // var roomInfo = {
+        //     roomName: this.form.name,
+        //     //hostId: int,
+        //     keywords :this.dynamicTags,
+        //     limit: this.num,
+        //     //bookCategory: name,
+        //     //movieCategory: name,
+        //     //roomInviteCode: String, 
+        //     //password: String,
+        //     //thumbnailUrl: String,
+        // }
 
         //store.dispatch('root/requestRoomInfo', roomInfo)
-
-        axios.post('http://localhost:8443/api/v1/home',roomInfo)
-        .then((res)=>{
-            if(res.data.success){
-                alert('방생성');
-            }else{
-                alert('실패');
-            }
-        })
-        .catch((err)=>
-            console.log(err)
-        )
+            const roomName= "";//document.getElementById("rName");
+            const hostId = 10000;
+            const keywords = [];//document.getElementById("kTag");
+            const limit = 1;//document.getElementById("pNum");
+            const bookCategory = 0;
+            const movieCategory = 1;
+            const url = "";
+            const password = "";
+            axios({
+                method:"POST",
+                url: "rooms",
+                data:{
+                    "roomName": this.form.name,
+                    "hostId": 10000,
+                    "keywords" :this.dynamicTags,
+                    "limit": this.num,
+                    "bookCategory": 0,
+                    "movieCategory": 1,
+                    //"roomInviteCode": String, 
+                    //password: String,
+                    "url": "src/assets/images/ssafy-logo.png",
+                    //"email": email.value,
+                    "password": "1234",
+                }
+            }).then((res)=>{
+                console.log(res);
+            }).catch(error=>{
+                console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+                console.log(error);
+                throw new Error(error);
+            });
+        // axios.post('/rooms',roomInfo)
+        // .then((response)=>{
+        //     console.log()
+        //     if(response.data){
+        //         alert('방생성');
+        //     }else{
+        //         alert('실패');
+        //     }
+        // })
+        // .catch((response)=>
+        //     console.log(response)
+        // );
     },
 
     joinSession () {
