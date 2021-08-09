@@ -24,6 +24,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<User, QUser> blacks = this.<User, QUser>createSet("blacks", User.class, QUser.class, PathInits.DIRECT2);
 
+    public final ListPath<Blog, QBlog> blogs = this.<Blog, QBlog>createList("blogs", Blog.class, QBlog.class, PathInits.DIRECT2);
+
     public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
 
     public final StringPath defaultPage = createString("defaultPage");

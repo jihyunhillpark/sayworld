@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.ssafy.api.request.UserFixPutReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.FriendBlackRes;
+import com.ssafy.api.response.InterestRes;
 import com.ssafy.db.entity.User;
 
 import java.util.List;
@@ -26,4 +27,10 @@ public interface UserService {
 	List<FriendBlackRes> getBlackList(String myEmail);
 	void addBlack(String myEmail, String blackEmail);
 	void deleteBlack(String myEmail, String blackEmail);
+
+
+	// 관심사 methods
+	List<InterestRes> getInterest();
+	void addInterest();
+	void fixInterest();
 }
