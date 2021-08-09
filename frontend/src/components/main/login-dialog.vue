@@ -76,6 +76,7 @@ export default {
       form: {
         id: '',
         password: '',
+        nickname: '',
         align: 'left'
       },
       rules: {
@@ -99,7 +100,7 @@ export default {
       loginForm.value.validate((valid) => {
         if (valid) {
           console.log('submit')
-          store.dispatch('root/requestLogin', { id: state.form.id, password: state.form.password })
+          store.dispatch('root/requestLogin', { id: state.form.id, password: state.form.password, nickname:state.form.nickname })
           .then(function (result) {
             alert('accessToken: ' + result.data.accessToken)
           })
@@ -115,6 +116,7 @@ export default {
     const handleClose = function () {
       state.form.id = ''
       state.form.password = ''
+      state.form.nickname = ''
       emit('closeLoginDialog')
     }
 

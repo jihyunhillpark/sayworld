@@ -54,7 +54,9 @@ public class AuthController {
 	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo, HttpServletResponse res) {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
+
 		User user = userService.getUserByEmail(email);
+
 
 		String token = "";
 		Map<String, Object> resultMap = new HashMap<>();
@@ -66,6 +68,7 @@ public class AuthController {
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 
 			// 여기부터! 토큰 정보는 request의 헤더로 보내고, 토큰 정보 확인해보기위해 map에 담아주려고함.
+
 			token = JwtTokenUtil.getToken(email); //토큰 생성하고
 			res.setHeader("jwt-auth-token", token); //request 헤더로 보내고
 			System.out.println(user.getEmail());

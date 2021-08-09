@@ -15,8 +15,15 @@ export function requestSignup ({ state }, payload) {
 }
 
 export function requestUserInfo ({ state }) {
-  let token = localStorage.getItem("token")
-  const url = "/users/userInfo"
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-  return $axios.get(url)
+  const url = `/users/userInfo/${state.email}`
+  let headers = {
+    Authorization: "Bearer " + state.token
+  }
+  return $axios.get(url, {headers: headers})
+}
+
+export function sendCategory ({ state }, payload) {
+  const url = `/userCategory/${state.email}`
+  let body = payload
+  return $axios.post(url, body)
 }
