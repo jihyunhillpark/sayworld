@@ -20,3 +20,10 @@ export function requestUserInfo ({ state }) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   return $axios.get(url)
 }
+
+export function requestRoomInfo ({ state }, payload) {
+  const url = "/rooms"
+  console.log("ddddd");
+  let body = payload
+  return $axios.post(url,body)
+}
