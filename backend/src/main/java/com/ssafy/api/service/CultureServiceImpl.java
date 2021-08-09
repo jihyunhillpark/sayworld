@@ -56,7 +56,11 @@ public class CultureServiceImpl implements CultureService{
     public void deleteCulture(String email, String cultureTitle, char cultureCategory){
         User user = userRepository.findByEmail(email).get();
         List<Culture> list = user.getCultures();
-        list.remove(cultureRepository.findByCultureTitleAndCultureCategory(cultureTitle, cultureCategory).get());
+        Culture culture = cultureRepository.findByCultureTitleAndCultureCategory(cultureTitle, cultureCategory).get();
+        list.remove(culture);
+
+        cultureRepository.delete(culture);
+        userRepository.save(user);
     }
 
 }
