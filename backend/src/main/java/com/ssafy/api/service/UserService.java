@@ -28,9 +28,8 @@ public interface UserService {
 	void addBlack(String myEmail, String blackEmail);
 	void deleteBlack(String myEmail, String blackEmail);
 
-
-	// 관심사 methods
 	List<InterestRes> getInterest(String myEmail);
 	void addInterest(String myEmail, List<InterestReq> interestReq);
 	void fixInterest(String myEmail, List<InterestReq> interestReq);
+
 }

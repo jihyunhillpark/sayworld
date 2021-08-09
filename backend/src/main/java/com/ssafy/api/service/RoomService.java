@@ -9,12 +9,14 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface RoomService {
-    //List<Room> selectRooms();
-    Room createRoom(RoomCreatePostRequest roomCreateInfo, String sessionId);
+    Room createRoom(RoomCreatePostRequest roomCreateInfo);
     // Room updateRoom(RoomUpdateRequest roomUpdateInfo);
-    Optional<Room> getRoomByRoomTitle(String roomName);
     Optional<Room> getRoomBySessionId(String sessionId);
-    List<Tag> addTags(List<String> keywords, Long roomId);
+    void addTags(List<String> keywords, Room room);
     void deleteRoom(Room selectedRoom);
     Optional<Room> detailRoom(String sessionId);
+    List<Room> getRoomList();
+    List<Room> getRoomByRoomTitle(String roomName);
+    List<Room> getRoomByHostNickname(String nickname);
+    List<Room> getRoomListByKeyword(String keyword);
 }
