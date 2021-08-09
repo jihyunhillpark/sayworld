@@ -1,10 +1,8 @@
 package com.ssafy.api.controller;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
-import com.ssafy.api.request.CulturePostReq;
-import com.ssafy.api.request.UserFixPutReq;
-import com.ssafy.api.response.CultureListRes;
-import com.ssafy.api.response.FriendBlackRes;
+import com.ssafy.api.request.*;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.CultureService;
 import com.ssafy.db.entity.Culture;
 import io.swagger.annotations.*;
@@ -15,10 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserLoginPostReq;
-import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -65,7 +59,7 @@ public class UserController {
 
 
 	// 유저 정보 수정
-	@PostMapping("/userFix/{myEmail}")
+	@PutMapping("/userFix/{myEmail}")
 	@ApiOperation(value = "유저정보 수정", notes = "아이디를 제외한 모든 유저정보 수정")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -202,7 +196,7 @@ public class UserController {
 	}
 
 	// 사용자 친구 삭제
-	@PostMapping("/deleteFriend/{myEmail}")
+	@DeleteMapping("/deleteFriend/{myEmail}")
 	@ApiOperation(value = "회원 친구목록 조회", notes = "사용자의 친구목록의 친구(사용자) 정보목록 조회")
 	@ApiResponses({
 			@ApiResponse(code=200, message = "성공"),
@@ -251,7 +245,7 @@ public class UserController {
 	}
 
 	// 사용자 친구 삭제
-	@PostMapping("/deleteBlack/{myEmail}")
+	@DeleteMapping("/deleteBlack/{myEmail}")
 	@ApiOperation(value = "회원 차단 해제", notes = "사용자의 차단목록의 사용자(사용자) 차단 해제")
 	@ApiResponses({
 			@ApiResponse(code=200, message = "성공"),
@@ -268,6 +262,53 @@ public class UserController {
 	}
 
 
+	// 사용자의 관심사 목록 조회
+	@GetMapping("/userCategory/{myEmail}")
+	@ApiOperation(value = "사용자의 관심사 목록 조회", notes = "사용자의 관심사 목록 조회")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<List<InterestRes>> getInterest(@PathVariable String myEmail){
+
+		return new ResponseEntity(userService.getInterest(myEmail), HttpStatus.OK);
+	}
+
+	// 사용자의 관심사 등록
+	@PostMapping("/userCategory/{myEmail}")
+	@ApiOperation(value = "사용자의 관심사 등록", notes = "사용자의 관심사 목록에 새로운 관심사를 추가")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> addInterest(@PathVariable String myEmail
+			, @RequestBody @ApiParam(value = "추가할 관심사 목록",required = true)List<InterestReq> interestReqs){
+
+		userService.addInterest(myEmail, interestReqs);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+
+	// 사용자의 관심사 수정
+	@PutMapping("/userCategory/{myEmail}")
+	@ApiOperation(value = "사용자의 관심사 수정", notes = "사용자의 기존 관심사 목록을 수정")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> fixInterest(@PathVariable String myEmail
+			, @RequestBody @ApiParam(value = "수정할 관심사 목록",required = true)List<InterestReq> interestReqs){
+
+		userService.fixInterest(myEmail, interestReqs);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
 
 
 }

@@ -19,8 +19,7 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.api.response.RoomCreatePostRes;
 
 import javax.servlet.http.HttpSession;
-//import javax.xml.ws.Service;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
