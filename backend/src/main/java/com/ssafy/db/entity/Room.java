@@ -50,20 +50,17 @@ public class Room {
     @Column(name="session_id", nullable = false)
     private String sessionId;
 
-    @ManyToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "room_keyword",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name="keyword_id"))
-    final private Set<Tag> tags = new HashSet<Tag>();
+    @OneToMany(mappedBy = "room")
+    private Set<RoomTag> roomTags;
 
-    public void addTag(Tag tag) {
-        tags.add(tag);
-        tag.getRooms().add(this);
-    }
-
-    public void removeTag(Tag tag){
-        tags.remove(tag);
-        tag.getRooms().remove(this);
-    }
+//    public void addTag(Tag tag) {
+//        tags.add(tag);
+//        tag.getRooms().add(this);
+//    }
+//
+//    public void removeTag(Tag tag){
+//        tags.remove(tag);
+//        tag.getRooms().remove(this);
+//    }
 
 }

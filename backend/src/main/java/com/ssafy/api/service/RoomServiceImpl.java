@@ -2,8 +2,11 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.RoomCreatePostRequest;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.RoomTag;
+import com.ssafy.db.entity.RoomTagID;
 import com.ssafy.db.entity.Tag;
 import com.ssafy.db.repository.RoomRepository;
+import com.ssafy.db.repository.RoomTagRepository;
 import com.ssafy.db.repository.TagRepository;
 import io.openvidu.java.client.Session;
 import org.checkerframework.checker.units.qual.A;
@@ -24,7 +27,8 @@ public class RoomServiceImpl implements RoomService{
     @Autowired
     TagRepository tagRepository;
 
-
+    @Autowired
+    RoomTagRepository roomTagRepository;
 
     @Override
     public List<Room> getRoomList() {
@@ -59,12 +63,12 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public void addTags(List<String> keywords, Room room) {
-        List<Tag> mappedTags = new ArrayList<>();
-        Optional<Tag> wrappedTag;
+    public void addTags(List<String> keywords, Room room) { //방정보는 이미 저장 했음ㄴㄴ
+        Optional<Tag> wrappedTag = null;
         Tag tag;
 
         for(String keyword: keywords){
+            System.out.println("KEYWORD ==== " + keyword);
             wrappedTag = tagRepository.findByTagName(keyword);
             if(wrappedTag.isPresent()) {
                 tag = wrappedTag.get();
@@ -75,11 +79,12 @@ public class RoomServiceImpl implements RoomService{
                 // System.out.println("tag = " + tag.getTagName() + ", id = " + tag.getTagId());
                 tagRepository.save(tag); //기존에 없던 태그라면 태그 테이블에 추가.
             }
-            mappedTags.add(tag);
+            RoomTagID roomTagID = new RoomTagID(room.getRoomId(),tag.getTagId());
+            RoomTag roomTag = new RoomTag(roomTagID,room,tag);
+            System.out.println("TEST === " + roomTag.getRoom().getRoomTitle());
+            System.out.println("TEST === 2 " + roomTag.getTag().getTagName());
+            roomTagRepository.save(roomTag);
         }
-
-        room.getTags().addAll(mappedTags); //매핑 테이블에 다 저장하기
-        roomRepository.save(room);
     }
 
     @Override
@@ -99,7 +104,17 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public List<Room> getRoomListByKeyword(String keyword) {
-        return roomRepository.findByKeyword(keyword);
+    public Set<Room> getRoomListByKeyword(String keyword) {
+        //해당 키워드로 검색
+        Optional<Tag> find = tagRepository.findByTagName(keyword);
+        Set<Room> rooms = new HashSet<>();
+        if(find.isPresent()){
+            List<RoomTag> roomTags = roomTagRepository.findRoomTagsByRoomTagIDTagId(find.get().getTagId());
+            for(RoomTag roomTag : roomTags){
+                // System.out.println("ROOM == " + roomTag.getRoom().getRoomTitle());
+                rooms.add(roomTag.getRoom());
+            }
+        }
+        return rooms;
     }
 }
