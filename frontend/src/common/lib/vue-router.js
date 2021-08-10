@@ -7,6 +7,8 @@ import ConferencesDetail from "@/views/conferences/conference-detail";
 import History from "@/views/history/history";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
+import CultureRegister from "../../components/mypage/CultureRegister";
+import MyBlog from "../../components/mypage/MyBlog";
 
 // const fullMenu = require("@/views/main/menu.json");
 // function makeRoutesFromMenu() {
@@ -59,6 +61,17 @@ const routes = [
     name: "Start",
     component: Start
   },
+  {
+    path: "/culture",
+    name: "CultureRegister",
+    component: CultureRegister
+  },
+  {
+    path: "/myblog",
+    name: "MyBlog",
+    component: MyBlog
+  }
+
 
 ]
 
