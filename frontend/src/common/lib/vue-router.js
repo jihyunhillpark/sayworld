@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/home/Home";
+import SearchResult from "@/views/home/SearchResult";
 import Main from "@/views/main/Main";
 import Start from "@/views/start/Start";
 import UserCategory from "@/views/user/UserCategory";
@@ -58,6 +59,11 @@ const routes = [
     path: "/start",
     name: "Start",
     component: Start
+  },
+  {
+    path: "/search/:searchValue",
+    name: "SearchResult",
+    component: SearchResult
   },
 
 ]

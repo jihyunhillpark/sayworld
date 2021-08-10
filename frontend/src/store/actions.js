@@ -27,3 +27,12 @@ export function sendCategory ({ state }, payload) {
   let body = payload
   return $axios.post(url, body)
 }
+
+export function searchRoom ({ state }, payload) {
+  const url = `rooms/?search_type=${payload.searchType}&input=${payload.searchValue}`
+  console.log(url)
+  let headers = {
+    Authorization: "Bearer " + state.token
+  }
+  return $axios.get(url, {headers: headers})
+}

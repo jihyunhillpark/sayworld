@@ -23,3 +23,11 @@ export function SET_EMAIL(state, email) {
 export function SET_USERINFO (state, userInfo) {
   state.userInfo = userInfo
 }
+
+export function SET_SEARCH_KEYWORD (state, searchKeyword) {
+  state.searchKeyword = searchKeyword
+}
+
+export function SET_SEARCH_TITLE (state, searchTitle) {
+  state.searchTitle = searchTitle
+}

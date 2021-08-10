@@ -37,4 +37,6 @@ export default {
   userInfo: '',
   token: '',
   email: '',
+  searchKeyword: [],
+  searchTitle: [],
 }
