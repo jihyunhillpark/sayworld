@@ -1,11 +1,11 @@
 <template>
-  <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible=true" circle></el-button>
-  <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
+<el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
+<el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-input v-model="form.name" autocomplete="off" id="rName" value=""></el-input>
     </el-form-item>
-    <el-form-item prop="keyword" label="키워드" :label-width="formLabelWidth">
+    <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
         <el-tag
         :key="tag"
         v-for="tag in dynamicTags"
@@ -26,103 +26,112 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </el-form-item>
-    <el-form-item prop="roomName" label="인원" :label-width="formLabelWidth">
-        <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
+    <el-form-item prop="personNum" label="인원" :label-width="formLabelWidth">
+        <el-input-number v-model="num" id = "pNum" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
     </el-form-item>
     <el-form-item prop="roomTheme" label="테마" :label-width="formLabelWidth">
         <el-radio v-model="radio" label="book">Book</el-radio>
         <el-radio v-model="radio" label="movie">Movie</el-radio>
     </el-form-item>
-    <el-form-item prop="roomLock" label="방" :label-width="formLabelWidth">
-        <el-row>
-        <el-checkbox v-model="checked" @change="handleCheckbox">잠금</el-checkbox>
-        <el-input v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
-        </el-row>
-    </el-form-item>
-    <el-form-item>
-        <!--<input type="file" id="file" ref="files" @change="imageUpload" multiple />-->
+    <el-form-item prop="roomLock" label="방 잠금" :label-width="formLabelWidth">
+        <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
+        <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
     </el-form-item>
     <div class="image-box">
-        <label for="file">채팅방 사진 등록</label>
+        <label for="file">채팅방 사진 등록하기</label>
         <input type="file" id="file" ref="files" @change="imageUpload" multiple />
     </div>
     </el-form>
     <template #footer>
     <span class="dialog-footer">
-        <el-button type="primary" @click="[dialogFormVisible = false,joinSession()]" >생성</el-button>
-        <el-button @click="dialogFormVisible = false">취소</el-button>
+        <el-button type="primary" @click="[formClose(),formRoom(),joinSession()]" >생성</el-button>
+        <el-button @click="formClose()">취소</el-button>
     </span>
     </template>
-  </el-dialog>
-  <div id="session" v-if="session">
-    <div id="session-header">
-      <h1 id="session-title">{{ mySessionId }}</h1>
-      <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
+</el-dialog>
+    <div id="session" v-if="session">
+        <div id="session-header">
+            <h1 id="session-title">{{ mySessionId }}</h1>
+            <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
+            <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
+            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
+        </div>
+        <div id="main-video" class="col-md-6">
+            <user-video :stream-manager="mainStreamManager"/>
+        </div>
+        <div id="video-container" class="col-md-6">
+            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+            <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+        </div>
     </div>
-    <div id="main-video" class="col-md-6">
-      <user-video :stream-manager="mainStreamManager"/>
-    </div>
-    <div id="video-container" class="col-md-6">
-      <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-      <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
-    </div>
-  </div>
 </template>
 <script>
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from './UserVideo';
-
-import { reactive, computed, ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useStore } from 'vuex';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
+const store = useStore();
+
 export default {
-  name: 'CreateRoom',
-  components: {
-    UserVideo,
-	},
+    name: 'CreateRoom',
 
-  setup() {
-    const store = useStore()
-    const router = useRouter()
-    const state = reactive({
-      dynamicTags: ['키워드를', '입력하세요'],
-      inputVisible: false,
-      inputValue: '',
-      checked: false,
-      radio: 'book',
-      num: 1,
-      dialogFormVisible: false,
-      form: {
-          name: ''
-      },
-      isLocked: false,
-      formLabelWidth: '120px',
-      files: [], //업로드용 파일
-      filesPreview: [],
-      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
+    components: {
+        UserVideo,
+    },
 
-      OV: undefined,
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
-    })
+    data() {
+    return {
+        dynamicTags: ['키워드를', '입력하세요'],
+        inputVisible: false,
+        inputValue: '',
+        checkedLock: false,
+        radio: 'book',
+        num: 1,
+        dialogFormVisible: false,
+        form: {
+            name: '',
+            pwd:''
+        },
+        isLocked: false,
+        formLabelWidth: '120px',
+        files: [], //업로드용 파일
+        filesPreview: [],
+        uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 
-    const handleClose = function(tag) {
-      state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
-    }
+        OV: undefined,
+        session: undefined,
+        mainStreamManager: undefined,
+        publisher: undefined,
+        subscribers: [],
 
-    return { state, handleClose,}
-  },
+        block : false,
+        mute : false,
 
+    };
+    },
     methods: {
+    formClose() {
+        this.dialogFormVisible = false;
 
+        this.dynamicTags = ['키워드를', '입력하세요'];
+        this.inputVisible = false
+        this.inputValue = ''
+        this.checkedLock = false
+        this.radio = 'book'
+        this.num=1
+        this.form.name=''
+        this.isLocked=false
+        this.form.pwd=''
+    },
+    handleClose(tag) {
+        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+    },
 
     showInput() {
         this.inputVisible = true;
@@ -142,8 +151,69 @@ export default {
     handleChange(value) {
         console.log(value);
     },
-    handleCheckbox(value) {
+    handleCheckbox() {
         this.isLocked= !this.isLocked;
+    },
+//방생성 API
+    formRoom(){
+        console.log("formRoom");
+        // var roomInfo = {
+        //     roomName: this.form.name,
+        //     //hostId: int,
+        //     keywords :this.dynamicTags,
+        //     limit: this.num,
+        //     //bookCategory: name,
+        //     //movieCategory: name,
+        //     //roomInviteCode: String,
+        //     //password: String,
+        //     //thumbnailUrl: String,
+        // }
+
+        //store.dispatch('root/requestRoomInfo', roomInfo)
+            const roomName= document.getElementById("rName");
+            const hostId = 10000;
+            const keywords = [];//document.getElementById("kTag");
+            const limit = 1;//document.getElementById("pNum");
+            const bookCategory = 0;
+            const movieCategory = 1;
+            const url = "";
+            const password = "";
+            axios({
+                method:"POST",
+                url: "rooms",
+                data:{
+                    roomName : roomName.value,
+                    hostId: 10001,
+                    keywords :this.dynamicTags,
+                    limit: this.num,
+                    bookCategory: 0,
+                    movieCategory: 1,
+                    //"roomInviteCode": String,
+                    //password: String,
+                    url: "src/assets/images/ssafy-logo.png",
+                    //"email": email.value,
+                    password: "123456",
+                }
+            }).then((res)=>{
+                console.log(res);
+            }).catch(error=>{
+                console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+                console.log(this.roomName);
+                console.log(error);
+                throw new Error(error);
+            });
+        // axios.post('/rooms',roomInfo)
+        // .then((response)=>{
+        //     console.log()
+        //     if(response.data){
+        //         alert('방생성');
+        //     }else{
+        //         alert('실패');
+        //     }
+        // })
+        // .catch((response)=>
+        //     console.log(response)
+        // );
     },
 
     joinSession () {
@@ -187,12 +257,12 @@ export default {
                     let publisher = this.OV.initPublisher(undefined, {
                         audioSource: undefined, // The source of audio. If undefined default microphone
                         videoSource: undefined, // The source of video. If undefined default webcam
-                        publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-                        publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+                        publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+                        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
                         resolution: '640x480',  // The resolution of your video
-                        frameRate: 30,			// The frame rate of your video
-                        insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-                        mirror: false       	// Whether to mirror your local video or not
+                        frameRate: 30,         // The frame rate of your video
+                        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+                        mirror: false          // Whether to mirror your local video or not
                     });
 
                     this.mainStreamManager = publisher;
@@ -201,6 +271,7 @@ export default {
                     // --- Publish your stream ---
 
                     this.session.publish(this.publisher);
+
                 })
                 .catch(error => {
                     console.log('There was an error connecting to the session:', error.code, error.message);
@@ -208,8 +279,15 @@ export default {
         });
 
         window.addEventListener('beforeunload', this.leaveSession)
-	},
-
+    },
+    blockUnblock (){
+        var videoEnabled = this.block;
+        this.publisher.publishVideo(videoEnabled);
+    },
+    muteUnmute (){
+        var audioEnabled = this.mute;
+        this.publisher.publishAudio(audioEnabled);
+    },
     leaveSession () {
         // --- Leave the session by calling 'disconnect' method over the Session object ---
         if (this.session) this.session.disconnect();
@@ -235,7 +313,7 @@ export default {
      * These methods retrieve the mandatory user token from OpenVidu Server.
      * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
      * the API REST, openvidu-java-client or openvidu-node-client):
-     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   1) Initialize a Session in OpenVidu Server   (POST /openvidu/api/sessions)
      *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
      *   3) The Connection.token must be consumed in Session.connect() method
      */
@@ -272,7 +350,7 @@ export default {
         });
     },
 
-    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
+      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
     createToken (sessionId) {
         return new Promise((resolve, reject) => {
             axios
@@ -334,5 +412,77 @@ export default {
     cursor: pointer;
     border-radius: 5px;
 }
-</style>
 
+/*openvidu*/
+#session-header {
+	margin-bottom: 20px;
+}
+
+#session-title {
+	display: inline-block;
+}
+
+#buttonLeaveSession {
+	float: right;
+	margin-top: 20px;
+}
+
+#video-container video {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+}
+
+#video-container video + div {
+	float: left;
+	width: 50%;
+	position: relative;
+	margin-left: -50%;
+}
+
+#video-container p {
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+video {
+	width: 100%;
+	height: auto;
+}
+
+#main-video p {
+	position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 22px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+#session img {
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	object-fit: contain;
+	vertical-align: baseline;
+}
+
+#session #video-container img {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+	object-fit: cover;
+	height: 180px;
+}
+
+</style>
