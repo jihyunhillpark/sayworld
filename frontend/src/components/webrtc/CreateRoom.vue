@@ -3,7 +3,7 @@
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
-        <el-input v-model="form.name"  id="rName" autocomplete="off"></el-input>
+        <el-input v-model="form.name" autocomplete="off" id="rName" value=""></el-input>
     </el-form-item>
     <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
         <el-tag
@@ -170,7 +170,7 @@ export default {
         // }
 
         //store.dispatch('root/requestRoomInfo', roomInfo)
-            const roomName= "";//document.getElementById("rName");
+            const roomName= document.getElementById("rName");
             const hostId = 10000;
             const keywords = [];//document.getElementById("kTag");
             const limit = 1;//document.getElementById("pNum");
@@ -182,22 +182,23 @@ export default {
                 method:"POST",
                 url: "rooms",
                 data:{
-                    "roomName": this.form.name,
-                    "hostId": 10000,
-                    "keywords" :this.dynamicTags,
-                    "limit": this.num,
-                    "bookCategory": 0,
-                    "movieCategory": 1,
+                    roomName : roomName.value,
+                    hostId: 10001,
+                    keywords :this.dynamicTags,
+                    limit: this.num,
+                    bookCategory: 0,
+                    movieCategory: 1,
                     //"roomInviteCode": String, 
                     //password: String,
-                    "url": "src/assets/images/ssafy-logo.png",
+                    url: "src/assets/images/ssafy-logo.png",
                     //"email": email.value,
-                    "password": "1234",
+                    password: "123456",
                 }
             }).then((res)=>{
                 console.log(res);
             }).catch(error=>{
                 console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+                console.log(this.roomName);
                 console.log(error);
                 throw new Error(error);
             });
