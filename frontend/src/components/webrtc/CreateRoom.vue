@@ -4,7 +4,7 @@
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
         <!-- <el-input v-model="mySessionId" autocomplete="off" type="text" required></el-input> -->
-        <el-input v-model="form.name" autocomplete="off" id="rName" value=""></el-input>
+        <el-input v-model="mySessionId" autocomplete="off" id="rName" value=""></el-input>
     </el-form-item>
     <el-form-item prop="keyword" label="키워드" :label-width="formLabelWidth">
         <el-tag
@@ -31,9 +31,26 @@
     <el-form-item prop="personNum" label="인원" :label-width="formLabelWidth">
         <el-input-number v-model="num" id = "pNum" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
     </el-form-item>
-    <el-form-item prop="roomTheme" label="테마" :label-width="formLabelWidth">
-        <el-radio v-model="radio" label="book">Book</el-radio>
-        <el-radio v-model="radio" label="movie">Movie</el-radio>
+    <el-form-item prop="roomTheme" label="카테고리" :label-width="formLabelWidth">
+        <!-- <el-radio v-model="radio" label="book">Book</el-radio>
+        <el-radio v-model="radio" label="movie">Movie</el-radio> -->
+        <!-- book일때, room일때 구분해줘야함. -->
+        <el-select v-model="value" placeholder="Book">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
+        <el-select v-model="value" placeholder="Movie">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
     </el-form-item>
     <el-form-item prop="roomLock" label="방 잠금" :label-width="formLabelWidth">
         <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
@@ -46,7 +63,7 @@
     </el-form>
     <template #footer>
     <span class="dialog-footer">
-        <el-button type="primary" @click="[formClose(),formRoom(),joinSession()]" >생성</el-button>
+        <el-button type="primary" @click="[formRoom(),joinSession(),fromClose1()]" >생성</el-button>
         <el-button @click="formClose()">취소</el-button>
     </span>
     </template>
@@ -54,10 +71,10 @@
     <div id="session" v-if="session">
         <div id="session-header">
             <!-- <h1 id="session-title">{{mySessionId}}</h1> -->
-            <h1 id="session-title">{{rName.value}}</h1>
+            <h1 id="session-title">{{mySessionId}}</h1>
             <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
             <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
-            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession()]" value="Leave session">
+            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession(),formClose()]" value="Leave session">
         </div>
         <!-- <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager"/>
@@ -95,13 +112,30 @@ export default {
         inputValue: '',
         checkedLock: false,
         radio: 'book',
+        options: [{
+            value: '시',
+            label: '1'
+        }, {
+            value: '철학',
+            label: '2'
+        }, {
+            value: '로맨스소설',
+            label: '3'
+        }, {
+            value: 'Option4',
+            label: 'Option4'
+        }, {
+            value: 'Option5',
+            label: 'Option5'
+        }],
+        value: ''
         num: 1,
         dialogFormVisible: false,
         form: {
             name: '',
             pwd:''
         },
-        //mySessionId : '',
+        mySessionId : '',
         myUserName: 'Participant' + Math.floor(Math.random() * 100),//사용자 아이디로변경해야함.
         
         isLocked: false,
@@ -122,6 +156,10 @@ export default {
     };
     },
     methods: {
+    fromClose1(){
+        this.dialogFormVisible = false;
+
+    },
     formClose() {
         this.dialogFormVisible = false;
 
@@ -131,8 +169,8 @@ export default {
         this.checkedLock = false
         this.radio = 'book'
         this.num=1
-        //this.mySessionId=''
-        this.form.name='';
+        this.mySessionId=''
+        //this.form.name=''
         this.isLocked=false
         this.form.pwd=''
     },
@@ -181,7 +219,7 @@ export default {
                 data:{
                     roomName : rName.value,
                     hostId: 10001,
-                    keywords : ['hi','hi2','hi3'],
+                    keywords : this.dynamicTags,
                     limit: pNum.value,
                     bookCategory:0,
                     movieCategory: 1,
@@ -422,6 +460,16 @@ export default {
     border-radius: 5px;
 }
 
+.el-dropdown {
+    vertical-align: top;
+}
+.el-dropdown + .el-dropdown {
+margin-left: 15px;
+}
+.el-icon-arrow-down {
+font-size: 12px;
+}
+
 /*openvidu*/ 
 html {
 	position: relative;
@@ -589,6 +637,7 @@ a:hover .demo-logo {
 
 #session-title {
 	display: inline-block;
+    background-color: #e9e6c4;
 }
 
 #buttonLeaveSession {
