@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface RoomTagRepository extends JpaRepository<RoomTag, RoomTagID> {
     List<RoomTag> findRoomTagsByRoomTagIDRoomId(long roomId);
-    List<RoomTag> findRoomTagsByRoomTagIDTagId(int tagId);
+    List<RoomTag> findRoomTagsByRoomTagIDTagId(long tagId);
 }

@@ -120,7 +120,7 @@ public class RoomController {
 			return ResponseEntity.status(200).body(roomService.getRoomByRoomTitle(input));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
 			return ResponseEntity.status(200).body(roomService.getRoomByHostNickname(input));
-		else if(searchType.equals("keyword"))
+		else if(searchType.equals("keyword")) // Set 으로 반환
 			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
 		else
 			return ResponseEntity.status(200).body(null);

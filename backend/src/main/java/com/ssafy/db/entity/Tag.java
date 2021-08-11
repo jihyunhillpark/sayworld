@@ -19,7 +19,7 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name="keyword_id")
-    private int tagId;
+    private Long tagId;
 
 
     @Column(nullable = false, name="keyword_name")

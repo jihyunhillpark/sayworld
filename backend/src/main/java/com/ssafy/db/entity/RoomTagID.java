@@ -14,9 +14,9 @@ public class RoomTagID implements Serializable {
     @Column(name="room_id")
     private long roomId;
     @Column(name="keyword_id")
-    private int tagId;
+    private Long tagId;
 
-    public RoomTagID(long roomId, int tagId) {
+    public RoomTagID(long roomId, Long tagId) {
         this.roomId = roomId;
         this.tagId = tagId;
     }
@@ -35,7 +35,7 @@ public class RoomTagID implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 31 * hash + Long.hashCode(roomId);
-        hash = 31 * hash + Integer.hashCode(tagId);
+        hash = 31 * hash + Long.hashCode(tagId);
         return hash;
     }
 }

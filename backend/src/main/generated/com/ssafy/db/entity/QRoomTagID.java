@@ -21,7 +21,7 @@ public class QRoomTagID extends BeanPath<RoomTagID> {
 
     public final NumberPath<Long> roomId = createNumber("roomId", Long.class);
 
-    public final NumberPath<Integer> tagId = createNumber("tagId", Integer.class);
+    public final NumberPath<Long> tagId = createNumber("tagId", Long.class);
 
     public QRoomTagID(String variable) {
         super(RoomTagID.class, forVariable(variable));
