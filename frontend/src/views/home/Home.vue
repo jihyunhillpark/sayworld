@@ -3,6 +3,8 @@
     <!-- 세부 위치 수정 추후에 -->
     <CreateRoom />
     <div>
+    </div>
+    <div>
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
         <li
           v-for="i in state.count"

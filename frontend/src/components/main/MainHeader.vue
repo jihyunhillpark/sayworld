@@ -11,6 +11,7 @@
                 placeholder="검색"
                 prefix-icon="el-icon-search"
                 v-model="state.searchValue"
+                @keypress.enter="searchRoom"
               ></el-input>
             </div>
           </div>
@@ -21,9 +22,9 @@
               <span class="el-dropdown-link">
                 <el-avatar class="custom-avatar" :size="medium" :src="circleUrl"></el-avatar>
               </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item icon="el-icon-user-solid">마이페이지</el-dropdown-item>
+              <template #dropdown >
+                <el-dropdown-menu >
+                  <el-dropdown-item icon="el-icon-user-solid" @click="clickMyPage">마이페이지</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-moon" @click="clickLogout">로그아웃</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -54,34 +55,51 @@ export default {
     const state = reactive({
       searchValue: null,
       isCollapse: true,
-      menuItems: computed(() => {
-        const MenuItems = store.getters["root/getMenus"];
-        let keys = Object.keys(MenuItems);
-        let menuArray = []
-        for (let i = 0; i < keys.length; ++i) {
-          let menuObject = {}
-          menuObject.icon = MenuItems[keys[i]].icon;
-          menuObject.title = MenuItems[keys[i]].name;
-          menuArray.push(menuObject)
-        }
-        return menuArray
-      }),
-      activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
+      title: 'title',
+      keyword: 'keyword',
     })
+
+    const clickMyPage = () => {
+      router.push({
+        name: "MyPage"
+      })
+    }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.removeItem('token')
-        // 첫 화면으로 넘어가게 해줘야 한다!!!! (아직 구현 X)
+        localStorage.clear();
         window.location.reload()
       }
     }
-    return { state, clickLogout }
+
+    const searchRoom = () => {
+      if (state.searchValue) {
+        store.dispatch('root/searchRoom', {searchType: 'title', searchValue: state.searchValue})
+        .then((res) => {
+          console.log(res.data)
+          store.commit('root/SET_SEARCH_TITLE', res.data)
+        })
+        store.dispatch('root/searchRoom', {searchType: 'keyword', searchValue: state.searchValue})
+        .then((res) => {
+          console.log(res.data)
+          store.commit('root/SET_SEARCH_KEYWORD', res.data)
+        })
+        router.push({name: "SearchResult", params: { searchValue: state.searchValue }})
+      } else {
+        // 검색어 없을 때도 페이지 이동하는게 나은지 아니면 alert 띄우는게 나은지?
+        alert("검색어를 입력하세요.")
+      }
+    }
+    return { state, clickLogout, clickMyPage, searchRoom }
+  },
+
+
+
 
   }
 
 
-}
+
 </script>
 
 <style>

@@ -6,7 +6,7 @@
         <!-- <el-input v-model="mySessionId" autocomplete="off" type="text" required></el-input> -->
         <el-input v-model="mySessionId" autocomplete="off" id="rName" value=""></el-input>
     </el-form-item>
-    <el-form-item prop="keyword" label="키워드" :label-width="formLabelWidth">
+    <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
         <el-tag
         :key="tag"
         v-for="tag in dynamicTags"

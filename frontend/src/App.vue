@@ -1,7 +1,6 @@
 <template>
-  <Main />
-  <!-- <Main v-if="token"/> 
-  <Start v-else/> -->
+  <Main v-if="token"/>
+  <Start v-else/>
 </template>
 
 <script>
@@ -16,8 +15,10 @@ export default {
     Start,
   },
 
-  data: () => ({
-    token: localStorage.getItem('token')
-  }),
+  data() {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
 }
 </script>

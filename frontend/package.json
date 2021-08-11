@@ -10,6 +10,8 @@
   "dependencies": {
     "@mdi/font": "5.9.55",
     "axios": "^0.21.1",
+    "bootstrap": "^5.1.0",
+    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.44",
     "element-theme-chalk": "^2.15.3",
@@ -18,11 +20,12 @@
     "roboto-fontface": "*",
     "sass-loader": "^10.2.0",
     "stylus-loader": "^3.0.2",
-    "vue": "^3.0.0",
+    "vue": "^3.1.5",
     "vue-axios": "^3.2.4",
     "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.6",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

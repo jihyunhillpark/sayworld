@@ -14,6 +14,7 @@
       <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
         <el-input v-model="state.form.nickname" autocomplete="off"></el-input>
       </el-form-item>
+
       <el-form-item label="나이" :label-width="state.formLabelWidth">
         <el-radio-group v-model="state.form.age">
           <el-radio label="10">10대</el-radio>
@@ -24,18 +25,21 @@
           <el-radio label="60">60대 이상</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="성별" :label-width="state.formLabelWidth">
         <el-radio-group v-model="state.form.gender">
           <el-radio label="M">남성</el-radio>
           <el-radio label="F">여성</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="첫 페이지 설정" :label-width="state.formLabelWidth">
-        <el-radio-group v-model="state.form.default_page">
+        <el-radio-group v-model="state.form.defaultPage">
           <el-radio label="B">책</el-radio>
           <el-radio label="M">영화</el-radio>
         </el-radio-group>
       </el-form-item>
+
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -69,8 +73,8 @@ export default {
         nickname: '',
         age: '',
         gender: '',
-        default_page: '',
-        align: 'left',
+        defaultPage: '',
+        align: 'left'
       },
       rules: {
         email: [
@@ -136,14 +140,15 @@ export default {
             { email: state.form.email,
               password: state.form.password,
               nickname: state.form.nickname,
-              age: state.form.age,
+              age: Number(state.form.age),
               gender: state.form.gender,
-              default_page: state.form.default_page,
+              defaultPage: state.form.defaultPage
           })
           .then(function (res) {
             handleClose()
-            console.log(res.data)
             alert('회원 가입이 완료되었습니다.')
+
+
             // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
             // .then(function (result) {
             //   localStorage.setItem('token', result.data.accessToken)
@@ -170,7 +175,7 @@ export default {
       state.form.nickname = ''
       state.form.age = ''
       state.form.gender = ''
-      state.form.default_page = 'B'
+      state.form.defaultPage = ''
       emit('closeSignupDialog')
     }
 
