@@ -3,15 +3,17 @@
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
     <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
+        <!-- <el-input v-model="mySessionId" autocomplete="off" type="text" required></el-input> -->
         <el-input v-model="form.name" autocomplete="off" id="rName" value=""></el-input>
     </el-form-item>
-    <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
+    <el-form-item prop="keyword" label="키워드" :label-width="formLabelWidth">
         <el-tag
         :key="tag"
         v-for="tag in dynamicTags"
         closable
         :disable-transitions="false"
-        @close="handleClose(tag)">
+        @close="handleClose(tag)"
+        id="kTag">
         {{tag}}
         </el-tag>
         <el-input
@@ -35,7 +37,7 @@
     </el-form-item>
     <el-form-item prop="roomLock" label="방 잠금" :label-width="formLabelWidth">
         <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
-        <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
+        <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'" id="rPwd" value=""></el-input>
     </el-form-item>
     <div class="image-box">
         <label for="file">채팅방 사진 등록하기</label>
@@ -51,14 +53,15 @@
 </el-dialog>
     <div id="session" v-if="session">
         <div id="session-header">
-            <h1 id="session-title">{{ mySessionId }}</h1>
+            <!-- <h1 id="session-title">{{mySessionId}}</h1> -->
+            <h1 id="session-title">{{rName.value}}</h1>
             <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
             <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
-            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
+            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession()]" value="Leave session">
         </div>
-        <div id="main-video" class="col-md-6">
+        <!-- <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager"/>
-        </div>
+        </div> -->
         <div id="video-container" class="col-md-6">
             <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
@@ -98,6 +101,9 @@ export default {
             name: '',
             pwd:''
         },
+        //mySessionId : '',
+        myUserName: 'Participant' + Math.floor(Math.random() * 100),//사용자 아이디로변경해야함.
+        
         isLocked: false,
         formLabelWidth: '120px',
         files: [], //업로드용 파일
@@ -125,7 +131,8 @@ export default {
         this.checkedLock = false
         this.radio = 'book'
         this.num=1
-        this.form.name=''
+        //this.mySessionId=''
+        this.form.name='';
         this.isLocked=false
         this.form.pwd=''
     },
@@ -154,68 +161,70 @@ export default {
     handleCheckbox() {
         this.isLocked= !this.isLocked;
     },
-//방생성 API
+    //방생성 API
     formRoom(){
         console.log("formRoom");
-        // var roomInfo = {
-        //     roomName: this.form.name,
-        //     //hostId: int,
-        //     keywords :this.dynamicTags,
-        //     limit: this.num,
-        //     //bookCategory: name,
-        //     //movieCategory: name,
-        //     //roomInviteCode: String, 
-        //     //password: String,
-        //     //thumbnailUrl: String,
-        // }
-
         //store.dispatch('root/requestRoomInfo', roomInfo)
+            //const roomName= document.getElementById("mySessionId");
             const roomName= document.getElementById("rName");
             const hostId = 10000;
-            const keywords = [];//document.getElementById("kTag");
-            const limit = 1;//document.getElementById("pNum");
+            const keywords = [];
+            //const keywords = document.getElementById("kTag");
+            const limit = document.getElementById("pNum");
             const bookCategory = 0;
             const movieCategory = 1;
             const url = "";
-            const password = "";
+            const password = document.getElementById("rPwd");
             axios({
                 method:"POST",
                 url: "rooms",
                 data:{
-                    roomName : roomName.value,
+                    roomName : rName.value,
                     hostId: 10001,
-                    keywords :this.dynamicTags,
-                    limit: this.num,
-                    bookCategory: 0,
+                    keywords : ['hi','hi2','hi3'],
+                    limit: pNum.value,
+                    bookCategory:0,
                     movieCategory: 1,
                     //"roomInviteCode": String, 
                     //password: String,
                     url: "src/assets/images/ssafy-logo.png",
                     //"email": email.value,
-                    password: "123456",
+                    password: password.value,
                 }
             }).then((res)=>{
                 console.log(res);
             }).catch(error=>{
                 console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-                console.log(this.roomName);
+                console.log(roomName.value);
                 console.log(error);
                 throw new Error(error);
             });
-        // axios.post('/rooms',roomInfo)
-        // .then((response)=>{
-        //     console.log()
-        //     if(response.data){
-        //         alert('방생성');
-        //     }else{
-        //         alert('실패');
-        //     }
+    },
+    //방삭제 API
+    deleteRoom(){
+        console.log("deleteRoom");
+        // axios.delete("rooms").then(function(response){
+        //     console.log(response);
+        // }).catch(function(ex){
+        //     throw new Error(ex)
+        // });
+
+        // axios.delete('/rooms/val') //val = 특정 값
+        // .then(res => {
+        //     console.log(res);  
         // })
-        // .catch((response)=>
-        //     console.log(response)
-        // );
+
+        // axios.delete(`rooms${rId}`)
+        // .then((res)=>{
+        //         console.log(res);
+        //     }).catch(error=>{
+        //         console.log(error);
+        //         throw new Error(error);
+        //     });
+        //store.dispatch('root/requestRoomInfo', roomInfo)
     },
 
+    // 오픈비두
     joinSession () {
         // --- Get an OpenVidu object ---
         this.OV = new OpenVidu();
@@ -414,6 +423,166 @@ export default {
 }
 
 /*openvidu*/ 
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+nav {
+	height: 50px;
+	width: 100%;
+	z-index: 1;
+	background-color: #4d4d4d !important;
+	border-color: #4d4d4d !important;
+	border-top-right-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+}
+
+.navbar-header {
+	width: 100%;
+}
+
+.nav-icon {
+	padding: 5px 15px 5px 15px;
+	float: right;
+}
+
+nav a {
+	color: #ccc !important;
+}
+
+nav i.fa {
+	font-size: 40px;
+	color: #ccc;
+}
+
+nav a:hover {
+	color: #a9a9a9 !important;
+}
+
+nav i.fa:hover {
+	color: #a9a9a9;
+}
+
+#main-container {
+	padding-bottom: 80px;
+}
+
+/*vertical-center {
+	position: relative;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}*/
+
+.horizontal-center {
+	margin: 0 auto;
+}
+
+.form-control {
+	color: #0088aa;
+	font-weight: bold;
+}
+
+.form-control:focus {
+	border-color: #0088aa;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
+}
+
+input.btn {
+	font-weight: bold;
+}
+
+.btn {
+	font-weight: bold !important;
+}
+
+.btn-success {
+	background-color: #06d362 !important;
+	border-color: #06d362;
+}
+
+.btn-success:hover {
+	background-color: #1abd61 !important;
+	border-color: #1abd61;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #4d4d4d;
+}
+
+.footer .text-muted {
+	margin: 20px 0;
+	float: left;
+	color: #ccc;
+}
+
+.openvidu-logo {
+	height: 35px;
+	float: right;
+	margin: 12px 0;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.openvidu-logo:hover {
+	-webkit-filter: grayscale(0.5);
+	filter: grayscale(0.5);
+}
+
+.demo-logo {
+	margin: 0;
+	height: 22px;
+	float: left;
+	padding-right: 8px;
+}
+
+a:hover .demo-logo {
+	-webkit-filter: brightness(0.7);
+	filter: brightness(0.7);
+}
+
+#join-dialog {
+	margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+}
+
+#join-dialog h1 {
+	color: #4d4d4d;
+	font-weight: bold;
+	text-align: center;
+}
+
+#img-div {
+	text-align: center;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	/*position: relative;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -50%);*/
+}
+
+#img-div img {
+	height: 15%;
+}
+
+#join-dialog label {
+	color: #0088aa;
+}
+
+#join-dialog input.btn {
+	margin-top: 15px;
+}
+
 #session-header {
 	margin-bottom: 20px;
 }
