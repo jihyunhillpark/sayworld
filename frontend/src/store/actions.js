@@ -29,8 +29,7 @@ export function sendCategory ({ state }, payload) {
 }
 
 export function searchRoom ({ state }, payload) {
-  const url = `rooms/?search_type=${payload.searchType}&input=${payload.searchValue}`
-  console.log(url)
+  const url = `rooms/search?input=${payload.searchValue}&search_type=${payload.searchType}`
   let headers = {
     Authorization: "Bearer " + state.token
   }

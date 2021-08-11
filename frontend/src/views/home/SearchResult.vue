@@ -32,16 +32,16 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   name: "SearchResult",
   setup() {
     const store = useStore()
-    return {
-      searchKeyword: store.state.root.searchKeyword,
-      searchTitle: store.state.root.searchTitle,
-    }
+    const searchKeyword = computed(() => store.state.root.searchKeyword)
+    const searchTitle = computed(() => store.state.root.searchTitle)
+    return { searchKeyword, searchTitle }
   }
 }
 </script>
