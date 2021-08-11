@@ -1,5 +1,4 @@
-<template>
-{{myUserName}}
+<template>\
 <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
@@ -36,20 +35,20 @@
         <!-- <el-radio v-model="radio" label="book">Book</el-radio>
         <el-radio v-model="radio" label="movie">Movie</el-radio> -->
         <!-- book일때, room일때 구분해줘야함. -->
-        <el-select v-model="value" placeholder="Book">
+        <el-select v-model="bValue" placeholder="Book">
             <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in b_options"
+                :key="item.bookCategoryId"
+                :label="item.bookCategory"
+                :value="item.bookCategoryId">
             </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="Movie">
+        <el-select v-model="mValue" placeholder="Movie">
             <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in m_options"
+                :key="item.movieCategoryId"
+                :label="item.movieCategory"
+                :value="item.movieCategoryId">
             </el-option>
         </el-select>
     </el-form-item>
@@ -111,25 +110,11 @@ export default {
         inputVisible: false,
         inputValue: '',
         checkedLock: false,
-        radio: 'book',
-        // options: [{
-        //     value: '시',
-        //     label: '1'
-        // }, {
-        //     value: '철학',
-        //     label: '2'
-        // }, {
-        //     value: '로맨스소설',
-        //     label: '3'
-        // }, {
-        //     value: 'Option4',
-        //     label: 'Option4'
-        // }, {
-        //     value: 'Option5',
-        //     label: 'Option5'
-        // }],
-        //value: ''
+        b_options:[],
+        m_options:[],
         num: 1,
+        bValue:'',
+        mValue:'',
         dialogFormVisible: false,
         form: {
             name: '',
@@ -155,10 +140,24 @@ export default {
 
     };
     },
+    mounted() {
+        this.$nextTick(function () {
+            axios.get('category/book')
+            .then((response) =>  { this.b_options = response.data;
+                console.log(response.data);
+                console.log(this.b_options);
+            }).catch(function (error) { console.log(error); })
+
+            axios.get('category/movie')
+            .then((response) =>  { this.m_options = response.data;
+                console.log(response.data);
+                console.log(this.m_options);
+            }).catch(function (error) { console.log(error); })
+        })
+    },
     methods: {
     fromClose1(){
         this.dialogFormVisible = false;
-
     },
     formClose() {
         this.dialogFormVisible = false;
@@ -167,9 +166,10 @@ export default {
         this.inputVisible = false
         this.inputValue = ''
         this.checkedLock = false
-        this.radio = 'book'
         this.num=1
         this.mySessionId=''
+        this.bValue=''
+        this.mValue=''
         //this.form.name=''
         this.isLocked=false
         this.form.pwd=''
@@ -205,12 +205,12 @@ export default {
         //store.dispatch('root/requestRoomInfo', roomInfo)
             //const roomName= document.getElementById("mySessionId");
             const roomName= document.getElementById("rName");
-            const hostId = 10000;
+            //const hostId = 10000;
             const keywords = [];
             //const keywords = document.getElementById("kTag");
             const limit = document.getElementById("pNum");
-            const bookCategory = 0;
-            const movieCategory = 1;
+            // const bookCategory = 0;
+            // const movieCategory = 1;
             const url = "";
             const password = document.getElementById("rPwd");
             axios({
@@ -218,11 +218,11 @@ export default {
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: 10001,
+                    hostId: store.state.root.userInfo.user_id,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
-                    bookCategory:0,
-                    movieCategory: 1,
+                    bookCategory:this.bValue,
+                    movieCategory: this.mValue,
                     //"roomInviteCode": String, 
                     //password: String,
                     url: "src/assets/images/ssafy-logo.png",

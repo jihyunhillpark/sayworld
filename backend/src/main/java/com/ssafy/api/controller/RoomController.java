@@ -17,6 +17,7 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.api.response.RoomCreatePostRes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,12 +115,12 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<List<Room>> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
+	public ResponseEntity<? extends Collection> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
 		if(searchType.equals("title"))
 			return ResponseEntity.status(200).body(roomService.getRoomByRoomTitle(input));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
 			return ResponseEntity.status(200).body(roomService.getRoomByHostNickname(input));
-		else if(searchType.equals("keyword"))
+		else if(searchType.equals("keyword")) // Set 으로 반환
 			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
 		else
 			return ResponseEntity.status(200).body(null);

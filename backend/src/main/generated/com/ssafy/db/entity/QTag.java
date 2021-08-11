@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -20,9 +19,7 @@ public class QTag extends EntityPathBase<Tag> {
 
     public static final QTag tag = new QTag("tag");
 
-    public final SetPath<Room, QRoom> rooms = this.<Room, QRoom>createSet("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
-
-    public final NumberPath<Integer> tagId = createNumber("tagId", Integer.class);
+    public final NumberPath<Long> tagId = createNumber("tagId", Long.class);
 
     public final StringPath tagName = createString("tagName");
 

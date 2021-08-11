@@ -34,11 +34,11 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath roomPassword = createString("roomPassword");
 
+    public final SetPath<RoomTag, QRoomTag> roomTags = this.<RoomTag, QRoomTag>createSet("roomTags", RoomTag.class, QRoomTag.class, PathInits.DIRECT2);
+
     public final StringPath roomTitle = createString("roomTitle");
 
     public final StringPath sessionId = createString("sessionId");
-
-    public final SetPath<Tag, QTag> tags = this.<Tag, QTag>createSet("tags", Tag.class, QTag.class, PathInits.DIRECT2);
 
     public QRoom(String variable) {
         super(Room.class, forVariable(variable));
