@@ -18,5 +18,5 @@ public interface RoomService {
     List<Room> getRoomList();
     List<Room> getRoomByRoomTitle(String roomName);
     List<Room> getRoomByHostNickname(String nickname);
-    List<Room> getRoomListByKeyword(String keyword);
+    Set<Room> getRoomListByKeyword(String keyword);
 }
