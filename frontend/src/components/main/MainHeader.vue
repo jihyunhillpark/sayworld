@@ -2,7 +2,7 @@
   <div class="pinning-header">
     <div class="pinning-header-container">
       <div class="main-header">
-        <div class="ic ic-logo" />
+        <div class="ic ic-logo" @click="$router.push({ name: 'Home' })"/>
         <el-switch v-model="toggle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         <div class="secondary-navigation">
           <div class="nav-element">
