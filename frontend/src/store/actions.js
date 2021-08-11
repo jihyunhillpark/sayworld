@@ -27,3 +27,10 @@ export function sendCategory ({ state }, payload) {
   let body = payload
   return $axios.post(url, body)
 }
+
+export function requestRoomInfo ({ state }, payload) {
+  const url = "/rooms"
+  console.log("ddddd");
+  let body = payload
+  return $axios.post(url,body)
+}

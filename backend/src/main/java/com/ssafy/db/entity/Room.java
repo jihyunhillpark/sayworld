@@ -27,7 +27,7 @@ public class Room {
     //시간 안해도 되나!?
 
     @Column(name="room_host_id", nullable = false)
-    private int roomHostId; //fk
+    private Long roomHostId; //fk
 
     @Column(name="room_title")
     private String roomTitle;
