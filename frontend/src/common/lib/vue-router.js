@@ -1,11 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/home/Home";
-import SearchResult from "@/views/home/SearchResult";
-import Main from "@/views/main/Main";
-import Start from "@/views/start/Start";
-import UserCategory from "@/views/user/UserCategory";
-import ConferencesDetail from "@/views/conferences/conference-detail";
-import History from "@/views/history/history";
+import Home from "@/views/Home";
+import SearchResult from "@/views/SearchResult";
+import Start from "@/views/Start";
+import UserCategory from "@/views/UserCategory";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
 
