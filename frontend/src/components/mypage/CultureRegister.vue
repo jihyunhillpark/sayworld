@@ -1,10 +1,14 @@
 <template>
   <a><input type="radio" v-model="culture_check" value="책">책</a>
   <a><input type="radio" v-model="culture_check" value="영화">영화</a>
-  <a><form method=get action="https://naver.com" target="_blank" >
-    <input type=text name=q size=25 maxlength=255 value="" /> <!-- 구글 검색 입력 창 -->
-    <input type=button name=check value="문화력 검색" v-on:click="cultureFind" /> <!-- 검색 버튼 -->
-  </form></a>
+
+  <a>
+    <form id="myForm" @submit.prevent="sendPost">
+    <input type="text" name="title" v-model="title" placeholder="검색어를 입력하세요">
+    <button size="md" variant="danger" type="submit">검색</button>
+    </form>
+  </a>
+
   <p>나의 리스트 </p>
   <a v-for="list in info" v-bind:key="list">{{list}}</a> <br>
 
@@ -18,38 +22,29 @@
 import {useRouter} from "vue-router";
 import axios from "axios";
 import {reactive} from "vue";
-
+import {useStore} from "vuex";
 export default {
   name: "CultureRegister",
+  el: '#myForm',
   data() {
     return {
-      culture_check: [],
-      info: [{}]
+      title: ''
     }
   },
-
   methods: {
-    cultureFind() {
-      const router = useRouter()
-      const t = localStorage.getItem('email')
-      axios.get('/users/culture/' + t)
-        .then(res => {
-          this.info = res.data;
-          console.log(this.info)
-
-
+    sendPost: function () {
+      alert(this.title)
+      axios.post('books/check', {
+        title: this.title,
+      })
+        .then(function(res) {
+          console.log(res.data)
+        }, function() {
+          console.log('failed')
         })
-        .catch(e => {
-          console.log('error : ', e)
-        })
-    },
-    
-    cultureRegister() {
-      alert('등록이 완료되었습니다.')
     }
   }
 }
-
 </script>
 
 <style scoped>

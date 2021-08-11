@@ -20,3 +20,10 @@ export function requestUserInfo ({ state }) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   return $axios.get(url)
 }
+
+export function requestBook ({ state }, payload) {
+  const url = '/users/books'
+  let body = payload
+  console.log(payload)
+  return $axios.post(url, body)
+}
