@@ -75,16 +75,7 @@ export default {
     const searchRoom = () => {
       if (state.searchValue) {
         store.dispatch('root/searchRoom', {searchType: 'title', searchValue: state.searchValue})
-        .then((res) => {
-          console.log(res.data)
-          store.commit('root/SET_SEARCH_TITLE', res.data)
-          router.push({name: "SearchResult", params: { searchValue: state.searchValue }})
-        })
         store.dispatch('root/searchRoom', {searchType: 'keyword', searchValue: state.searchValue})
-        .then((res) => {
-          console.log(res.data)
-          store.commit('root/SET_SEARCH_KEYWORD', res.data)
-        })
       } else {
         // 검색어 없을 때도 페이지 이동하는게 나은지 아니면 alert 띄우는게 나은지?
         alert("검색어를 입력하세요.")
