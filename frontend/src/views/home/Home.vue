@@ -2,6 +2,7 @@
   <div>
     <!-- 세부 위치 수정 추후에 -->
     <CreateRoom />
+    <p>{{ $store.state.root.userInfo.nickname }}</p>
     <div>
     </div>
     <div>

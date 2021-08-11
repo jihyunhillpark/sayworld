@@ -94,7 +94,7 @@ export default {
               store.commit('root/SET_USERINFO', res.data)
             })
             router.push({ name: 'Home' })
-            window.location.reload()
+            //window.location.reload()
           })
           .catch(function (err) {
             console.log(err)

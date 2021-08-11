@@ -1,4 +1,5 @@
 <template>
+{{myUserName}}
 <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
 <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
@@ -96,8 +97,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const store = useStore();
-
 export default {
     name: 'CreateRoom',
 
@@ -106,29 +105,30 @@ export default {
     },
 
     data() {
+        const store = useStore();
     return {
         dynamicTags: ['키워드를', '입력하세요'],
         inputVisible: false,
         inputValue: '',
         checkedLock: false,
         radio: 'book',
-        options: [{
-            value: '시',
-            label: '1'
-        }, {
-            value: '철학',
-            label: '2'
-        }, {
-            value: '로맨스소설',
-            label: '3'
-        }, {
-            value: 'Option4',
-            label: 'Option4'
-        }, {
-            value: 'Option5',
-            label: 'Option5'
-        }],
-        value: ''
+        // options: [{
+        //     value: '시',
+        //     label: '1'
+        // }, {
+        //     value: '철학',
+        //     label: '2'
+        // }, {
+        //     value: '로맨스소설',
+        //     label: '3'
+        // }, {
+        //     value: 'Option4',
+        //     label: 'Option4'
+        // }, {
+        //     value: 'Option5',
+        //     label: 'Option5'
+        // }],
+        //value: ''
         num: 1,
         dialogFormVisible: false,
         form: {
@@ -136,7 +136,7 @@ export default {
             pwd:''
         },
         mySessionId : '',
-        myUserName: 'Participant' + Math.floor(Math.random() * 100),//사용자 아이디로변경해야함.
+        myUserName: store.state.root.userInfo.nickname,
         
         isLocked: false,
         formLabelWidth: '120px',
