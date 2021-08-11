@@ -29,20 +29,38 @@ export function sendCategory ({ state }, payload) {
   return $axios.post(url, body)
 }
 
-export function searchRoom ({ state, commit }, payload) {
-  const url = `rooms/search?input=${payload.searchValue}&search_type=${payload.searchType}`
+export function requestCategory ({ state }, payload) {
   let headers = {
     Authorization: "Bearer " + state.token
   }
   $axios({
-    url: url,
+    url: `category/${payload.category}`,
+    method: 'get',
+    headers: headers,
+  })
+  .then((res) => {
+    console.log(res.data)
+    return res.data
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
+
+// 카테고리 검색 추가해야함
+export function searchRoom ({ state, commit }, payload) {
+  let headers = {
+    Authorization: "Bearer " + state.token
+  }
+  $axios({
+    url: `rooms/search?input=${payload.searchValue}&search_type=${payload.searchType}`,
     method: 'get',
     headers: headers,
   })
   .then((res) => {
     if (payload.searchType === 'title') {
       commit('SET_SEARCH_TITLE', res.data)
-      router.push({name: "SearchResult", params: { searchValue: state.searchValue }})
+      router.push({name: "SearchResult", params: { searchValue: payload.searchValue }})
     } else if (payload.searchType === 'keyword') {
       commit('SET_SEARCH_KEYWORD', res.data)
     }

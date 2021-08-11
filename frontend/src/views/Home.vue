@@ -2,6 +2,7 @@
   <div>
     <!-- 세부 위치 수정 추후에 -->
     <CreateRoom />
+    <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
     <div>
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
         <li

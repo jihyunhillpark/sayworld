@@ -3,34 +3,11 @@ import Home from "@/views/Home";
 import SearchResult from "@/views/SearchResult";
 import Start from "@/views/Start";
 import UserCategory from "@/views/UserCategory";
+import RoomCategory from "@/views/RoomCategory";
+import CategoryRoom from "@/views/CategoryRoom";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
 
-// const fullMenu = require("@/views/main/menu.json");
-// function makeRoutesFromMenu() {
-//   let routes = Object.keys(fullMenu).map(key => {
-//     if (key === "home") {
-//       return { path: fullMenu[key].path, name: key, component: Home };
-//     } else if (key === "history") {
-//       return { path: fullMenu[key].path, name: key, component: History };
-//     } else {
-//       // menu.json 에 들어있는 로그아웃 메뉴
-//       return null;
-//     }
-//   });
-//   // 로그아웃 파싱한 부분 제거
-//   routes = routes.filter(item => item);
-//   // menu 자체에는 나오지 않는 페이지 라우터에 추가(방 상세보기)
-//   routes.push({
-//     path: "/conferences/:conferenceId",
-//     name: "conference-detail",
-//     component: ConferencesDetail
-//   });
-
-//   return routes;
-// }
-
-// const routes = makeRoutesFromMenu();
 const routes = [
   {
     path: "/register",
@@ -61,6 +38,16 @@ const routes = [
     path: "/search/:searchValue",
     name: "SearchResult",
     component: SearchResult
+  },
+  {
+    path: "/category",
+    name: "RoomCategory",
+    component: RoomCategory
+  },
+  {
+    path: "/category/:categoryName",
+    name: "CategoryRoom",
+    component: CategoryRoom
   },
 
 ]
