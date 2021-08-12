@@ -203,6 +203,7 @@ export default {
     },
     //방생성 API
     formRoom(){
+        //const store = useStore();
         console.log("formRoom");
         //store.dispatch('root/requestRoomInfo', roomInfo)
             //const roomName= document.getElementById("mySessionId");
@@ -220,7 +221,7 @@ export default {
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: 1,//store.state.root.userInfo.user_id,
+                    hostId: 47,//store.state.root.userInfo.userId,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
                     bookCategory:this.bValue,
