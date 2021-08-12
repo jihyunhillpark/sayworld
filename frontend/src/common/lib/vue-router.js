@@ -8,6 +8,8 @@ import CategoryRoom from "@/views/CategoryRoom";
 import MeetingRoom from "@/views/MeetingRoom";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
+import CultureRegister from "../../components/mypage/CultureRegister";
+import MyBlog from "../../components/mypage/MyBlog";
 
 const routes = [
   {
@@ -55,6 +57,17 @@ const routes = [
     name: "MeetingRoom",
     component: MeetingRoom
   },
+  {
+    path: "/culture",
+    name: "CultureRegister",
+    component: CultureRegister
+  },
+  {
+    path: "/myblog",
+    name: "MyBlog",
+    component: MyBlog
+  }
+
 
 ]
 

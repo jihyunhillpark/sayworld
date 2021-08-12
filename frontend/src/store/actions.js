@@ -200,3 +200,10 @@ export function createToken ({ dispatch }, sessionId) {
     .catch(error => reject(error.response))
   })
 }
+
+export function requestBook ({ state }, payload) {
+  const url = '/users/books'
+  let body = payload
+  console.log(payload)
+  return $axios.post(url, body)
+}
