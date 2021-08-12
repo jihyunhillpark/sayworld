@@ -12,7 +12,8 @@
         v-for="tag in dynamicTags"
         closable
         :disable-transitions="false"
-        @close="handleClose(tag)">
+        @close="handleClose(tag)"
+        id="kTag">
         {{tag}}
         </el-tag>
         <el-input
@@ -27,8 +28,8 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </el-form-item>
-    <el-form-item prop="roomName" label="인원" :label-width="formLabelWidth">
-        <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
+    <el-form-item prop="personNum" label="인원" :label-width="formLabelWidth">
+        <el-input-number v-model="num" id = "pNum" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
     </el-form-item>
     <el-form-item prop="roomTheme" label="카테고리" :label-width="formLabelWidth">
         <!-- <el-radio v-model="radio" label="book">Book</el-radio>
@@ -51,14 +52,9 @@
             </el-option>
         </el-select>
     </el-form-item>
-    <el-form-item prop="roomLock" label="방" :label-width="formLabelWidth">
-        <el-row>
-        <el-checkbox v-model="checked" @change="handleCheckbox">잠금</el-checkbox>
-        <el-input v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
-        </el-row>
-    </el-form-item>
-    <el-form-item>
-        <!--<input type="file" id="file" ref="files" @change="imageUpload" multiple />-->
+    <el-form-item prop="roomLock" label="방 잠금" :label-width="formLabelWidth">
+        <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
+        <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'" id="rPwd" value=""></el-input>
     </el-form-item>
     <div class="room-file-upload-wrapper">
         <div v-if="!files.length" class="room-file-upload-example-container">
@@ -118,47 +114,15 @@ import { useRouter } from "vue-router"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
 export default {
-  name: 'CreateRoom',
-  components: {
-    UserVideo,
-	},
+    name: 'CreateRoom',
 
-  setup() {
-    const store = useStore()
-    const router = useRouter()
-    const state = reactive({
-      dynamicTags: ['키워드를', '입력하세요'],
-      inputVisible: false,
-      inputValue: '',
-      checked: false,
-      radio: 'book',
-      num: 1,
-      dialogFormVisible: false,
-      form: {
-          name: ''
-      },
-      isLocked: false,
-      formLabelWidth: '120px',
-      files: [], //업로드용 파일
-      filesPreview: [],
-      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
-
-      OV: undefined,
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
-    })
-
-    const handleClose = function(tag) {
-      state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
-    }
-
-    return { state, handleClose,}
-  },
+    components: {
+        UserVideo,
+    },
 
     data() {
         const store = useStore();
@@ -447,12 +411,12 @@ export default {
                     let publisher = this.OV.initPublisher(undefined, {
                         audioSource: undefined, // The source of audio. If undefined default microphone
                         videoSource: undefined, // The source of video. If undefined default webcam
-                        publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-                        publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+                        publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+                        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
                         resolution: '640x480',  // The resolution of your video
-                        frameRate: 30,			// The frame rate of your video
-                        insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-                        mirror: false       	// Whether to mirror your local video or not
+                        frameRate: 30,         // The frame rate of your video
+                        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+                        mirror: false          // Whether to mirror your local video or not
                     });
 
                     this.mainStreamManager = publisher;
@@ -461,6 +425,7 @@ export default {
                     // --- Publish your stream ---
 
                     this.session.publish(this.publisher);
+
                 })
                 .catch(error => {
                     console.log('There was an error connecting to the session:', error.code, error.message);
@@ -468,8 +433,15 @@ export default {
         });
 
         window.addEventListener('beforeunload', this.leaveSession)
-	},
-
+    },
+    blockUnblock (){
+        var videoEnabled = this.block;
+        this.publisher.publishVideo(videoEnabled);
+    },
+    muteUnmute (){
+        var audioEnabled = this.mute;
+        this.publisher.publishAudio(audioEnabled);
+    },
     leaveSession () {
         // --- Leave the session by calling 'disconnect' method over the Session object ---
         if (this.session) this.session.disconnect();
@@ -495,7 +467,7 @@ export default {
      * These methods retrieve the mandatory user token from OpenVidu Server.
      * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
      * the API REST, openvidu-java-client or openvidu-node-client):
-     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   1) Initialize a Session in OpenVidu Server   (POST /openvidu/api/sessions)
      *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
      *   3) The Connection.token must be consumed in Session.connect() method
      */
@@ -532,7 +504,7 @@ export default {
         });
     },
 
-    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
+      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
     createToken (sessionId) {
         return new Promise((resolve, reject) => {
             axios
@@ -944,4 +916,3 @@ width: 100%; */
 }
 
 </style>
-

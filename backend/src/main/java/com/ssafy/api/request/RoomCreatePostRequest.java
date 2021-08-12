@@ -18,7 +18,7 @@ public class RoomCreatePostRequest {
     String roomName;
 
     @ApiModelProperty(name="호스트 ID", example="1")
-    int hostId;
+    Long hostId;
 
     @ApiModelProperty(name="키워드 리스트", example="['판타지', '불의잔', '후회안함']")
     List<String> keywords;
@@ -35,8 +35,11 @@ public class RoomCreatePostRequest {
     @ApiModelProperty(name="비밀번호", example="1234dfsf" )
     String password;
 
+    @ApiModelProperty(name="초대코드", example="djfkwkskd")
+    String roomInviteCode;
+
     @ApiModelProperty(name="이미지url", example="resources/dist/img" )
-    String url;
+    String thumbnailUrl;
 
     @ApiModelProperty(name="세션 Id", example="Dfjk_sSBgs_nWdk" )
     String sessionId;

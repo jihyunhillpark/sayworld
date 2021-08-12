@@ -32,7 +32,6 @@ export function sendCategory ({ state }, payload) {
   let body = payload
   return $axios.post(url, body)
 }
-<<<<<<< HEAD
 
 export function requestCategory ({ state }, payload) {
   let headers = {
@@ -208,5 +207,3 @@ export function requestBook ({ state }, payload) {
   console.log(payload)
   return $axios.post(url, body)
 }
-=======
->>>>>>> b17ca2d9f7b0ba2f0a72d88c863d7b8edca5d692
