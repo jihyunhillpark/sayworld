@@ -278,16 +278,17 @@ export default {
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: 47,//store.state.root.userInfo.userId,
+                    hostId: 1,//store.state.root.userInfo.userId,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
-                    bookCategory:this.bValue,
-                    movieCategory: this.mValue,
+                    bookCategoryId:this.bValue,
+                    movieCategoryId: this.mValue,
                     //"roomInviteCode": String,
                     //password: String,
-                    url: this.files,
+                    thumbnailUrl: 'ges',
                     //"email": email.value,
                     password: password.value,
+                    sessionId: rName.value,
                 }
             }).then((res)=>{
                 console.log(res);
