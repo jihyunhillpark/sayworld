@@ -20,11 +20,11 @@ public class QRoom extends EntityPathBase<Room> {
 
     public static final QRoom room = new QRoom("room");
 
-    public final NumberPath<Long> bookCategoryId = createNumber("bookCategoryId", Long.class);
+    public final NumberPath<Integer> bookCategoryId = createNumber("bookCategoryId", Integer.class);
 
-    public final NumberPath<Long> hostId = createNumber("hostId", Long.class);
+    public final NumberPath<Integer> movieCategoryId = createNumber("movieCategoryId", Integer.class);
 
-    public final NumberPath<Long> movieCategoryId = createNumber("movieCategoryId", Long.class);
+    public final NumberPath<Integer> roomHostId = createNumber("roomHostId", Integer.class);
 
     public final NumberPath<Long> roomId = createNumber("roomId", Long.class);
 
@@ -34,11 +34,11 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath roomPassword = createString("roomPassword");
 
-    public final SetPath<RoomTag, QRoomTag> roomTags = this.<RoomTag, QRoomTag>createSet("roomTags", RoomTag.class, QRoomTag.class, PathInits.DIRECT2);
-
     public final StringPath roomTitle = createString("roomTitle");
 
     public final StringPath sessionId = createString("sessionId");
+
+    public final SetPath<Tag, QTag> tags = this.<Tag, QTag>createSet("tags", Tag.class, QTag.class, PathInits.DIRECT2);
 
     public QRoom(String variable) {
         super(Room.class, forVariable(variable));
