@@ -60,12 +60,12 @@ public class User {
     List<Blog> blogs = new ArrayList();
 
     // 화상방 외부 채팅
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
 
     // 친구목록
     @ManyToMany
@@ -96,12 +96,4 @@ public class User {
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    String password;
-
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-//    private Set<Room> rooms = new HashSet<>();
-//
-//    public void addRoom(Room room){
-//        rooms.add(room);
-//        room.setUser(this);
-//    }
 }

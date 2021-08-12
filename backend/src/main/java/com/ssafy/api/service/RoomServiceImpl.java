@@ -54,7 +54,7 @@ public class RoomServiceImpl implements RoomService{
                 .movieCategoryId(roomCreateInfo.getMovieCategory())
                 .bookCategoryId(roomCreateInfo.getBookCategory())
                 .roomPassword(roomCreateInfo.getPassword())
-                .roomImg("request_thumbnail_img")
+                .roomImg(roomCreateInfo.getThumbnailUrl())
                 .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
         addTags(roomCreateInfo.getKeywords(), room);  //키워드가 있다면 db에 추가
 //        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());

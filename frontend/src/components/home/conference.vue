@@ -58,7 +58,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '제목2222'
+      default: '제목'
     },
     desc: {
       type: String,
