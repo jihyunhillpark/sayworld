@@ -72,6 +72,8 @@
         <div id="session-header">
             <!-- <h1 id="session-title">{{mySessionId}}</h1> -->
             <h1 id="session-title">{{mySessionId}}</h1>
+            <!-- <el-button type="primary" id="blockIcon" icon="el-icon-turn-off-microphone" @click="blockUnblock" circle></el-button>
+            <el-button type="primary" icon="el-icon-microphone" @click="dialogFormVisible = true" circle></el-button> -->
             <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
             <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
             <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession(),formClose()]" value="Leave session">
@@ -218,7 +220,7 @@ export default {
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: store.state.root.userInfo.user_id,
+                    hostId: 1,//store.state.root.userInfo.user_id,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
                     bookCategory:this.bValue,
@@ -324,7 +326,7 @@ export default {
                     console.log('There was an error connecting to the session:', error.code, error.message);
                 });
         });
-
+        
         window.addEventListener('beforeunload', this.leaveSession)
     },
     blockUnblock (){
