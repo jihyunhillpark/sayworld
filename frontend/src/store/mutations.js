@@ -31,3 +31,37 @@ export function SET_SEARCH_KEYWORD (state, searchKeyword) {
 export function SET_SEARCH_TITLE (state, searchTitle) {
   state.searchTitle = searchTitle
 }
+
+// Openvidu
+export function SET_MYSESSIONID(state, mySessionId) {
+  state.mySessionId = mySessionId
+}
+
+export function SET_OV(state, OV) {
+  state.OV = OV
+  console.log('mutation', state.OV)
+}
+
+export function SET_OVTOKEN(state, ovToken) {
+  console.log("checkovToken")
+  state.ovToken = ovToken
+}
+
+export function SET_SESSION(state, session) {
+  console.log('checksession')
+  state.session = session
+}
+
+export function SET_MAINSTREAMMANAGER(state, mainStreamManager) {
+  console.log('qe')
+  state.mainStreamManager = mainStreamManager
+}
+
+export function SET_PUBLISHER(state, publisher) {
+  console.log('23')
+  state.publisher = publisher
+}
+
+export function SET_SUBSCRIBERS(state, subscribers) {
+  state.subscribers = subscribers
+}

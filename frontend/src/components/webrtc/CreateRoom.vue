@@ -63,7 +63,8 @@
     </el-form>
     <template #footer>
     <span class="dialog-footer">
-        <el-button type="primary" @click="[formRoom(),joinSession(),fromClose1()]" >생성</el-button>
+        <el-button type="primary" @click="[formRoom(), fromClose1()]" >생성</el-button>
+        <!-- <el-button type="primary" @click="[formRoom(), joinSession(), fromClose1()]" >생성</el-button> -->
         <el-button @click="formClose()">취소</el-button>
     </span>
     </template>
@@ -90,12 +91,14 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from './UserVideo';
 import { useStore } from 'vuex';
+import { useRouter } from "vue-router"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-
+const store = useStore();
+const router = useRouter()
 
 export default {
   name: 'CreateRoom',
@@ -231,6 +234,10 @@ export default {
                 }
             }).then((res)=>{
                 console.log(res);
+                this.$store.commit('root/SET_MYSESSIONID', rName.value )
+                console.log(this.$store.state.root.mySessionId)
+                // this.$store.dispatch('root/joinSession', this.$store.state.root.mySessionId)
+                this.$router.push({ name : 'MeetingRoom' })
             }).catch(error=>{
                 console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
                 console.log(roomName.value);
@@ -290,12 +297,13 @@ export default {
         this.session.on('exception', ({ exception }) => {
             console.warn(exception);
         });
-
+        console.log('session', this.mySessionId)
         // --- Connect to the session with a valid user token ---
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
         this.getToken(this.mySessionId).then(token => {
+            console.log(token)
             this.session.connect(token, { clientData: this.myUserName })
                 .then(() => {
 
@@ -318,6 +326,7 @@ export default {
                     // --- Publish your stream ---
 
                     this.session.publish(this.publisher);
+
 
                 })
                 .catch(error => {

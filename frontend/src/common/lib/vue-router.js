@@ -5,6 +5,7 @@ import Start from "@/views/Start";
 import UserCategory from "@/views/UserCategory";
 import RoomCategory from "@/views/RoomCategory";
 import CategoryRoom from "@/views/CategoryRoom";
+import MeetingRoom from "@/views/MeetingRoom";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
 
@@ -48,6 +49,11 @@ const routes = [
     path: "/category/:categoryName",
     name: "CategoryRoom",
     component: CategoryRoom
+  },
+  {
+    path: "/room",
+    name: "MeetingRoom",
+    component: MeetingRoom
   },
 
 ]
