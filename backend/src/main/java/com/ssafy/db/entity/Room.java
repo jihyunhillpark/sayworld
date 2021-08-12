@@ -20,26 +20,25 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="room_id",nullable = false, updatable = false) //openvidu token 사용해도 될둣..?
     private long roomId;
-
-    //반지의 제왕 - 판타지, 골룸골룸, 반지챡
-    //해리포터 - 판타지, 흑흑, 음음
-
     //시간 안해도 되나!?
-
-    @Column(name="room_host_id", nullable = false)
-    private Long roomHostId; //fk
 
     @Column(name="room_title")
     private String roomTitle;
+
+    @Column(name="room_host_id")
+    private long hostId;
+//    @ManyToOne
+//    @JoinColumn(name="room_host_id")
+//    private User user;
 
     @Column(name="room_invite_code")
     private String roomInviteCode;
 
     @Column(name="movie_category_id", nullable = false)
-    private int movieCategoryId; //fk
+    private Long movieCategoryId; //fk
 
     @Column(name="book_category_id", nullable = false)
-    private int bookCategoryId; //fk
+    private Long bookCategoryId; //fk
 
     @Column(name="room_password")
     private String roomPassword;
@@ -62,5 +61,7 @@ public class Room {
 //        tags.remove(tag);
 //        tag.getRooms().remove(this);
 //    }
-
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }

@@ -96,4 +96,12 @@ public class User {
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    String password;
+
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+//    private Set<Room> rooms = new HashSet<>();
+//
+//    public void addRoom(Room room){
+//        rooms.add(room);
+//        room.setUser(this);
+//    }
 }
