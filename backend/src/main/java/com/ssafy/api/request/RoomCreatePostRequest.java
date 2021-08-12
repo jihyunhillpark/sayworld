@@ -27,10 +27,10 @@ public class RoomCreatePostRequest {
     int limit;
 
     @ApiModelProperty(name="책 카테고리", example="0" )
-    Long bookCategory;
+    Long bookCategoryId;
 
     @ApiModelProperty(name="영화 카테고리", example="1" )
-    Long movieCategory;
+    Long movieCategoryId;
 
     @ApiModelProperty(name="비밀번호", example="1234dfsf" )
     String password;

@@ -51,8 +51,8 @@ public class RoomServiceImpl implements RoomService{
         Room room = Room.builder().roomTitle(roomCreateInfo.getRoomName())
                 .hostId(roomCreateInfo.getHostId())
                 .roomInviteCode("request_invite_url")
-                .movieCategoryId(roomCreateInfo.getMovieCategory())
-                .bookCategoryId(roomCreateInfo.getBookCategory())
+                .movieCategoryId(roomCreateInfo.getMovieCategoryId())
+                .bookCategoryId(roomCreateInfo.getBookCategoryId())
                 .roomPassword(roomCreateInfo.getPassword())
                 .roomImg(roomCreateInfo.getThumbnailUrl())
                 .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
@@ -81,6 +81,8 @@ public class RoomServiceImpl implements RoomService{
             }
             RoomTagID roomTagID = new RoomTagID(room.getRoomId(),tag.getTagId());
             RoomTag roomTag = new RoomTag(roomTagID,room,tag);
+            System.out.println("IN == "+ room.getRoomTitle());
+            System.out.println("IN == "+ room.getBookCategoryId());
             roomRepository.save(room);
             roomTagRepository.save(roomTag);
         }
