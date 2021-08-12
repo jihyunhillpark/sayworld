@@ -20,11 +20,11 @@ public class QRoom extends EntityPathBase<Room> {
 
     public static final QRoom room = new QRoom("room");
 
-    public final NumberPath<Integer> bookCategoryId = createNumber("bookCategoryId", Integer.class);
+    public final NumberPath<Long> bookCategoryId = createNumber("bookCategoryId", Long.class);
 
-    public final NumberPath<Integer> movieCategoryId = createNumber("movieCategoryId", Integer.class);
+    public final NumberPath<Long> hostId = createNumber("hostId", Long.class);
 
-    public final NumberPath<Integer> roomHostId = createNumber("roomHostId", Integer.class);
+    public final NumberPath<Long> movieCategoryId = createNumber("movieCategoryId", Long.class);
 
     public final NumberPath<Long> roomId = createNumber("roomId", Long.class);
 

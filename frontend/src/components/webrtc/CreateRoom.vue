@@ -35,20 +35,20 @@
         <!-- <el-radio v-model="radio" label="book">Book</el-radio>
         <el-radio v-model="radio" label="movie">Movie</el-radio> -->
         <!-- book일때, room일때 구분해줘야함. -->
-        <el-select v-model="value" placeholder="Book">
+        <el-select v-model="bValue" placeholder="Book">
             <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in b_options"
+                :key="item.bookCategoryId"
+                :label="item.bookCategory"
+                :value="item.bookCategoryId">
             </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="Movie">
+        <el-select v-model="mValue" placeholder="Movie">
             <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in m_options"
+                :key="item.movieCategoryId"
+                :label="item.movieCategory"
+                :value="item.movieCategoryId">
             </el-option>
         </el-select>
     </el-form-item>
@@ -56,9 +56,26 @@
         <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
         <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'" id="rPwd" value=""></el-input>
     </el-form-item>
-    <div class="image-box">
-        <label for="file">채팅방 사진 등록하기</label>
-        <input type="file" id="file" ref="files" @change="imageUpload" multiple />
+    <div class="room-file-upload-wrapper">
+        <div v-if="!files.length" class="room-file-upload-example-container">
+                <div class="room-file-notice-item room-file-upload-button">
+                    <div class="image-box">
+                        <label for="file">일반 사진 등록</label>
+                        <input type="file" id="file" ref="files" @change="imageUpload" multiple />
+                    </div>
+                </div>
+        </div>
+        <div v-else class="file-preview-content-container">
+            <div class="file-preview-container">
+                <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
+                    <div class="file-close-button" @click="fileDeleteButton" :name="file.number">
+                        x
+                    </div>
+                    <img :src="file.preview" />
+                </div>
+
+            </div>
+        </div>
     </div>
     </el-form>
     <template #footer>
@@ -73,6 +90,8 @@
         <div id="session-header">
             <!-- <h1 id="session-title">{{mySessionId}}</h1> -->
             <h1 id="session-title">{{mySessionId}}</h1>
+            <!-- <el-button type="primary" id="blockIcon" icon="el-icon-turn-off-microphone" @click="blockUnblock" circle></el-button>
+            <el-button type="primary" icon="el-icon-microphone" @click="dialogFormVisible = true" circle></el-button> -->
             <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
             <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
             <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession(),formClose()]" value="Leave session">
@@ -97,42 +116,26 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-const store = useStore();
-const router = useRouter()
 
 export default {
-  name: 'CreateRoom',
+    name: 'CreateRoom',
 
     components: {
-      UserVideo,
+        UserVideo,
     },
 
     data() {
-    const store = useStore();
+        const store = useStore();
     return {
         dynamicTags: ['키워드를', '입력하세요'],
         inputVisible: false,
         inputValue: '',
         checkedLock: false,
-        radio: 'book',
-        // options: [{
-        //     value: '시',
-        //     label: '1'
-        // }, {
-        //     value: '철학',
-        //     label: '2'
-        // }, {
-        //     value: '로맨스소설',
-        //     label: '3'
-        // }, {
-        //     value: 'Option4',
-        //     label: 'Option4'
-        // }, {
-        //     value: 'Option5',
-        //     label: 'Option5'
-        // }],
-        //value: ''
+        b_options:[],
+        m_options:[],
         num: 1,
+        bValue:'',
+        mValue:'',
         dialogFormVisible: false,
         form: {
             name: '',
@@ -158,10 +161,24 @@ export default {
 
     };
     },
+    mounted() {
+        this.$nextTick(function () {
+            axios.get('category/book')
+            .then((response) =>  { this.b_options = response.data;
+                console.log(response.data);
+                console.log(this.b_options);
+            }).catch(function (error) { console.log(error); })
+
+            axios.get('category/movie')
+            .then((response) =>  { this.m_options = response.data;
+                console.log(response.data);
+                console.log(this.m_options);
+            }).catch(function (error) { console.log(error); })
+        })
+    },
     methods: {
     fromClose1(){
         this.dialogFormVisible = false;
-
     },
     formClose() {
         this.dialogFormVisible = false;
@@ -170,12 +187,17 @@ export default {
         this.inputVisible = false
         this.inputValue = ''
         this.checkedLock = false
-        this.radio = 'book'
         this.num=1
         this.mySessionId=''
+        this.bValue=''
+        this.mValue=''
         //this.form.name=''
         this.isLocked=false
         this.form.pwd=''
+
+        this.files = []
+        this.filesPreview=[]
+        this.uploadImageIndex=0;
     },
     handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
@@ -200,7 +222,42 @@ export default {
         console.log(value);
     },
     handleCheckbox() {
-        this.isLocked= !this.isLocked;
+      this.isLocked= !this.isLocked;
+    },
+    imageUpload() {
+        console.log(this.$refs.files.files);
+
+        // this.files = [...this.files, this.$refs.files.files];
+        //하나의 배열로 넣기
+        let num = -1;
+        for (let i = 0; i < this.$refs.files.files.length; i++) {
+            this.files = [
+                ...this.files,
+                //이미지 업로드
+                {
+                    //실제 파일
+                    file: this.$refs.files.files[i],
+                    //이미지 프리뷰
+                    preview: URL.createObjectURL(this.$refs.files.files[i]),
+                    //삭제및 관리를 위한 number
+                    number: i
+                }
+            ];
+            num = i;
+            //이미지 업로드용 프리뷰
+            // this.filesPreview = [
+            //   ...this.filesPreview,
+            //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
+            // ];
+        }
+        this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
+        console.log(this.files);
+        // console.log(this.filesPreview);
+    },
+    fileDeleteButton(e) {
+        const name = e.target.getAttribute('name');
+        this.files = this.files.filter(data => data.number !== Number(name));
+        // console.log(this.files);
     },
     //방생성 API
     formRoom(){
@@ -208,27 +265,27 @@ export default {
         //store.dispatch('root/requestRoomInfo', roomInfo)
             //const roomName= document.getElementById("mySessionId");
             const roomName= document.getElementById("rName");
-            const hostId = 10000;
+            // const hostId = 10000;
             const keywords = [];
             //const keywords = document.getElementById("kTag");
             const limit = document.getElementById("pNum");
-            const bookCategory = 0;
-            const movieCategory = 1;
-            const url = "";
+            // const bookCategory = 0;
+            // const movieCategory = 1;
+            const url = []
             const password = document.getElementById("rPwd");
             axios({
                 method:"POST",
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: 10001,
+                    hostId: 47,//store.state.root.userInfo.userId,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
-                    bookCategory:0,
-                    movieCategory: 1,
+                    bookCategory:this.bValue,
+                    movieCategory: this.mValue,
                     //"roomInviteCode": String,
                     //password: String,
-                    url: "src/assets/images/ssafy-logo.png",
+                    url: this.files,
                     //"email": email.value,
                     password: password.value,
                 }
@@ -268,6 +325,47 @@ export default {
         //     });
         //store.dispatch('root/requestRoomInfo', roomInfo)
     },
+
+    //방생성 API
+    // formRoom(){
+    //     //const store = useStore();
+    //     console.log("formRoom");
+    //     //store.dispatch('root/requestRoomInfo', roomInfo)
+    //         //const roomName= document.getElementById("mySessionId");
+    //         const roomName= document.getElementById("rName");
+    //         //const hostId = 10000;
+    //         const keywords = [];
+    //         //const keywords = document.getElementById("kTag");
+    //         const limit = document.getElementById("pNum");
+    //         // const bookCategory = 0;
+    //         // const movieCategory = 1;
+    //         const url = [];
+    //         const password = document.getElementById("rPwd");
+    //         axios({
+    //             method:"POST",
+    //             url: "rooms",
+    //             data:{
+    //                 roomName : rName.value,
+    //                 hostId: 47,//store.state.root.userInfo.userId,
+    //                 keywords : this.dynamicTags,
+    //                 limit: pNum.value,
+    //                 bookCategory:this.bValue,
+    //                 movieCategory: this.mValue,
+    //                 //"roomInviteCode": String,
+    //                 //password: String,
+    //                 url: this.files,
+    //                 //"email": email.value,
+    //                 password: password.value,
+    //             }
+    //         }).then((res)=>{
+    //             console.log(res);
+    //         }).catch(error=>{
+    //             console.log("에러 발생ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+    //             console.log(roomName.value);
+    //             console.log(error);
+    //             throw new Error(error);
+    //         });
+    // },
 
     // 오픈비두
     joinSession () {
@@ -326,7 +424,6 @@ export default {
                     // --- Publish your stream ---
 
                     this.session.publish(this.publisher);
-
 
                 })
                 .catch(error => {
@@ -428,6 +525,25 @@ export default {
 .room-name{
     width:80%;
 }
+.el-input__inner {
+    -webkit-appearance: none;
+    background-color: var(--el-input-background-color,var(--el-color-white));
+    background-image: none;
+    border-radius: var(--el-input-border-radius,var(--el-border-radius-base));
+    border: var(--el-input-border,var(--el-border-base));
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: var(--el-input-font-color,var(--el-text-color-regular));
+    display: inline-block;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    padding: 0 15px;
+    -webkit-transition: var(--el-border-transition-base);
+    transition: var(--el-border-transition-base);
+    width: 80%;
+}
 .el-tag + .el-tag {
     margin-left: 10px;
 }
@@ -443,32 +559,6 @@ export default {
     margin-left: 10px;
     vertical-align: bottom;
 }
-.image-box {
-    margin-top: 10px;
-    padding-bottom: 5px;
-    text-align: center;
-}
-
-.image-box input[type='file'] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
-
-.image-box label {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4F7178;
-    color: #fff;
-    vertical-align: middle;
-    font-size: 15px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
 .el-dropdown {
     vertical-align: top;
 }
@@ -710,6 +800,118 @@ video {
    cursor: pointer;
    object-fit: cover;
    height: 180px;
+}
+
+/* 이미지업로드 */
+.room-file-upload-example {
+    height: 100%;
+}
+
+.file-preview-content-container {
+    height: 100%;
+}
+
+.room-file-upload-wrapper {
+    margin: 20px;
+    border: 1px solid #dddddd;
+    background-color: #f4f4f4;
+    min-height: 200px;
+    font-size: 15px;
+    color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.room-file-upload-example-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100%;
+width: 100%; */
+}
+
+.room-file-image-example-wrapper {
+    text-align: center;
+}
+
+.room-file-notice-item {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.room-file-notice-item-red {
+    color: #ef4351;
+}
+
+.image-box {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.image-box input[type='file'] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.image-box label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4F7178;
+    color: #fff;
+    vertical-align: middle;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.file-preview-wrapper {
+    padding: 10px;
+    position: relative;
+}
+
+.file-preview-wrapper>img {
+    position: relative;
+    width: 190px;
+    height: 130px;
+    z-index: 10;
+}
+
+.file-close-button {
+    position: absolute;
+    /* align-items: center; */
+    line-height: 18px;
+    z-index: 99;
+    font-size: 18px;
+    right: 5px;
+    top: 10px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #666666;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.file-preview-container {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.file-preview-wrapper-upload {
+    margin: 10px;
+    padding-top: 20px;
+    background-color: #888888;
+    width: 190px;
+    height: 130px;
 }
 
 </style>
