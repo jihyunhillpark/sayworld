@@ -91,10 +91,13 @@ export default {
             //localStorage.getItem('email')
             store.dispatch('root/requestUserInfo')
             .then((res) => {
+              console.log(res.data)
               store.commit('root/SET_USERINFO', res.data)
+              // 로그인하고 라우터 이동했는데 어떻게 페이지 바뀔수 있게 하지..?
+              // 지금은 새로고침 해야 제대로 뜸 -> window.reload하면 state에 정보 저장이 X
+              // window.location.reload()
+              router.push({ name: 'Home' })
             })
-            router.push({ name: 'Home' })
-            window.location.reload()
           })
           .catch(function (err) {
             console.log(err)

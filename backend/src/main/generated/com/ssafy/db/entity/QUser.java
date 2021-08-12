@@ -28,10 +28,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<BookCategory, QBookCategory> bookCategories = this.<BookCategory, QBookCategory>createSet("bookCategories", BookCategory.class, QBookCategory.class, PathInits.DIRECT2);
 
-    public final ListPath<ChatFriendJoin, QChatFriendJoin> chatFriendJoins = this.<ChatFriendJoin, QChatFriendJoin>createList("chatFriendJoins", ChatFriendJoin.class, QChatFriendJoin.class, PathInits.DIRECT2);
-
-    public final ListPath<ChatFriendMsg, QChatFriendMsg> chatFriendMsgs = this.<ChatFriendMsg, QChatFriendMsg>createList("chatFriendMsgs", ChatFriendMsg.class, QChatFriendMsg.class, PathInits.DIRECT2);
-
     public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
 
     public final StringPath defaultPage = createString("defaultPage");
