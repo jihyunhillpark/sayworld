@@ -4,8 +4,8 @@
 
   <a>
     <form id="myForm" @submit.prevent="sendPost">
-    <input type="text" name="title" v-model="title" placeholder="검색어를 입력하세요">
-    <button size="md" variant="danger" type="submit">검색</button>
+      <input type="text" name="title" v-model="title" placeholder="검색어를 입력하세요">
+      <button size="md" variant="danger" type="submit">검색</button>
     </form>
   </a>
 
@@ -33,14 +33,25 @@ export default {
   },
   methods: {
     sendPost: function () {
-      alert(this.title)
-      axios.post('books/check', {
-        title: this.title,
+      console.log(this.title)
+
+      axios.post('/books/search',  {
+        params: {
+          title : this.title
+        }
+
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Naver-Client-Id':'fj19qSeYZpP5xmRuUQ_l',
+          'X-Naver-Client-Secret':'ZeN6POhLUU'
+        }
       })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res.data)
-        }, function() {
-          console.log('failed')
+        })
+        .catch(function (err) {
+          console.log(err)
         })
     }
   }
