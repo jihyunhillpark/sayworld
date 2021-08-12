@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.*;
@@ -34,10 +35,12 @@ public class Room {
     @Column(name="room_invite_code")
     private String roomInviteCode;
 
-    @Column(name="movie_category_id", nullable = false)
+    @Column(name="movie_category_id")
+    @ColumnDefault("0")
     private Long movieCategoryId; //fk
 
-    @Column(name="book_category_id", nullable = false)
+    @Column(name="book_category_id")
+    @ColumnDefault("0")
     private Long bookCategoryId; //fk
 
     @Column(name="room_password")
