@@ -1,7 +1,6 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.RoomCreatePostRequest;
-import com.ssafy.api.response.RoomRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.db.entity.Room;
@@ -18,7 +17,6 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.api.response.RoomCreatePostRes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +42,7 @@ public class RoomController {
 		Room room = null;
 
 		if ((room = roomService.createRoom(roomCreatePostRequest)) != null){ // 새로운 방일 경우 ( 기존에 존재하는 방이 아닐 경우)
+			roomService.addTags(roomCreatePostRequest.getKeywords(), room); //키워드가 있다면 db에 추가
 			// 방생성 성공 응답
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
@@ -53,7 +52,7 @@ public class RoomController {
 	/**
 	 * 방 상세 조회하기 - TO DO : history 어떻게 관리할 것이냐!?
 	 */
-	@GetMapping("/{roomId}")
+	@GetMapping("/{sessionId}")
 	@ApiOperation(value = "방 상세 조회", notes = "선택한 방의 상세 정보를 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -61,11 +60,11 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "세션방 만료", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<RoomRes> detailRoom(@PathVariable Long roomId, HttpSession httpSession) throws Exception {
-		RoomRes selectedRoom;
-		selectedRoom = roomService.detailRoom(roomId);
-		if (selectedRoom != null){
-			return ResponseEntity.status(200).body(selectedRoom);
+	public ResponseEntity<Room> detailRoom(@RequestParam String sessionId, HttpSession httpSession) throws Exception {
+		Optional<Room> selectedRoom;
+		selectedRoom = roomService.detailRoom(sessionId);
+		if (selectedRoom.isPresent()){
+			return ResponseEntity.status(200).body(selectedRoom.get());
 		}
 		return ResponseEntity.status(404).body(null);
 	}
@@ -73,7 +72,7 @@ public class RoomController {
 	/**
 	 * 방 삭제하기 - 사실, 방이름도 unique key인데 이걸로 해도 될거 같기도 하고
 	 * */
-	@DeleteMapping("/{roomId}")
+	@DeleteMapping("/")
 	@ApiOperation(value = "방 삭제하기", notes = "선택한 방의 상세 정보를 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -81,8 +80,8 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "세션방 만료", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends BaseResponseBody> removeRoom(@PathVariable Long roomId, HttpSession httpSession) throws Exception {
-		Optional<Room> room = roomService.getRoomByRoomId(roomId);
+	public ResponseEntity<? extends BaseResponseBody> removeRoom(@RequestParam String sessionId, HttpSession httpSession) throws Exception {
+		Optional<Room> room = roomService.getRoomBySessionId(sessionId);
 		if(room.isPresent()){
 			roomService.deleteRoom(room.get());
 			return ResponseEntity.status(200).body(RoomCreatePostRes.of(200, "Delete Success"));
@@ -100,7 +99,7 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<List<RoomRes>> getRoomList(){
+	public ResponseEntity<List<Room>> getRoomList(){
 		return ResponseEntity.status(200).body(roomService.getRoomList());
 	}
 
@@ -115,21 +114,13 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends Collection> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
+	public ResponseEntity<List<Room>> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
 		if(searchType.equals("title"))
-			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input));
+			return ResponseEntity.status(200).body(roomService.getRoomByRoomTitle(input));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
-			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input));
-		else if(searchType.equals("keyword")) // Set 으로 반환
+			return ResponseEntity.status(200).body(roomService.getRoomByHostNickname(input));
+		else if(searchType.equals("keyword"))
 			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
-		else if(searchType.equals("movie")){
-			Long movieId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
-		}
-		else if(searchType.equals("book")){
-			Long bookId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByBookId(bookId));
-		}
 		else
 			return ResponseEntity.status(200).body(null);
 	}

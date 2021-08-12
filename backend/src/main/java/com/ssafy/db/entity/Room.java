@@ -20,25 +20,26 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="room_id",nullable = false, updatable = false) //openvidu token 사용해도 될둣..?
     private long roomId;
+
+    //반지의 제왕 - 판타지, 골룸골룸, 반지챡
+    //해리포터 - 판타지, 흑흑, 음음
+
     //시간 안해도 되나!?
+
+    @Column(name="room_host_id", nullable = false)
+    private int roomHostId; //fk
 
     @Column(name="room_title")
     private String roomTitle;
-
-    @Column(name="room_host_id")
-    private long hostId;
-//    @ManyToOne
-//    @JoinColumn(name="room_host_id")
-//    private User user;
 
     @Column(name="room_invite_code")
     private String roomInviteCode;
 
     @Column(name="movie_category_id", nullable = false)
-    private Long movieCategoryId; //fk
+    private int movieCategoryId; //fk
 
     @Column(name="book_category_id", nullable = false)
-    private Long bookCategoryId; //fk
+    private int bookCategoryId; //fk
 
     @Column(name="room_password")
     private String roomPassword;
@@ -49,19 +50,20 @@ public class Room {
     @Column(name="session_id", nullable = false)
     private String sessionId;
 
-    @OneToMany(mappedBy = "room")
-    private Set<RoomTag> roomTags;
+    @ManyToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "room_keyword",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name="keyword_id"))
+    final private Set<Tag> tags = new HashSet<Tag>();
 
-//    public void addTag(Tag tag) {
-//        tags.add(tag);
-//        tag.getRooms().add(this);
-//    }
-//
-//    public void removeTag(Tag tag){
-//        tags.remove(tag);
-//        tag.getRooms().remove(this);
-//    }
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getRooms().add(this);
+    }
+
+    public void removeTag(Tag tag){
+        tags.remove(tag);
+        tag.getRooms().remove(this);
+    }
+
 }
