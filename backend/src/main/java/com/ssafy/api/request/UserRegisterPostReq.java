@@ -23,7 +23,7 @@ public class UserRegisterPostReq {
 	String gender;
 	@ApiModelProperty(name="유저 나이", example="18")
 	int age;
-	@ApiModelProperty(name="첫 시작 화면", example="B")
+	@ApiModelProperty(name="첫 시작 화면", example="0")
 	int defaultPage;
 	@ApiModelProperty(name="유저의 책문화력 티어", example="0")
 	int tierBook;

@@ -33,8 +33,8 @@
         </el-form-item>
         <el-form-item label="첫 페이지 설정" :label-width="state.formLabelWidth">
           <el-radio-group v-model="state.form.defaultPage">
-            <el-radio label="B">책</el-radio>
-            <el-radio label="M">영화</el-radio>
+            <el-radio label="1">책</el-radio>
+            <el-radio label="0">영화</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -216,7 +216,7 @@ export default {
               nickname: state.form.nickname,
               age: Number(state.form.age),
               gender: state.form.gender,
-              defaultPage: state.form.defaultPage
+              defaultPage: Number(state.form.defaultPage)
           })
           .then(function (res) {
             // handleClose()
