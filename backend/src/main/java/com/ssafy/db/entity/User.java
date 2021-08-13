@@ -41,7 +41,7 @@ public class User {
     @Column(name = "age")
     int age;
     @Column(name = "default_page")
-    String defaultPage;
+    int defaultPage;
     @Column(name = "tier_book")
     int tierBook;
     @Column(name = "tier_movie")
