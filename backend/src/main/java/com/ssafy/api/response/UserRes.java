@@ -26,7 +26,7 @@ public class UserRes{
 	@ApiModelProperty(name="User age")
 	int age;
 	@ApiModelProperty(name="User default Page")
-	String defaultPage;
+	int defaultPage;
 	@ApiModelProperty(name="User book tier")
 	int tierBook;
 	@ApiModelProperty(name="User movie tier")
