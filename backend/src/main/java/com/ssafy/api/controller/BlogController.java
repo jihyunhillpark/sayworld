@@ -15,7 +15,7 @@ import java.util.List;
 
 @Api(value = "유저 블로그 Api", tags = {"Blog"})
 @RestController
-@RequestMapping("/blogs")
+@RequestMapping("/api/v1/blogs")
 public class BlogController {
 
     @Autowired

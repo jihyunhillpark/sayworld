@@ -2,7 +2,7 @@
   <div class="pinning-header">
     <div class="pinning-header-container">
       <div class="main-header">
-        <div class="ic ic-logo" />
+        <div class="ic ic-logo" @click="$router.push({ name: 'Home' })"/>
         <el-switch v-model="toggle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         <div class="secondary-navigation">
           <div class="nav-element">
@@ -60,14 +60,12 @@ export default {
     })
 
     const clickMyPage = () => {
-      router.push({
-        name: "MyPage"
-      })
+      router.push({ name: "MyPage" })
     }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.clear();
+        localStorage.clear()
         window.location.reload()
       }
     }
@@ -75,16 +73,7 @@ export default {
     const searchRoom = () => {
       if (state.searchValue) {
         store.dispatch('root/searchRoom', {searchType: 'title', searchValue: state.searchValue})
-        .then((res) => {
-          console.log(res.data)
-          store.commit('root/SET_SEARCH_TITLE', res.data)
-        })
         store.dispatch('root/searchRoom', {searchType: 'keyword', searchValue: state.searchValue})
-        .then((res) => {
-          console.log(res.data)
-          store.commit('root/SET_SEARCH_KEYWORD', res.data)
-        })
-        router.push({name: "SearchResult", params: { searchValue: state.searchValue }})
       } else {
         // 검색어 없을 때도 페이지 이동하는게 나은지 아니면 alert 띄우는게 나은지?
         alert("검색어를 입력하세요.")

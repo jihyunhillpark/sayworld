@@ -23,7 +23,7 @@ public class UserFixPutReq {
     @ApiModelProperty(name = "바꾸는 나이", example = "17")
     int age;
     @ApiModelProperty(name = "바꾼 첫 시작 화면", example = "B")
-    String defaultPage;
+    int defaultPage;
     @ApiModelProperty(name = "바꾸는 프로필사진 경로", example = "/url2")
     String profileImg;
 

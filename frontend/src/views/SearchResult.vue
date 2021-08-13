@@ -4,21 +4,21 @@
       <h3>{{ $route.params.searchValue }} 검색 결과</h3>
       <el-tabs type="border-card">
         <el-tab-pane label="방 제목">
-          <h3 v-show="!searchTitle">방 제목에 해당하는 결과가 없습니다.</h3>
+          <h3 v-show="!searchTitle.length">방 제목에 해당하는 결과가 없습니다.</h3>
           <el-row v-if="searchTitle">
             <el-col :span="6" v-for="(room, index) of searchTitle" :key="index">
               <el-card class="box-card">
-                <p>{{ room.roomTitle }}</p>
+                <p>{{ room.roomName }}</p>
               </el-card>
             </el-col>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="키워드">
-          <h3 v-show="!searchKeyword">키워드에 해당하는 결과가 없습니다.</h3>
+          <h3 v-show="!searchKeyword.length">키워드에 해당하는 결과가 없습니다.</h3>
           <el-row>
             <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index">
               <el-card class="box-card">
-                <p>{{ room.roomTitle }}</p>
+                <p>{{ room.roomName }}</p>
               </el-card>
             </el-col>
           </el-row>
@@ -32,16 +32,16 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   name: "SearchResult",
   setup() {
     const store = useStore()
-    return {
-      searchKeyword: store.state.root.searchKeyword,
-      searchTitle: store.state.root.searchTitle,
-    }
+    const searchKeyword = computed(() => store.state.root.searchKeyword)
+    const searchTitle = computed(() => store.state.root.searchTitle)
+    return { searchKeyword, searchTitle }
   }
 }
 </script>

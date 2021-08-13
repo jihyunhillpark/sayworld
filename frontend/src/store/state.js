@@ -34,9 +34,23 @@ export default {
   activeMenu: 'home',
   menus: menuData,
   //
-  userInfo: '',
-  token: '',
-  email: '',
+  userInfo: null,
+  token: null,
+  email: null,
   searchKeyword: [],
   searchTitle: [],
+  searchCategory: [],
+
+  // openvidu
+  mySessionId : null,
+  roomInfo: undefined,
+
+  OV: undefined,
+  ovToken: null,
+  session: undefined,
+  mainStreamManager: undefined,
+  publisher: {},
+  subscribers: [],
+
+
 }

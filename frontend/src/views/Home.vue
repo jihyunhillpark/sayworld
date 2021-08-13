@@ -2,9 +2,13 @@
   <div>
     <!-- 세부 위치 수정 추후에 -->
     <CreateRoom />
+<<<<<<< HEAD:frontend/src/views/home/Home.vue
     <p>{{ $store.state.root.userInfo.nickname }}</p>
     <div>
     </div>
+=======
+    <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+>>>>>>> 76aadd9a70046505124732a4c736a1e0173e13c5:frontend/src/views/Home.vue
     <div>
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
         <li

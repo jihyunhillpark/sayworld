@@ -41,7 +41,7 @@ public class User {
     @Column(name = "age")
     int age;
     @Column(name = "default_page")
-    String defaultPage;
+    int defaultPage;
     @Column(name = "tier_book")
     int tierBook;
     @Column(name = "tier_movie")
@@ -60,12 +60,12 @@ public class User {
     List<Blog> blogs = new ArrayList();
 
     // 화상방 외부 채팅
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
 
     // 친구목록
     @ManyToMany
