@@ -70,6 +70,6 @@ export default {
   height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("../../assets/images/sayworld-logo.png");
+  background-image: url("../assets/images/sayworld-logo.png");
 }
 </style>

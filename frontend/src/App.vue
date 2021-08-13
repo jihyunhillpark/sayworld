@@ -5,7 +5,7 @@
 
 <script>
 import Main from '@/views/main/Main'
-import Start from '@/views/start/Start'
+import Start from '@/views/Start'
 
 export default {
   name: 'App',

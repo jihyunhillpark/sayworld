@@ -60,12 +60,12 @@ public class User {
     List<Blog> blogs = new ArrayList();
 
     // 화상방 외부 채팅
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendJoin> chatFriendJoins = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    List<ChatFriendMsg> chatFriendMsgs = new ArrayList<>();
 
     // 친구목록
     @ManyToMany
