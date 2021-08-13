@@ -88,14 +88,14 @@ export function postBlog({state}, payload) {
 }
 
 // 블로그 글 수정
-export function blogList({state}, payload) {
+export function putBlog({state}, payload) {
   const url = '/blogs'
   let body = payload
   return $axios.put(url, body)
 }
 
 // 블로그 글 삭제
-export function blogList({state}, payload) {
+export function deleteBlog({state}, payload) {
   const url = '/blogs'
   let body = payload
   return $axios.delete(url, body)
