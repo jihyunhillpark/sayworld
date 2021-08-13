@@ -60,14 +60,12 @@ export default {
     })
 
     const clickMyPage = () => {
-      router.push({
-        name: "MyPage"
-      })
+      router.push({ name: "MyPage" })
     }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        localStorage.clear();
+        localStorage.clear()
         window.location.reload()
       }
     }

@@ -8,7 +8,7 @@
           <el-row v-if="searchTitle">
             <el-col :span="6" v-for="(room, index) of searchTitle" :key="index">
               <el-card class="box-card">
-                <p>{{ room.roomTitle }}</p>
+                <p>{{ room.roomName }}</p>
               </el-card>
             </el-col>
           </el-row>
@@ -18,7 +18,7 @@
           <el-row>
             <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index">
               <el-card class="box-card">
-                <p>{{ room.roomTitle }}</p>
+                <p>{{ room.roomName }}</p>
               </el-card>
             </el-col>
           </el-row>

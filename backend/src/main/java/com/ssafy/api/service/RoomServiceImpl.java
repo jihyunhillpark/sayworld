@@ -48,15 +48,18 @@ public class RoomServiceImpl implements RoomService{
         if(existingRoom.isPresent()) {
             return null;
         }
+        Long bookCategoryId = ( roomCreateInfo.getBookCategoryId() == null)? 0L: roomCreateInfo.getBookCategoryId();
+        Long movieCategoryid = ( roomCreateInfo.getMovieCategoryId() == null)? 0L: roomCreateInfo.getMovieCategoryId();
         Room room = Room.builder().roomTitle(roomCreateInfo.getRoomName())
                 .hostId(roomCreateInfo.getHostId())
                 .roomInviteCode("request_invite_url")
-                .movieCategoryId(roomCreateInfo.getMovieCategoryId())
-                .bookCategoryId(roomCreateInfo.getBookCategoryId())
+                .movieCategoryId(movieCategoryid)
+                .bookCategoryId(bookCategoryId)
                 .roomPassword(roomCreateInfo.getPassword())
                 .roomImg(roomCreateInfo.getThumbnailUrl())
                 .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
         addTags(roomCreateInfo.getKeywords(), room);  //키워드가 있다면 db에 추가
+
 //        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());
 //        if(user.isPresent()) { //hostId로 유저를 찾아서 관계 테이블들에 쏙쏙
 //            User insertUser = user.get();
@@ -81,8 +84,6 @@ public class RoomServiceImpl implements RoomService{
             }
             RoomTagID roomTagID = new RoomTagID(room.getRoomId(),tag.getTagId());
             RoomTag roomTag = new RoomTag(roomTagID,room,tag);
-            System.out.println("IN == "+ room.getRoomTitle());
-            System.out.println("IN == "+ room.getBookCategoryId());
             roomRepository.save(room);
             roomTagRepository.save(roomTag);
         }
