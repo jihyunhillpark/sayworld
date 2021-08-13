@@ -81,8 +81,6 @@
       .catch(e => {
         console.log('error : ', e)
       })
-
-
     },
 
     methods: {
