@@ -74,6 +74,33 @@ export function searchRoom ({ state, commit }, payload) {
   })
 }
 
+// 블로그 글 조회
+export function blogList({state}) {
+  const url = `/blogs/${state.email}`
+  return $axios.get(url)
+}
+
+// 블로그 글 등록
+export function postBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.post(url, body)
+}
+
+// 블로그 글 수정
+export function blogList({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.put(url, body)
+}
+
+// 블로그 글 삭제
+export function blogList({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.delete(url, body)
+}
+
 // openvidu
 // export function joinSession({ state, dispatch, commit }, mySessionId) {
 //   console.log("vuex joinsession", mySessionId)
