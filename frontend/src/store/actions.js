@@ -28,27 +28,17 @@ export function requestUserInfo ({ state }) {
 }
 
 export function sendCategory ({ state }, payload) {
-  const url = `users/userCategory/${state.email}`
-  let body = payload
+  const url = `users/userCategory/${payload.email}`
+  let body = payload.category
   return $axios.post(url, body)
 }
 
 export function requestCategory ({ state }, payload) {
+  const url = `category/${payload.category}`
   let headers = {
     Authorization: "Bearer " + state.token
   }
-  $axios({
-    url: `category/${payload.category}`,
-    method: 'get',
-    headers: headers,
-  })
-  .then((res) => {
-    console.log(res.data)
-    return res.data
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+  return $axios.get(url, {headers: headers})
 }
 
 // 카테고리 검색 추가해야함
@@ -67,6 +57,8 @@ export function searchRoom ({ state, commit }, payload) {
       router.push({name: "SearchResult", params: { searchValue: payload.searchValue }})
     } else if (payload.searchType === 'keyword') {
       commit('SET_SEARCH_KEYWORD', res.data)
+    } else {
+      commit('SET_SEARCH_CATEGORY', res.data)
     }
   })
   .catch((err) => {

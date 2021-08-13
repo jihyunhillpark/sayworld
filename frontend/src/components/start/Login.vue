@@ -20,7 +20,6 @@
 import { reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import {requestUserInfo} from "../../store/actions";
 
 export default {
   name: 'Login',
@@ -81,22 +80,19 @@ export default {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       loginForm.value.validate((valid) => {
         if (valid) {
-          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password, nickname: state.form.nickname })
-          .then(function (result) {
+          store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
+          .then((result) => {
             store.commit('root/SET_TOKEN', result.data.accessToken)
             localStorage.setItem('token', result.data.accessToken)
             store.commit('root/SET_EMAIL', state.form.email)
             localStorage.setItem('email', state.form.email)
-            //밑에 처럼 getItem함수를 쓰면 키값으로 value를 알아낼수있음
-            //localStorage.getItem('email')
             store.dispatch('root/requestUserInfo')
             .then((res) => {
               console.log(res.data)
               store.commit('root/SET_USERINFO', res.data)
-              // 로그인하고 라우터 이동했는데 어떻게 페이지 바뀔수 있게 하지..?
-              // 지금은 새로고침 해야 제대로 뜸 -> window.reload하면 state에 정보 저장이 X
-              // window.location.reload()
+              // 다시 로그인을 할 때 로그아웃 한 위치의 페이지로 보내짐...(어떻게 해결?)
               router.push({ name: 'Home' })
+              router.go()
             })
           })
           .catch(function (err) {

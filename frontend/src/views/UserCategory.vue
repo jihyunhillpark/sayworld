@@ -6,8 +6,9 @@
     <div>
       <el-row :gutter="12">
       <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
-      <el-col v-for="(genre, idx) in state.bookCategory" :span="6">
-        <el-button :class="{categoryBtn: !state.isClick, categoryBtnClick: state.isClick}" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button>
+      <el-col v-for="(genre, idx) in state.bookCategory" :span="6" :key="idx">
+        <el-button class="categoryBtn" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button>
+        <!-- <el-button :class="{categoryBtn: !state.isClick, categoryBtnClick: state.isClick}" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button> -->
         <!-- <el-card :class="{categoryBtn: !state.isClick, categoryBtnClick: state.isClick}" @click="clickCategory(idx+1)" shadow="hover">{{ genre }}</el-card> -->
       </el-col>
       </el-row>
@@ -22,11 +23,13 @@
 <script>
 import { reactive } from "vue"
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'UserCategory',
   setup() {
     const store = useStore()
+    const router = useRouter()
     const state = reactive({
       bookCategory: ['시', '철학', '로맨스 소설', '판타지 소설', '추리 소설', '고전문학',
       '에세이', '교육', '자기계발', '역사', '예술', '경제/경영'],
@@ -54,6 +57,7 @@ export default {
       }
       store.dispatch('root/sendCategory', payload)
       .then((res) => {
+        router.push({ name: 'Home' })
         console.log(res)
       })
       .catch((err) => {
