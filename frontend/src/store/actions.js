@@ -79,6 +79,20 @@ export function postBlog({state}, payload) {
   return $axios.post(url, body)
 }
 
+// 블로그 글 수정
+export function putBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.put(url, body)
+}
+
+// 블로그 글 삭제
+export function deleteBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.delete(url, body)
+}
+
 // openvidu
 // export function joinSession({ state, dispatch, commit }, mySessionId) {
 //   console.log("vuex joinsession", mySessionId)
