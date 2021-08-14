@@ -1,12 +1,11 @@
 <template>
-  <Main />
-  <!-- <Main v-if="token"/> -->
-  <!-- <Start v-else/> -->
+  <Main v-if="token"/>
+  <Start v-else/>
 </template>
 
 <script>
 import Main from '@/views/main/Main'
-import Start from '@/views/start/Start'
+import Start from '@/views/Start'
 
 export default {
   name: 'App',
@@ -16,8 +15,10 @@ export default {
     Start,
   },
 
-  data: () => ({
-    token: localStorage.getItem('token')
-  }),
+  data() {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
 }
 </script>

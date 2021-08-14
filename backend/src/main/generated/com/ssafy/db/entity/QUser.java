@@ -24,15 +24,21 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<User, QUser> blacks = this.<User, QUser>createSet("blacks", User.class, QUser.class, PathInits.DIRECT2);
 
+    public final ListPath<Blog, QBlog> blogs = this.<Blog, QBlog>createList("blogs", Blog.class, QBlog.class, PathInits.DIRECT2);
+
+    public final SetPath<BookCategory, QBookCategory> bookCategories = this.<BookCategory, QBookCategory>createSet("bookCategories", BookCategory.class, QBookCategory.class, PathInits.DIRECT2);
+
     public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
 
-    public final StringPath defaultPage = createString("defaultPage");
+    public final NumberPath<Integer> defaultPage = createNumber("defaultPage", Integer.class);
 
     public final StringPath email = createString("email");
 
     public final SetPath<User, QUser> friends = this.<User, QUser>createSet("friends", User.class, QUser.class, PathInits.DIRECT2);
 
     public final StringPath gender = createString("gender");
+
+    public final SetPath<MovieCategory, QMovieCategory> movieCategories = this.<MovieCategory, QMovieCategory>createSet("movieCategories", MovieCategory.class, QMovieCategory.class, PathInits.DIRECT2);
 
     public final StringPath nickname = createString("nickname");
 

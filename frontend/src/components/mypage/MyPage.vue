@@ -70,38 +70,27 @@
       }
     },
 
-    created() {
-      const k = localStorage.getItem('email')
-      //this.info.push(localStorage.getItem('email'));
-      axios.get("/users/userInfo/" + k)
-      .then(response => {
-        this.info = response.data;
+  methods: {
+    getout() {
+      const router = useRouter()
+      const t = localStorage.getItem('email')
+      alert("정말 탈퇴하시겠어요?")
+      axios.delete('/users/userDelete/' + t)
+      .then(res => {
+        this.info = res.data;
         console.log(this.info)
+        alert("이용해주셔서 감사합니다:)")
+        this.$router.push({
+          name: "Start"
+      })
+
       })
       .catch(e => {
         console.log('error : ', e)
       })
     },
 
-    methods: {
-      getout() {
-        const router = useRouter()
-        const t = localStorage.getItem('email')
-        alert("정말 탈퇴하시겠어요?")
-        axios.delete('/users/userDelete/' + t)
-        .then(res => {
-          this.info = res.data;
-          console.log(this.info)
-          alert("이용해주셔서 감사합니다:)")
-          this.$router.push({
-            name: "Start"
-        })
 
-        })
-        .catch(e => {
-          console.log('error : ', e)
-        })
-      },
 
       goCulturePage() {
         this.$router.push({
@@ -116,12 +105,10 @@
       }
 
 
+  },
+};
 
-
-    },
-  };
-
-  </script>
+</script>
 
   <style scoped>
 

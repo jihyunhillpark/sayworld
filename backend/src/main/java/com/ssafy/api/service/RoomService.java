@@ -1,20 +1,26 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.RoomCreatePostRequest;
+import com.ssafy.api.response.RoomRes;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.Tag;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface RoomService {
-    //List<Room> selectRooms();
-    Room createRoom(RoomCreatePostRequest roomCreateInfo, String sessionId);
+    Room createRoom(RoomCreatePostRequest roomCreateInfo);
     // Room updateRoom(RoomUpdateRequest roomUpdateInfo);
-    Optional<Room> getRoomByRoomTitle(String roomName);
-    Optional<Room> getRoomBySessionId(String sessionId);
-    List<Tag> addTags(List<String> keywords, Long roomId);
+    void addTags(List<String> keywords, Room room);
     void deleteRoom(Room selectedRoom);
-    Optional<Room> detailRoom(String sessionId);
+    Optional<Room> getRoomByRoomId(Long roomId);
+    RoomRes detailRoom(Long roomId);
+    List<RoomRes> getRoomList();
+    List<RoomRes> getRoomListByRoomTitle(String roomName);
+    List<RoomRes> getRoomListByHostNickname(String nickname);
+    List<RoomRes> getRoomListByKeyword(String keyword);
+    List<RoomRes> getRoomListByMovieId(Long movieId);
+    List<RoomRes> getRoomListByBookId(Long bookId);
 }

@@ -2,7 +2,7 @@
   <div class="pinning-header">
     <div class="pinning-header-container">
       <div class="main-header">
-        <div class="ic ic-logo" />
+        <div class="ic ic-logo" @click="$router.push({ name: 'Home' })"/>
         <el-switch v-model="toggle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         <div class="secondary-navigation">
           <div class="nav-element">
@@ -11,6 +11,7 @@
                 placeholder="검색"
                 prefix-icon="el-icon-search"
                 v-model="state.searchValue"
+                @keypress.enter="searchRoom"
               ></el-input>
             </div>
           </div>
@@ -54,46 +55,31 @@ export default {
     const state = reactive({
       searchValue: null,
       isCollapse: true,
-      menuItems: computed(() => {
-        const MenuItems = store.getters["root/getMenus"];
-        let keys = Object.keys(MenuItems);
-        let menuArray = []
-        for (let i = 0; i < keys.length; ++i) {
-          let menuObject = {}
-          menuObject.icon = MenuItems[keys[i]].icon;
-          menuObject.title = MenuItems[keys[i]].name;
-          menuArray.push(menuObject)
-        }
-        return menuArray
-      }),
-      activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
+      title: 'title',
+      keyword: 'keyword',
     })
 
     const clickMyPage = () => {
-      //alert("마이페이지?")
-
-      router.push({
-        name: "MyPage"
-      })
+      router.push({ name: "MyPage" })
     }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-       //localStorage.removeItem('token')
-        localStorage.clear();
-        //로그아웃 하면 근데 로컬 스토리지에서 제거만 하고 끝내면되나??
-        //localStorage.clear();
-        // 첫 화면으로 넘어가게 해줘야 한다!!!! (아직 구현 X)
-        //window.location.reload()
-
-        //한번 시도해보겟슴다 - > 완료
-        router.push({
-          name: "Start"
-        })
-
+        localStorage.clear()
+        window.location.reload()
       }
     }
-    return { state, clickLogout, clickMyPage }
+
+    const searchRoom = () => {
+      if (state.searchValue) {
+        store.dispatch('root/searchRoom', {searchType: 'title', searchValue: state.searchValue})
+        store.dispatch('root/searchRoom', {searchType: 'keyword', searchValue: state.searchValue})
+      } else {
+        // 검색어 없을 때도 페이지 이동하는게 나은지 아니면 alert 띄우는게 나은지?
+        alert("검색어를 입력하세요.")
+      }
+    }
+    return { state, clickLogout, clickMyPage, searchRoom }
   },
 
 
