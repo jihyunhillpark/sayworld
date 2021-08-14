@@ -1,5 +1,5 @@
 <template>
-  <div>
+<div>
     <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
     <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
         <el-form :model="form">
@@ -87,9 +87,9 @@
         </span>
         </template>
     </el-dialog>
-  </div>
-    <!-- <div id="session" v-if="session">
-        <div id="session-header">
+</div>
+    <div id="session" v-if="session">
+        <!-- <div id="session-header">
             <h1 id="session-title">{{mySessionId}}</h1>
             <h1 id="session-title">{{mySessionId}}</h1>
             <el-button type="primary" id="blockIcon" icon="el-icon-turn-off-microphone" @click="blockUnblock" circle></el-button>
@@ -98,14 +98,14 @@
             <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
             <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(),leaveSession(),formClose()]" value="Leave session">
         </div>
-        <!-- <div id="main-video" class="col-md-6">
+        <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager"/>
         </div> -->
         <div id="video-container" class="col-md-6">
             <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
         </div>
-    </div> -->
+    </div>
 </template>
 <script>
 import axios from 'axios';
@@ -157,6 +157,7 @@ export default {
         block : false,
         mute : false,
 
+        hostId : store.state.root.userInfo.userId,
     };
     },
     mounted() {
@@ -220,7 +221,7 @@ export default {
         console.log(value);
     },
     handleCheckbox() {
-      this.isLocked= !this.isLocked;
+        this.isLocked= !this.isLocked;
     },
     imageUpload() {
         console.log(this.$refs.files.files);
@@ -261,6 +262,7 @@ export default {
     formRoom(){
         //const store = useStore();
         console.log("formRoom");
+        console.log(this.files[0]);
         //store.dispatch('root/requestRoomInfo', roomInfo)
             //const roomName= document.getElementById("mySessionId");
             const roomName= document.getElementById("rName");
@@ -268,8 +270,7 @@ export default {
             const keywords = [];
             //const keywords = document.getElementById("kTag");
             const limit = document.getElementById("pNum");
-            // const bookCategory = 0;
-            // const movieCategory = 1;
+            const thumbnailUrl = "";
             const url = []
             const password = document.getElementById("rPwd");
             axios({
@@ -277,14 +278,14 @@ export default {
                 url: "rooms",
                 data:{
                     roomName : rName.value,
-                    hostId: 1,//store.state.root.userInfo.userId,
+                    hostId: this.hostId,
                     keywords : this.dynamicTags,
                     limit: pNum.value,
                     bookCategoryId:this.bValue,
                     movieCategoryId: this.mValue,
                     //"roomInviteCode": String,
                     //password: String,
-                    thumbnailUrl: 'ges',
+                    thumbnailUrl: "idk........",
                     //"email": email.value,
                     password: password.value,
                     sessionId: rName.value,
@@ -330,396 +331,5 @@ export default {
 }
 </script>
 <style>
-.room-name{
-    width:80%;
-}
-.el-input__inner {
-    -webkit-appearance: none;
-    background-color: var(--el-input-background-color,var(--el-color-white));
-    background-image: none;
-    border-radius: var(--el-input-border-radius,var(--el-border-radius-base));
-    border: var(--el-input-border,var(--el-border-base));
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    color: var(--el-input-font-color,var(--el-text-color-regular));
-    display: inline-block;
-    font-size: inherit;
-    height: 40px;
-    line-height: 40px;
-    outline: 0;
-    padding: 0 15px;
-    -webkit-transition: var(--el-border-transition-base);
-    transition: var(--el-border-transition-base);
-    width: 80%;
-}
-.el-tag + .el-tag {
-    margin-left: 10px;
-}
-.button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
-}
-.el-dropdown {
-    vertical-align: top;
-}
-.el-dropdown + .el-dropdown {
-margin-left: 15px;
-}
-.el-icon-arrow-down {
-font-size: 12px;
-}
-
-/*openvidu*/
-html {
-   position: relative;
-   min-height: 100%;
-}
-
-nav {
-   height: 50px;
-   width: 100%;
-   z-index: 1;
-   background-color: #4d4d4d !important;
-   border-color: #4d4d4d !important;
-   border-top-right-radius: 0 !important;
-   border-top-left-radius: 0 !important;
-}
-
-.navbar-header {
-   width: 100%;
-}
-
-.nav-icon {
-   padding: 5px 15px 5px 15px;
-   float: right;
-}
-
-nav a {
-   color: #ccc !important;
-}
-
-nav i.fa {
-   font-size: 40px;
-   color: #ccc;
-}
-
-nav a:hover {
-   color: #a9a9a9 !important;
-}
-
-nav i.fa:hover {
-   color: #a9a9a9;
-}
-
-#main-container {
-   padding-bottom: 80px;
-}
-
-/*vertical-center {
-   position: relative;
-   top: 30%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-}*/
-
-.horizontal-center {
-   margin: 0 auto;
-}
-
-.form-control {
-   color: #0088aa;
-   font-weight: bold;
-}
-
-.form-control:focus {
-   border-color: #0088aa;
-   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-}
-
-input.btn {
-   font-weight: bold;
-}
-
-.btn {
-   font-weight: bold !important;
-}
-
-.btn-success {
-   background-color: #06d362 !important;
-   border-color: #06d362;
-}
-
-.btn-success:hover {
-   background-color: #1abd61 !important;
-   border-color: #1abd61;
-}
-
-.footer {
-   position: absolute;
-   bottom: 0;
-   width: 100%;
-   height: 60px;
-   background-color: #4d4d4d;
-}
-
-.footer .text-muted {
-   margin: 20px 0;
-   float: left;
-   color: #ccc;
-}
-
-.openvidu-logo {
-   height: 35px;
-   float: right;
-   margin: 12px 0;
-   -webkit-transition: all 0.1s ease-in-out;
-   -moz-transition: all 0.1s ease-in-out;
-   -o-transition: all 0.1s ease-in-out;
-   transition: all 0.1s ease-in-out;
-}
-
-.openvidu-logo:hover {
-   -webkit-filter: grayscale(0.5);
-   filter: grayscale(0.5);
-}
-
-.demo-logo {
-   margin: 0;
-   height: 22px;
-   float: left;
-   padding-right: 8px;
-}
-
-a:hover .demo-logo {
-   -webkit-filter: brightness(0.7);
-   filter: brightness(0.7);
-}
-
-#join-dialog {
-   margin-left: auto;
-    margin-right: auto;
-    max-width: 70%;
-}
-
-#join-dialog h1 {
-   color: #4d4d4d;
-   font-weight: bold;
-   text-align: center;
-}
-
-#img-div {
-   text-align: center;
-   margin-top: 3em;
-   margin-bottom: 3em;
-   /*position: relative;
-   top: 20%;
-   left: 50%;
-   transform: translate(-50%, -50%);*/
-}
-
-#img-div img {
-   height: 15%;
-}
-
-#join-dialog label {
-   color: #0088aa;
-}
-
-#join-dialog input.btn {
-   margin-top: 15px;
-}
-
-#session-header {
-   margin-bottom: 20px;
-}
-
-#session-title {
-   display: inline-block;
-    background-color: #e9e6c4;
-}
-
-#buttonLeaveSession {
-   float: right;
-   margin-top: 20px;
-}
-
-#video-container video {
-   position: relative;
-   float: left;
-   width: 50%;
-   cursor: pointer;
-}
-
-#video-container video + div {
-   float: left;
-   width: 50%;
-   position: relative;
-   margin-left: -50%;
-}
-
-#video-container p {
-   display: inline-block;
-   background: #f8f8f8;
-   padding-left: 5px;
-   padding-right: 5px;
-   color: #777777;
-   font-weight: bold;
-   border-bottom-right-radius: 4px;
-}
-
-video {
-   width: 100%;
-   height: auto;
-}
-
-#main-video p {
-   position: absolute;
-   display: inline-block;
-   background: #f8f8f8;
-   padding-left: 5px;
-   padding-right: 5px;
-   font-size: 22px;
-   color: #777777;
-   font-weight: bold;
-   border-bottom-right-radius: 4px;
-}
-
-#session img {
-   width: 100%;
-   height: auto;
-   display: inline-block;
-   object-fit: contain;
-   vertical-align: baseline;
-}
-
-#session #video-container img {
-   position: relative;
-   float: left;
-   width: 50%;
-   cursor: pointer;
-   object-fit: cover;
-   height: 180px;
-}
-
-/* 이미지업로드 */
-.room-file-upload-example {
-    height: 100%;
-}
-
-.file-preview-content-container {
-    height: 100%;
-}
-
-.room-file-upload-wrapper {
-    margin: 20px;
-    border: 1px solid #dddddd;
-    background-color: #f4f4f4;
-    min-height: 200px;
-    font-size: 15px;
-    color: #f4f4f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.room-file-upload-example-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* height: 100%;
-width: 100%; */
-}
-
-.room-file-image-example-wrapper {
-    text-align: center;
-}
-
-.room-file-notice-item {
-    margin-top: 5px;
-    text-align: center;
-}
-
-.room-file-notice-item-red {
-    color: #ef4351;
-}
-
-.image-box {
-    margin-top: 30px;
-    padding-bottom: 20px;
-    text-align: center;
-}
-
-.image-box input[type='file'] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
-
-.image-box label {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4F7178;
-    color: #fff;
-    vertical-align: middle;
-    font-size: 15px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.file-preview-wrapper {
-    padding: 10px;
-    position: relative;
-}
-
-.file-preview-wrapper>img {
-    position: relative;
-    width: 190px;
-    height: 130px;
-    z-index: 10;
-}
-
-.file-close-button {
-    position: absolute;
-    /* align-items: center; */
-    line-height: 18px;
-    z-index: 99;
-    font-size: 18px;
-    right: 5px;
-    top: 10px;
-    color: #fff;
-    font-weight: bold;
-    background-color: #666666;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.file-preview-container {
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.file-preview-wrapper-upload {
-    margin: 10px;
-    padding-top: 20px;
-    background-color: #888888;
-    width: 190px;
-    height: 130px;
-}
-
+@import "./CreateRoom.css";
 </style>

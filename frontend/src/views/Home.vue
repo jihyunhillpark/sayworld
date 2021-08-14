@@ -2,15 +2,11 @@
   <div>
     <!-- 세부 위치 수정 추후에 -->
     <CreateRoom />
-<<<<<<< HEAD:frontend/src/views/home/Home.vue
-    <p>{{ $store.state.root.userInfo.nickname }}</p>
-    <div>
-    </div>
-=======
     <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
->>>>>>> 76aadd9a70046505124732a4c736a1e0173e13c5:frontend/src/views/Home.vue
-    <div>
-      <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+    <Conference />
+    <!-- conference???? -->
+    <!-- <div>
+      <ul class="infinite-list" style="overflow:auto">
         <li
           v-for="i in state.count"
           @click="clickConference(i)"
@@ -20,34 +16,12 @@
           <conference />
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 
 </template>
 <style>
-.infinite-list {
-  padding-left: 0;
-  max-height: calc(100% - 35px);
-}
 
-@media (min-width: 701px) and (max-width: 1269px) {
-  .infinite-list {
-    min-width: 700px;
-  }
-}
-
-@media (min-width: 1270px) {
-  .infinite-list {
-    min-width: 1021px;
-  }
-}
-
-.infinite-list .infinite-list-item {
-  min-width: 335px;
-  max-width: 25%;
-  display: inline-block;
-  cursor: pointer;
-}
 </style>
 <script>
 import Conference from "@/components/home/conference"
@@ -59,7 +33,7 @@ export default {
   name: "Home",
   components: {
     Conference,
-    CreateRoom,
+    CreateRoom
   },
   setup() {
     const router = useRouter()
