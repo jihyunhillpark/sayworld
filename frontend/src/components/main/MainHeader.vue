@@ -60,7 +60,7 @@ export default {
     const checked = computed({
       get: () => Boolean(store.state.root.curPage),
       set (val) {
-        store.commit('root/SET_CURRENT_PAGE', val)
+        store.commit('root/SET_CURRENT_PAGE', Number(val))
       }
     })
 
