@@ -14,7 +14,7 @@
       <v-card-element v-for="(info, idx) in state.infos" :key="info" >
         <img :src="info.image">
         <p>{{info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")}}</p>
-        <p><input type="checkbox" v-model="state.checkedValues" :value="info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, '')"></p><br>
+        <p><input type="checkbox" v-model="state.cultureTitle" :value="info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, '')"></p><br>
       </v-card-element>
   </div>
 </template>
@@ -34,7 +34,8 @@ export default {
       title: '',
       countDisplay: '',
       infos: '',
-      checkedValues: []
+      cultureTitle: [],
+      cultureCategory:''
     })
 
     const sendPost = function () {
@@ -69,13 +70,14 @@ export default {
 
     const RegisterOK = function() {
       console.log(state.title)
-      console.log(state.checkedValues)
+      console.log(state.cultureTitle)
       //console.log(state.infos.title)
       //체크 박스 선택된 것들의 title과 category를 뽑아서 전달해줘야지
       const k = localStorage.getItem('email')
       axios.post("/users/culture/" + k, {
         params: {
-          checkedValues: this.state.checkedValues
+          cultureCategory: "B",
+          cultureTitle: this.state.cultureTitle
         }
       })
         .then(response => {
