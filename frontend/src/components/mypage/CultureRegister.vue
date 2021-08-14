@@ -7,14 +7,14 @@
       <button size="md" variant="danger" type="submit">검색</button>
     </form>
     </a>
-  <a><button size="md" variant="danger" type="submit" style="float: right">등록하기</button></a>
+  <a><button size="md" variant="danger" type="submit" style="float: right" @click="RegisterOK">등록하기</button></a>
   <p>목록</p>
 
   <div class="wrapper">
       <v-card-element v-for="(info, idx) in state.infos" :key="info" >
         <img :src="info.image">
         <p>{{info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")}}</p>
-        <p><input type="checkbox"></p><br>
+        <p><input type="checkbox" v-model="state.checkedValues" :value="info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, '')"></p><br>
       </v-card-element>
   </div>
 </template>
@@ -34,6 +34,7 @@ export default {
       title: '',
       countDisplay: '',
       infos: '',
+      checkedValues: []
     })
 
     const sendPost = function () {
@@ -54,27 +55,44 @@ export default {
         .then(function (res) {
           state.infos = res.data.items
           console.log(res.data)
-          //const infos = []
-          //this.countDisplay = res.data.display
-          //alert(res.data.display)
-          //this.infos = res.data.items
           //이거다!!!!!
           //alert(res.data.items[0].title)
-          //console.log(this.infos)
           // for(const key in res.data.items) {
           //   console.log(this.infos[key].title)
-          //   //this.infos[key] = res.data.items[key].title
-          //   console.log(res.data.items[key].author)
-          //   console.log(res.data.items[key].image)
-          //   //alert(infos[key])
           // }
-          //alert("출력 다 된거다 이자식아")
+
         })
         .catch(function (err) {
           console.log(err)
         })
     }
-    return {state, sendPost}
+
+    const RegisterOK = function() {
+      console.log(state.title)
+      console.log(state.checkedValues)
+      //console.log(state.infos.title)
+      //체크 박스 선택된 것들의 title과 category를 뽑아서 전달해줘야지
+      const k = localStorage.getItem('email')
+      axios.post("/users/culture/" + k, {
+        params: {
+          checkedValues: this.state.checkedValues
+        }
+      })
+        .then(response => {
+          this.info = response.data;
+          console.log(this.info)
+          alert("등록되었습니다!")
+        })
+        .catch(e => {
+          console.log('error : ', e)
+          alert("등록에 실패하였습니다.")
+        })
+    }
+
+
+
+
+    return {state, sendPost, RegisterOK}
   }
 
 }
