@@ -74,22 +74,26 @@ export function blogList({state}) {
 
 // 블로그 글 등록
 export function postBlog({state}, payload) {
-  const url = '/blogs'
+  const url = `/blogs`
   let body = payload
   return $axios.post(url, body)
 }
 
 // 블로그 글 수정
 export function putBlog({state}, payload) {
-  const url = '/blogs'
+  const url = `/blogs`
   let body = payload
   return $axios.put(url, body)
 }
 
 // 블로그 글 삭제
 export function deleteBlog({state}, payload) {
-  const url = '/blogs'
-  let body = payload
+  const url = `blogs`
+  let body = {}
+  console.log("in actions")
+  body.data = payload
+  body.data.email = state.email
+  console.log(body.data)
   return $axios.delete(url, body)
 }
 
