@@ -90,6 +90,7 @@ export default {
             .then((res) => {
               console.log(res.data)
               store.commit('root/SET_USERINFO', res.data)
+              store.commit('root/SET_CURRENT_PAGE', res.data.defaultPage)
               // 다시 로그인을 할 때 로그아웃 한 위치의 페이지로 보내짐...(어떻게 해결?)
               router.push({ name: 'Home' })
               router.go()

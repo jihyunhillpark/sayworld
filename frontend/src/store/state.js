@@ -40,6 +40,7 @@ export default {
   searchKeyword: [],
   searchTitle: [],
   searchCategory: [],
+  curPage: null,
 
   // openvidu
   mySessionId : null,
