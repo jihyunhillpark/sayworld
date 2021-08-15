@@ -53,7 +53,7 @@ const routes = [
     component: CategoryRoom
   },
   {
-    path: "/room",
+    path: "/room/:roomName",
     name: "MeetingRoom",
     component: MeetingRoom
   },

@@ -1,20 +1,81 @@
 <template>
-  <el-card :body-style="{ padding: '0px' }">
+  <el-row>
+  <!-- <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0"> -->
+  <el-col :span="8" v-for="info in roomList" :key="info" cols="4" > 
+    <el-card :body-style="{ padding: '0px' }">
     <div class="image-wrapper">
       <el-skeleton style="width: 100%">
         <template #template>
-          <el-skeleton-item variant="image" style="width: 100%; height: 190px" />
+          <el-image :src="src">
+            <template #placeholder>
+              <div class="image-slot">
+                Loading<span class="dot">...</span>
+              </div>
+            </template>
+          </el-image>
+          <!-- <el-skeleton-item variant="image" style="width: 100%; height: 190px" /> -->
         </template>
       </el-skeleton>
       </div>
-    <div style="text-align: left; padding: 14px;">
-      <span class="title">{{ title }}</span>
+      <div style="text-align: left; padding: 14px;">
+      <span class="title">{{ info.roomName }}</span>
       <div class="bottom">
-        <span>{{ desc }}</span>
+        <span>{{ info.movieCategory }}</span>
+        <el-button type="primary" class ="button" size="mini" @click="participate(info.roomName)">입장하기</el-button>
       </div>
     </div>
   </el-card>
+  </el-col>
+  </el-row>
 </template>
+<script>
+import axios from 'axios';
+import _ from 'lodash';
+import { OpenVidu } from 'openvidu-browser';
+import UserVideo from '../webrtc/UserVideo';
+import { useStore } from 'vuex';
+import { useRouter } from "vue-router"
+
+export default {
+  name: 'Home',
+  components: {
+    UserVideo,
+  },
+  data(){
+    const store = useStore();
+    return{
+      title : '',
+      desc : "",
+      roomList: [],
+      src: 'https://ifh.cc/g/FieTKm.png'
+    }
+  },
+  mounted(){
+    const _ = require("lodash"); 
+    axios({
+        url: 'rooms',
+        method: 'GET',
+      }).then((res)=>{
+        console.log("roomList start")
+        this.roomList=_.sortBy(res.data,'roomId').reverse();
+        //_.sortBy(this.roomList,'this.roomList.roomName');
+        console.log(this.roomList)
+        console.log("roomList end")
+      });
+      //_.sortBy(res.data,'roomId').reverse();
+  },
+  methods: {
+    participate(rName){
+      console.log(rName);
+      //this.$store.commit('root/SET_MYSESSIONID', rName )
+      //console.log(rName);
+      //console.log(this.$store.state.root.mySessionId)
+                // this.$store.dispatch('root/joinSession', this.$store.state.root.mySessionId)
+      this.$router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+    }
+  }
+}
+</script>
 <style>
 .el-card {
   margin: 0 8px;
@@ -22,50 +83,25 @@
 }
 .el-card .image-wrapper {
   width: 100%;
-  height: 190px;
+  height: 250px;
 }
 .el-card .title {
   font-weight: bold;
 }
-.el-card .bottom {
-  margin-top: 5px;
-  display:-webkit-box;
-  word-wrap:break-word;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.bottom {
+    margin-top: 13px;
+    line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-/* 테블릿, 모바일의 경우 두 줄 말줄임표시 */
-@media (max-width: 1269px) {
-  .el-card .bottom {
-    -webkit-line-clamp: 2;
-    height:42px;
-  }
+.button {
+    padding: 0;
+    min-height: auto;
 }
-/* 데스크탑의 경우 세 줄 말줄임표시 */
-@media (min-width: 1270px) {
-  .el-card .bottom {
-    -webkit-line-clamp: 3;
-    height:60px;
-  }
+.image {
+    width: 100%;
+    display: block;
 }
 
 </style>
-<script>
-export default {
-  name: 'Home',
-
-  props: {
-    title: {
-      type: String,
-      default: '제목'
-    },
-    desc: {
-      type: String,
-      default: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-    }
-  },
-
-  setup () {}
-}
-</script>

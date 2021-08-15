@@ -1,10 +1,13 @@
 <template>
   <div id="session" v-if="state.session">
     <div id="session-header">
-      <h1 id="session-title">{{mySessionId}}</h1>
-      <input class="btn btn-large btn-danger" type="checkbox" id="switchBlock" @click="blockUnblock" v-model="block"> 비디오중지
-      <input class="btn btn-large btn-danger" type="checkbox" id="switchMute" @click="muteUnmute" v-model="mute"> 음소거
-      <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[deleteRoom(), leaveSession]" value="Leave session">
+      <h1 id="session-title">{{$route.params.roomName}}</h1>
+      <div>
+        <el-checkbox v-model="state.block" @click="blockUnblock()">비디오중지</el-checkbox>
+        <el-checkbox v-model="state.mute" @click="muteUnmute()">음소거</el-checkbox>
+      </div>
+        <el-button type="primary" size="small" @click="[leaveSession()]">나가기</el-button>
+      <!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[leaveSession()]" value="Leave session"> -->
     </div>
     <!-- <div id="main-video" class="col-md-6">
       <user-video :stream-manager="mainStreamManager"/>
@@ -18,6 +21,7 @@
 
 <script>
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { computed, onMounted, reactive } from 'vue'
 import UserVideo from '@/components/webrtc/UserVideo'
 import { OpenVidu } from 'openvidu-browser';
@@ -29,6 +33,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const route = useRoute()
     const state = reactive({
       OV: undefined,
       ovToken: null,
@@ -36,19 +41,22 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-
+      block: 'false',
+      mute: 'false',
     })
-    const mySessionId = store.state.root.mySessionId
+    // const mySessionId = store.state.root.mySessionId
+    // const mySessionId = computed(() => route.params.roomName)
+    const mySessionId = route.params.roomName
 
-    const block = false
-    const mute = false
+    // const block = true;
+    // const mute = true;
 
     const blockUnblock = () => {
-      var videoEnabled = block
+      var videoEnabled = state.block
       state.publisher.publishVideo(videoEnabled)
     }
     const muteUnmute = () => {
-      var audioEnabled = mute
+      var audioEnabled = state.mute
       state.publisher.publishAudio(audioEnabled)
     }
     const updateMainVideoStreamManager = (stream) => {
@@ -122,24 +130,31 @@ export default {
 
     const leaveSession = () => {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
+      console.log("leaveRoom");
       if (state.session) state.session.disconnect()
 
-      state.session = undefined
-      state.mainStreamManager = undefined
-      state.publisher = undefined
-      state.subscribers = []
-      state.OV = undefined
+      delete state.session;
+      delete state.OV;
+      delete state.publisher;
+      state.subscribers = [];
+      // state.session = undefined
+      // state.mainStreamManager = undefined
+      // state.publisher = undefined
+      // state.subscribers = []
+      // state.OV = undefined
 
       window.removeEventListener('beforeunload', leaveSession);
     }
 
     onMounted(() => {
       console.log('123', mySessionId)
+      console.log(route.params.roomName)
+      // mySessionId = route.params.roomName
       store.dispatch('root/joinSession', mySessionId)
       joinSession()
     })
 
-    return { state, block, mute, mySessionId, blockUnblock, muteUnmute, updateMainVideoStreamManager, leaveSession }
+    return { state, mySessionId, blockUnblock, muteUnmute, updateMainVideoStreamManager, leaveSession }
   }
 }
 </script>

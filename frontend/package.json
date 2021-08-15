@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.44",
     "element-theme-chalk": "^2.15.3",
+    "lodash": "^4.17.21",
     "node-sass": "^6.0.1",
     "openvidu-browser": "^2.19.0",
     "roboto-fontface": "*",
