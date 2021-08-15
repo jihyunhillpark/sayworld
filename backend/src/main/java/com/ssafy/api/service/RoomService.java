@@ -17,7 +17,7 @@ public interface RoomService {
     void deleteRoom(Room selectedRoom);
     Optional<Room> getRoomByRoomId(Long roomId);
     RoomRes detailRoom(Long roomId);
-    List<RoomRes> getRoomList();
+    List<RoomRes> getRoomList(Long page);
     List<RoomRes> getRoomListByRoomTitle(String roomName);
     List<RoomRes> getRoomListByHostNickname(String nickname);
     List<RoomRes> getRoomListByKeyword(String keyword);

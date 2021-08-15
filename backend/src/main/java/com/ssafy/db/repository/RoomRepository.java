@@ -21,6 +21,9 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     List<Room> findByMovieCategoryId(Long movieId);
     List<Room> findByBookCategoryId(Long bookId);
     List<Room> findByHostId(Long hostId);
+    List<Room> findByMovieCategoryIdGreaterThan(Long categoryId);
+    List<Room> findByBookCategoryIdGreaterThan(Long categoryId);
 //    @Query(value="select * from room where room_host_id := hostId", nativeQuery = true)
 //    List<Room> findRoomsByHostId(@Param("room_host_id") Long hostId);
+
 }

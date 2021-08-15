@@ -9,15 +9,15 @@
     <!-- <div id="main-video" class="col-md-6">
       <user-video :stream-manager="mainStreamManager"/>
     </div> -->
-    <div id="video-container" class="col-md-6">
-      <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-      <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
-    </div>
     <div class="container">
-      <h3 class=" text-center">Messaging</h3>
     <div class="messaging">
         <div class="inbox_msg">
-          <div class="left_part"> </div>
+          <div class="video_section">
+            <div id="video-container" class="col-md-6">
+              <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+              <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+            </div>
+          </div>
           <div class="mesgs">
             <h2>SayWorld</h2>
             <div ref="chatDisplay" class="msg_history">
@@ -232,11 +232,12 @@ export default {
 <style>
 .container{max-width:1170px; margin:auto;}
 img{ max-width:100%;}
-.left_part {
+.video_section {
   background: #f8f8f8 none repeat scroll 0 0;
   float: left;
   overflow: hidden;
-  width: 40%; border-right:1px solid #c4c4c4;
+  width: 70%; border-right:1px solid #c4c4c4;
+  box-sizing: border-box;
 }
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -320,9 +321,11 @@ img{ max-width:100%;}
   text-align: left;
  }
  .received_withd_msg p {
-  background: #ebebeb none repeat scroll 0 0;
+  /* background: #ebebeb none repeat scroll 0 0; */
+  background: #252C34 none repeat scroll 0 0;
   border-radius: 10px;
-  color: #646464;
+  /* color: #646464; */
+  color: #c9c9c9;
   font-size: 14px;
   margin: 0;
   padding: 5px 10px 5px 12px;
@@ -338,8 +341,9 @@ img{ max-width:100%;}
 .received_withd_msg { width: 57%;}
 .mesgs {
   float: left;
-  padding: 30px 15px 0 25px;
-  width: 60%;
+  /* padding: 30px 15px 0 25px; */
+  width: 30%;
+  box-sizing: border-box;
 }
 
  .sent_msg p {
@@ -383,7 +387,8 @@ img{ max-width:100%;}
 }
 .messaging { padding: 0 0 50px 0;}
 .msg_history {
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
+  background-color: #1C2128;
   height: 400px;
   overflow-y: scroll;
 }

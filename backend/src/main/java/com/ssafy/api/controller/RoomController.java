@@ -92,7 +92,7 @@ public class RoomController {
 	/**
 	 * 방 리스트 조회
 	 */
-	@GetMapping
+	@GetMapping("/page/{page}")
 	@ApiOperation(value = "방 전체 조회", notes = "DB에 저장한 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -100,14 +100,14 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<List<RoomRes>> getRoomList(){
-		return ResponseEntity.status(200).body(roomService.getRoomList());
+	public ResponseEntity<List<RoomRes>> getRoomList(@PathVariable Long page){
+		return ResponseEntity.status(200).body(roomService.getRoomList(page));
 	}
 
 	/**
 	 * 방 리스트 - 검색하기
 	 * */
-	@GetMapping("/search")
+	@GetMapping("page/{page}/search")
 	@ApiOperation(value = "선택하여 방 검색", notes = "검색 종류에 따라 검색 단어를 포함하는 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
