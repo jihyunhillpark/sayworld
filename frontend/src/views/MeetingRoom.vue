@@ -6,7 +6,7 @@
         <el-checkbox v-model="state.block" @click="blockUnblock()">비디오중지</el-checkbox>
         <el-checkbox v-model="state.mute" @click="muteUnmute()">음소거</el-checkbox>
       </div>
-        <el-button type="primary" size="small" @click="[leaveSession()]">나가기</el-button>
+        <el-button type="primary" size="small"  @click="[leaveSession()]">나가기</el-button>
       <!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[leaveSession()]" value="Leave session"> -->
     </div>
     <!-- <div id="main-video" class="col-md-6">
@@ -22,6 +22,7 @@
 <script>
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import { useRouter } from "vue-router"
 import { computed, onMounted, reactive } from 'vue'
 import UserVideo from '@/components/webrtc/UserVideo'
 import { OpenVidu } from 'openvidu-browser';
@@ -34,6 +35,7 @@ export default {
   setup() {
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const state = reactive({
       OV: undefined,
       ovToken: null,
@@ -47,9 +49,6 @@ export default {
     // const mySessionId = store.state.root.mySessionId
     // const mySessionId = computed(() => route.params.roomName)
     const mySessionId = route.params.roomName
-
-    // const block = true;
-    // const mute = true;
 
     const blockUnblock = () => {
       var videoEnabled = state.block
@@ -128,15 +127,28 @@ export default {
       window.addEventListener('beforeunload', leaveSession)
     }
 
-    const leaveSession = () => {
+    const leaveSession = (e) => {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       console.log("leaveRoom");
+      if(!window.confirm("정말 나가시겠습니까?")) {
+      	e.preventDefault();
+      }
       if (state.session) state.session.disconnect()
 
       delete state.session;
       delete state.OV;
       delete state.publisher;
       state.subscribers = [];
+
+      router.push({ name: "Home" })
+      // if (state.session) state.session.disconnect()
+
+      // delete state.session;
+      // delete state.OV;
+      // delete state.publisher;
+      // state.subscribers = [];
+
+
       // state.session = undefined
       // state.mainStreamManager = undefined
       // state.publisher = undefined
