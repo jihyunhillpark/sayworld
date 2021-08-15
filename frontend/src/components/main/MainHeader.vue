@@ -182,7 +182,7 @@ export default {
     }
 
     &:before {
-      background: #ff3a19;
+      background: #f1a4a4;
       content: attr(data-tg-off);
     }
 
