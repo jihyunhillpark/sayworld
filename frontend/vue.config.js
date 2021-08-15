@@ -23,7 +23,15 @@ module.exports = {
     hot: true
   },
   css: {
-    requireModuleExtension: false // import 시에 경로에 .module 포함 안해도 됨.
+    requireModuleExtension: false, // import 시에 경로에 .module 포함 안해도 됨.
+    // loaderOptions: {
+    //   sass: {
+    //     data: `
+    //       @import "@/styles/_variables.scss";
+    //       @import "@/styles/_mixins.scss";
+    //     `
+    //   }
+    // }
   },
   transpileDependencies: [
     'element-plus'

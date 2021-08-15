@@ -70,6 +70,19 @@
       }
     },
 
+    created() {
+      const k = localStorage.getItem('email')
+      //this.info.push(localStorage.getItem('email'));
+      axios.get("/users/userInfo/" + k)
+        .then(response => {
+          this.info = response.data;
+          console.log(this.info)
+        })
+        .catch(e => {
+          console.log('error : ', e)
+        })
+    },
+
   methods: {
     getout() {
       const router = useRouter()
