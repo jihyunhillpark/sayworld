@@ -115,13 +115,13 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends Collection> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
+	public ResponseEntity<? extends Collection> getRoomListBySearch(@PathVariable Long page, @RequestParam("search_type") String searchType, @RequestParam String input){
 		if(searchType.equals("title"))
-			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input,page));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
-			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input,page));
 		else if(searchType.equals("keyword")) // Set 으로 반환
-			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input,page));
 		else if(searchType.equals("movie")){
 			Long movieId = Long.parseLong(input);
 			return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
