@@ -30,7 +30,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<Culture, QCulture> cultures = this.<Culture, QCulture>createList("cultures", Culture.class, QCulture.class, PathInits.DIRECT2);
 
-    public final StringPath defaultPage = createString("defaultPage");
+    public final NumberPath<Integer> defaultPage = createNumber("defaultPage", Integer.class);
 
     public final StringPath email = createString("email");
 

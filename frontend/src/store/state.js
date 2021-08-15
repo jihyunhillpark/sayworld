@@ -39,6 +39,8 @@ export default {
   email: null,
   searchKeyword: [],
   searchTitle: [],
+  searchCategory: [],
+  curPage: null,
 
   // openvidu
   mySessionId : null,

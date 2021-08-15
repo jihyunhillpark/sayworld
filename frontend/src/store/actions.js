@@ -28,27 +28,17 @@ export function requestUserInfo ({ state }) {
 }
 
 export function sendCategory ({ state }, payload) {
-  const url = `users/userCategory/${state.email}`
-  let body = payload
+  const url = `users/userCategory/${payload.email}`
+  let body = payload.category
   return $axios.post(url, body)
 }
 
 export function requestCategory ({ state }, payload) {
+  const url = `category/${payload.category}`
   let headers = {
     Authorization: "Bearer " + state.token
   }
-  $axios({
-    url: `category/${payload.category}`,
-    method: 'get',
-    headers: headers,
-  })
-  .then((res) => {
-    console.log(res.data)
-    return res.data
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+  return $axios.get(url, {headers: headers})
 }
 
 // 카테고리 검색 추가해야함
@@ -67,11 +57,40 @@ export function searchRoom ({ state, commit }, payload) {
       router.push({name: "SearchResult", params: { searchValue: payload.searchValue }})
     } else if (payload.searchType === 'keyword') {
       commit('SET_SEARCH_KEYWORD', res.data)
+    } else {
+      commit('SET_SEARCH_CATEGORY', res.data)
     }
   })
   .catch((err) => {
     console.log(err)
   })
+}
+
+// 블로그 글 조회
+export function blogList({state}) {
+  const url = `/blogs/${state.email}`
+  return $axios.get(url)
+}
+
+// 블로그 글 등록
+export function postBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.post(url, body)
+}
+
+// 블로그 글 수정
+export function putBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.put(url, body)
+}
+
+// 블로그 글 삭제
+export function deleteBlog({state}, payload) {
+  const url = '/blogs'
+  let body = payload
+  return $axios.delete(url, body)
 }
 
 // openvidu
@@ -203,6 +222,13 @@ export function createToken ({ dispatch }, sessionId) {
 
 export function requestBook ({ state }, payload) {
   const url = '/users/books'
+  let body = payload
+  console.log(payload)
+  return $axios.post(url, body)
+}
+
+export function requestCulture ({ state }, payload) {
+  const url = '/users/culture'
   let body = payload
   console.log(payload)
   return $axios.post(url, body)

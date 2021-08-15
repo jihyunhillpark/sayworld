@@ -32,6 +32,16 @@ export function SET_SEARCH_TITLE (state, searchTitle) {
   state.searchTitle = searchTitle
 }
 
+export function SET_SEARCH_CATEGORY (state, searchCategory) {
+  state.searchCategory = searchCategory
+}
+
+export function SET_CURRENT_PAGE (state, page) {
+  console.log('state', page)
+  state.curPage = page
+  console.log(state.curPage)
+}
+
 // Openvidu
 export function SET_MYSESSIONID(state, mySessionId) {
   state.mySessionId = mySessionId

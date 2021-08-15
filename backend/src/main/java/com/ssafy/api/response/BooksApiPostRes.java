@@ -30,6 +30,6 @@ public class BooksApiPostRes implements Serializable {
         String publisher;
     }
 
-    //이제 여기부분에 받는부분 코드 짜보면됨.
+
 
 }
