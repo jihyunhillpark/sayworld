@@ -20,6 +20,7 @@
       <div style="text-align: left; padding: 14px;">
       <span class="title">{{ info.roomName }}</span>
       <div class="bottom">
+        <!-- 테마 다르게 나오게 -->
         <span>{{ info.movieCategory }}</span>
         <el-button type="primary" class ="button" size="mini" @click="participate(info.roomName)">입장하기</el-button>
       </div>
@@ -67,10 +68,6 @@ export default {
   methods: {
     participate(rName){
       console.log(rName);
-      //this.$store.commit('root/SET_MYSESSIONID', rName )
-      //console.log(rName);
-      //console.log(this.$store.state.root.mySessionId)
-                // this.$store.dispatch('root/joinSession', this.$store.state.root.mySessionId)
       this.$router.push({ name : 'MeetingRoom', params: { roomName: rName } })
     }
   }
