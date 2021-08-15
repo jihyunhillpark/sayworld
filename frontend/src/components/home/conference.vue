@@ -19,10 +19,19 @@
       </div>
       <div style="text-align: left; padding: 14px;">
       <span class="title">{{ info.roomName }}</span>
+      <span class="mid" v-for="keyW in info.keywords" :key="keyW">
+      &nbsp #{{keyW}}
+      </span>
       <div class="bottom">
         <!-- 테마 다르게 나오게 -->
         <span>{{ info.movieCategory }}</span>
-        <el-button type="primary" class ="button" size="mini" @click="participate(info.roomName)">입장하기</el-button>
+
+        <div>
+        <i v-if="info.password.length>0" class="el-icon-lock"></i>&nbsp
+        <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
+        <el-button v-if="info.password.length>0" type="primary" class ="button" size="mini" @click="participate(info.roomName,0,info.password)">입장하기</el-button>
+        <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1)">입장하기</el-button>
+        </div>
       </div>
     </div>
   </el-card>
@@ -47,6 +56,7 @@ export default {
     return{
       title : '',
       desc : "",
+      curPage: store.state.root.curPage,
       roomList: [],
       src: 'https://ifh.cc/g/FieTKm.png'
     }
@@ -66,8 +76,16 @@ export default {
       //_.sortBy(res.data,'roomId').reverse();
   },
   methods: {
-    participate(rName){
+    participate(rName,lock,pwd){
       console.log(rName);
+      var allow = true;
+      if(lock==0){
+        allow = false;
+        var pwdInput = prompt("비밀번호를 입력하세요"+"");
+        if(pwdInput==pwd) allow=true;
+        else if(pwdInput.length>0 && pwdInput !=pwd) alert("틀렸습니다.")
+      }
+      if(allow)
       this.$router.push({ name : 'MeetingRoom', params: { roomName: rName } })
     }
   }
