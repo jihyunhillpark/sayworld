@@ -13,36 +13,43 @@
       <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
       <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
     </div>
-    <div class="chat-box">
-      <div ref="chatDisplay" class="chat-display">
-        <div v-for="(chat, index) in state.chats" :key="index" class="chat-line">
-          <div v-if="chat.userId === userInfo.id" class="my-comment">
-            <!-- <img :src="chat.profileImage" class="user-profile" /> -->
-            <div>
-              <span class="participant-name">{{ chat.nickname }} </span><span class="chat-msg">{{ chat.message }}</span>
+    <div class="container">
+      <h3 class=" text-center">Messaging</h3>
+    <div class="messaging">
+        <div class="inbox_msg">
+          <div class="left_part"> </div>
+          <div class="mesgs">
+            <h2>SayWorld</h2>
+            <div ref="chatDisplay" class="msg_history">
+              <div v-for="(chat,index) in state.chats" :key="index">
+                <div v-if="chat.nickname !== userInfo.nickname" class="incoming_msg">
+                  <div class="incoming_msg_img">
+                    <div class="incoming_msg_img_wrap">
+                      <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                    </div>
+                    <span class="participant_name">{{ chat.nickname }} </span>
+                  </div>
+                  <div class="received_msg">
+                    <div class="received_withd_msg">
+                      <p>{{ chat.message }}</p>
+                      <span class="time_date"> {{ state.recvDate}} </span></div>
+                  </div>
+                </div>
+                <div v-else class="outgoing_msg">
+                  <div class="sent_msg">
+                    <p>{{ chat.message }}</p>
+                    <span class="time_date"> {{ state.nowDate }}       </span> </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div v-else class="other-comment">
-            <!-- <img :src="chat.profileImage" class="user-profile" /> -->
-            <div>
-              <span class="participant-name other">{{ chat.nickname }} </span
-              ><span class="chat-msg">{{ chat.message }}</span>
+            <div class="type_msg">
+              <div class="input_msg_write">
+                <input type="text" v-model="state.sendMsg" class="write_msg" placeholder="메세지를 입력해주세요" @keydown.enter="submitMsg"/>
+                <button class="msg_send_btn" type="button"><i class="fa el-icon-s-promotion" aria-hidden="true"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="msg-wrapper">
-        <div class="msg-guide">
-          <!-- <img :src="getUserInfo.profileImage" class="user-profile" /> -->
-          {{ userInfo.nickname }}
-        </div>
-        <input
-          v-model="state.sendMsg"
-          type="text"
-          class="msg-input"
-          placeholder="메세지를 입력해주세요"
-          @keydown.enter="submitMsg"
-        />
       </div>
     </div>
   </div>
@@ -73,10 +80,13 @@ export default {
       subscribers: [],
       sendMsg: undefined,
       chats: [],
+      recvDate: "",
+      nowDate: "",
     })
     const mySessionId = store.state.root.mySessionId
     const userInfo = store.state.root.userInfo
 
+    console.log(userInfo.nickname);
     const block = false
     const mute = false
 
@@ -104,6 +114,8 @@ export default {
       // RECEIVE PART = 'chat' 시그널 type을 SUBSCRIBE
       state.session.on('signal:chat', event => {
         state.chats.push(JSON.parse(event.data));
+        let date = new Date();
+        state.recvDate = date.getHours() + ":" + date.getMinutes();
         setTimeout(this.chat_on_scroll, 10);
       });
 
@@ -176,6 +188,8 @@ export default {
         nickname: userInfo.nickname,
         message: state.sendMsg,
       };
+      let date = new Date();
+      state.nowDate = date.getHours() + ":" + date.getMinutes();
       state.sendMsg = '';
       state.session
         .signal({ // SEND PART = chat 시그널로 data PUBLISH
@@ -216,4 +230,161 @@ export default {
 </script>
 
 <style>
+.container{max-width:1170px; margin:auto;}
+img{ max-width:100%;}
+.left_part {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 40%; border-right:1px solid #c4c4c4;
+}
+.inbox_people {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 40%; border-right:1px solid #c4c4c4;
+}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+}
+.top_spac{ margin: 20px 0 0;}
+
+
+.recent_heading {float: left; width:40%;}
+.srch_bar {
+  display: inline-block;
+  text-align: right;
+  width: 60%;
+}
+.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+
+.recent_heading h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: auto;
+}
+.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+
+.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+.chat_ib h5 span{ font-size:13px; float:right;}
+.chat_ib p{ font-size:14px; color:#989898; margin:auto}
+.chat_img {
+  float: left;
+  width: 11%;
+}
+.chat_ib {
+  float: left;
+  padding: 0 0 0 15px;
+  width: 88%;
+}
+
+.chat_people{ overflow:hidden; clear:both;}
+.chat_list {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 18px 16px 10px;
+}
+.inbox_chat { height: 550px; overflow-y: scroll;}
+
+.active_chat{ background:#ebebeb;}
+
+.incoming_msg_img {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  text-align: left;
+}
+.incoming_msg_img_wrap {
+  float: left;
+  width: 7%;
+}
+.incoming_msg_img > .participant_name{
+  margin-left: 10px;
+}
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  text-align: left;
+ }
+ .received_withd_msg p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 10px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+  word-break: break-all;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 7px;
+  margin: 0 0 0 10px;
+}
+.received_withd_msg { width: 57%;}
+.mesgs {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 60%;
+}
+
+ .sent_msg p {
+  background: #05728f none repeat scroll 0 0;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  /* width:100%; */
+  word-break: break-all;
+}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  margin-right: 10px;
+  float: right;
+  width: 46%;
+  text-align: right;
+}
+.input_msg_write input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
+
+.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.msg_send_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.messaging { padding: 0 0 50px 0;}
+.msg_history {
+  background-color: whitesmoke;
+  height: 400px;
+  overflow-y: scroll;
+}
 </style>
