@@ -37,9 +37,7 @@ export function SET_SEARCH_CATEGORY (state, searchCategory) {
 }
 
 export function SET_CURRENT_PAGE (state, page) {
-  console.log('state', page)
   state.curPage = page
-  console.log(state.curPage)
 }
 
 // Openvidu
