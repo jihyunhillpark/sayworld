@@ -37,8 +37,12 @@ public class RoomServiceImpl implements RoomService{
     MovieCategoryRepository movieCategoryRepository;
 
     @Override
-    public List<RoomRes> getRoomList() {
-        List<Room> rooms = roomRepository.findAll();
+    public List<RoomRes> getRoomList(Long page) {
+        List<Room> rooms = new ArrayList<>();
+        if( page == 0L ) //기본 페이지가 영화일 때
+            rooms = roomRepository.findByMovieCategoryIdGreaterThan(0L);
+        else  //기본 페이지가 책일 때
+            rooms = roomRepository.findByBookCategoryIdGreaterThan(0L);
         return makeRoomResponseList(rooms);
     }
 
@@ -170,6 +174,7 @@ public class RoomServiceImpl implements RoomService{
     private List<RoomRes> makeRoomResponseList(List<Room> rooms){
         List<RoomRes> roomResList = new ArrayList<>();
         for(Room room : rooms) {
+            System.out.println("HOST==" + room.getHostId());
             Optional<User> userOpt = userRepository.findByUserId(room.getHostId());
             if (userOpt.isPresent()) {
                 roomResList.add(makeRoomResponse(room, userOpt.get()));
