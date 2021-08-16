@@ -3,8 +3,17 @@
   <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
   <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
     <el-form :model="form">
-    <el-form-item prop="roomName" label="방 이름" :label-width="formLabelWidth">
-      <el-input v-model="mySessionId" autocomplete="off"></el-input>
+    <el-form-item prop="name" label="방 이름" :label-width="formLabelWidth"
+      :rules="[
+        { required: true, message: '필수 입력 항목입니다.', trigger: 'blur' },
+        {
+          pattern: /^[ㄱ-ㅎ가-힣a-zA-Z0-9_-]+$/g,
+          message: '한글, 영어, 숫자, -, _ 이외에는 사용할 수 없습니다.',
+          trigger: 'change'
+        }
+      ]"
+    >
+      <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item prop="keyword" label="키워드" id="kTag" :label-width="formLabelWidth">
         <el-tag
@@ -85,17 +94,11 @@
 <script>
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import UserVideo from './UserVideo';
 import { useStore } from 'vuex';
 import { useRouter } from "vue-router"
 
 export default {
   name: 'CreateRoom',
-
-  components: {
-    UserVideo,
-  },
-
   data() {
     const store = useStore();
     return {
@@ -242,7 +245,7 @@ export default {
         method:"POST",
         url: "rooms",
         data:{
-          roomName : this.mySessionId,
+          roomName : this.form.name,
           hostId: this.hostId,
           keywords : this.dynamicTags,
           limit: this.num,
@@ -253,11 +256,11 @@ export default {
           thumbnailUrl: "idk",//window.URL.createObjectURL(this.files[0]),
           //"email": email.value,
           password: this.form.pwd,
-          sessionId: this.mySessionId,
+          sessionId: this.form.name,
         }
       })
       .then(() => {
-        this.$router.push({ name : 'MeetingRoom', params: { roomName: this.mySessionId }  })
+        this.$router.push({ name : 'MeetingRoom', params: { roomName: this.form.name }  })
         this.fromClose1()
       })
       .catch((err) => {
