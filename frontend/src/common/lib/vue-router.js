@@ -29,7 +29,7 @@ const routes = [
     component: MyPage
   },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home
   },
@@ -54,7 +54,7 @@ const routes = [
     component: CategoryRoom
   },
   {
-    path: "/room/:roomName",
+    path: "/room",
     name: "MeetingRoom",
     component: MeetingRoom
   },

@@ -1,3 +1,5 @@
+import state from "./state"
+
 export function setPlatform (state, isDesktop) {
   state.isDesktopPlatform = isDesktop
 }
@@ -74,4 +76,13 @@ export function SET_PUBLISHER(state, publisher) {
 
 export function SET_SUBSCRIBERS(state, subscribers) {
   state.subscribers = subscribers
+}
+
+export function SET_HISTORY(state, roomHistory){
+  console.log("mutation IN")
+  let filteredRoomHistory = [];
+  for(let room of roomHistory){
+    filteredRoomHistory.push({roomTitle : room.roomTitle, roomId: room.roomId});
+  }
+  state.roomHistory = filteredRoomHistory
 }
