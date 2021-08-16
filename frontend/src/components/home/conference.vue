@@ -27,9 +27,9 @@
         <span v-if="curPage">{{ info.bookCategory }}</span>
         <span v-else>{{ info.movieCategory }}</span>
         <div>
-        <i v-if="info.password.length>0" class="el-icon-lock"></i>&nbsp;
+        <i v-if="info.password==='Y'" class="el-icon-lock" size=30px></i>&nbsp;
         <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
-        <el-button v-if="info.password.length>0" type="primary" class ="button" size="mini" @click="participate(info.roomName,0,info.password)">입장하기</el-button>
+        <el-button v-if="info.password==='Y'" type="primary" class ="button" size="mini" @click="participate(info.roomName,0)">입장하기</el-button>
         <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1)">입장하기</el-button>
         </div>
       </div>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import axios from 'axios'
-import _ from 'lodash'
+import _, { reject } from 'lodash'
 import UserVideo from '../webrtc/UserVideo'
 import { useStore } from 'vuex'
 import { reactive, computed, watch } from 'vue'
@@ -77,17 +77,34 @@ export default {
         });
     }, { immediate:true })
 
-    const participate = (rName, lock, pwd) => {
-      console.log(rName);
+    const participate = (rName, lock) => {
       var allow = true;
       if (lock == 0){
         allow = false;
         var pwdInput = prompt("비밀번호를 입력하세요");
-        if (pwdInput == pwd) allow=true;
-        else if(pwdInput.length>0 && pwdInput !=pwd) alert("틀렸습니다.")
+        //지현이가해준거ㅓ........맞으면 200, 틀리면 403
+        axios({
+          url: `rooms/check/${rName}`,
+          method: 'POST',
+          data:{
+            "password" : pwdInput
+          }
+        })
+        .then(response=>{
+          if(response.status==200){
+              console.log(response),
+              router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+          }
+        }
+        )
+        .catch(e =>{
+          console.log('error : ', e)
+          alert("틀렸습니다.")
+          reject(response)
+        })
       }
-      if (allow)
-      router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+      if(allow)
+        router.push({ name : 'MeetingRoom', params: { roomName: rName } })
     }
     return { state, curPage, participate }
   }
