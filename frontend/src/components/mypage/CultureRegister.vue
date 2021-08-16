@@ -6,6 +6,15 @@
       <a><input type="text" name="title" v-model="state.title" placeholder="검색어를 입력하세요"> &nbsp;&nbsp;</a>
       <button size="md" variant="danger" type="submit">검색</button>
     </form>
+
+    <form id="myForm2" @submit.prevent="sendPost2">
+      <a><input type="radio" v-model="culture_check" value="책">책 &nbsp;&nbsp;</a>
+      <a><input type="radio" v-model="culture_check" value="영화">영화 &nbsp;&nbsp;</a>
+      <a><input type="text" name="title" v-model="state.title" placeholder="검색어를 입력하세요"> &nbsp;&nbsp;</a>
+      <button size="md" variant="danger" type="submit">검색</button>
+    </form>
+
+
     </a>
   <a><button size="md" variant="danger" type="submit" style="float: right" @click="RegisterOK">등록하기</button></a>
   <p>목록</p>
@@ -56,17 +65,36 @@ export default {
         .then(function (res) {
           state.infos = res.data.items
           console.log(res.data)
-          //이거다!!!!!
-          //alert(res.data.items[0].title)
-          // for(const key in res.data.items) {
-          //   console.log(this.infos[key].title)
-          // }
-
         })
         .catch(function (err) {
           console.log(err)
         })
     }
+
+    const sendPost2 = function () {
+      console.log(state.title)
+
+      axios.post('/movies/search', {
+        params: {
+          title: this.state.title
+        }
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Naver-Client-Id': 'fj19qSeYZpP5xmRuUQ_l',
+          'X-Naver-Client-Secret': 'ZeN6POhLUU'
+        }
+      })
+        //통신이 끝났으면 네이버 검색api에서 가져온 정보들을 보여줘야지
+        .then(function (res) {
+          state.infos = res.data.items
+          console.log(res.data)
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+    }
+
 
     const RegisterOK = function() {
       console.log(state.title)
@@ -94,7 +122,7 @@ export default {
 
 
 
-    return {state, sendPost, RegisterOK}
+    return {state, sendPost, RegisterOK, sendPost2}
   }
 
 }
