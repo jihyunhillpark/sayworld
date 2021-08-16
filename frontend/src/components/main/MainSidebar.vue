@@ -67,7 +67,6 @@ export default {
     const homeSelect = function () {
       router.push({ name: 'Home' })
     }
-
     const deleted = (roomId) => {
       ElMessageBox.confirm('OK버튼을 누르면 방이 영원히 삭제됩니다. 진행하시겠습니까?', '경고', {
         confirmButtonText: 'OK',

@@ -2,14 +2,6 @@
   <div id="session" v-if="state.session">
     <div id="session-header">
       <h1 id="session-title">{{$route.params.roomName}}</h1>
-      <div>
-        <el-button v-if="state.block%2==0" type="primary" icon="el-icon-video-play" @click="blockUnblock(state.block++)" circle></el-button>
-        <el-button v-else type="primary" icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button>
-        
-        <el-button v-if="state.mute%2==0" type="primary" icon="el-icon-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
-        <el-button v-else type="primary" icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
-      </div>
-        <el-button type="primary" size="small"  @click="[leaveSession()]">나가기</el-button>
     </div>
     <!-- <div id="main-video" class="col-md-6">
       <user-video :stream-manager="mainStreamManager"/>
@@ -24,7 +16,7 @@
             </div>
           </div>
           <div class="mesgs">
-            <h2>SayWorld</h2>
+            <!-- <h2>SayWorld</h2> -->
             <div ref="chatDisplay" class="msg_history">
               <div v-for="(chat,index) in state.chats" :key="index">
                 <div v-if="chat.nickname !== userInfo.nickname" class="incoming_msg">
@@ -57,6 +49,15 @@
         </div>
       </div>
     </div>
+    <footer class="footer">
+      <div>
+        <el-button v-if="state.block%2==0" icon="el-icon-video-play" @click="blockUnblock(state.block++)" circle></el-button>
+        <el-button v-else icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button> 
+        <el-button v-if="state.mute%2==0" icon="el-icon-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+        <el-button v-else icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+        <el-button size="middle" id="buttonLeaveSession" @click="[leaveSession()]">나가기</el-button>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -249,6 +250,71 @@ export default {
 </script>
 
 <style>
+.el-button+.el-button {
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.el-button.is-circle {
+  position: relative;
+    margin-top: 10px;
+    border-radius: 50%;
+    padding: 12px;
+    background-color: #6AC3D7;
+}
+#session-header {
+  margin-bottom: 20px;
+}
+
+#session-title {
+  display: inline-block;
+  background-color: #abc990;
+}
+
+#buttonLeaveSession {
+  float: right;
+  margin-top: 10px;
+  background: #A1C3CA;
+}
+
+#video-container video {
+  position: relative;
+  float: left;
+  width: 50%;
+  cursor: pointer;
+}
+
+#video-container video + div {
+  float: left;
+  width: 50%;
+  position: relative;
+  margin-left: -50%;
+}
+
+#video-container p {
+  display: inline-block;
+  background: #f8f8f8;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #777777;
+  font-weight: bold;
+  border-bottom-right-radius: 4px;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+/*  */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #acacac;
+}
+
+/* 채팅방 */
 .container{max-width:1170px; margin:auto;}
 img{ max-width:100%;}
 .video_section {
@@ -411,4 +477,6 @@ img{ max-width:100%;}
   height: 400px;
   overflow-y: scroll;
 }
+
+
 </style>

@@ -99,7 +99,7 @@ export default {
   data() {
     const store = useStore();
     return {
-      dynamicTags: ['키워드를', '입력하세요'],
+      dynamicTags: ['키워드를 입력하세요'],
       inputVisible: false,
       inputValue: '',
       checkedLock: false,
