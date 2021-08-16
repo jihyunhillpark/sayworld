@@ -141,6 +141,21 @@ export function createToken ({ dispatch }, sessionId) {
   })
 }
 
+export function requestState({ dispatch }, sessionId) {
+  return new Promise((resolve, reject) => {
+    $axios
+    .get(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}`, {}, {
+      auth: {
+        username: 'OPENVIDUAPP',
+        password: OPENVIDU_SERVER_SECRET,
+      },
+    })
+    .then(response => response.data)
+    .then(data => resolve(data.id))
+    .catch(error => reject(error.response))
+  })
+}
+
 export function requestBook ({ state }, payload) {
   const url = '/users/books'
   let body = payload
