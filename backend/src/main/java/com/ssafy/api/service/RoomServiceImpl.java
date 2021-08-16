@@ -64,11 +64,12 @@ public class RoomServiceImpl implements RoomService{
                 .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
         addTags(roomCreateInfo.getKeywords(), room);  //키워드가 있다면 db에 추가
 
-//        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());
-//        if(user.isPresent()) { //hostId로 유저를 찾아서 관계 테이블들에 쏙쏙
-//            User insertUser = user.get();
-//            room.setUser(insertUser);
-//        }
+        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());
+        if(user.isPresent()) { //hostId로 유저를 찾아서 관계 테이블들에 쏙쏙
+            User insertUser = user.get();
+            insertUser.getRooms().add(room);
+            userRepository.save(insertUser);
+      }
         return room;
     }
     @Override
