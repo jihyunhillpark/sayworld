@@ -74,7 +74,7 @@
     </el-form>
     <template #footer>
     <span class="dialog-footer">
-      <el-button type="primary" @click="[formRoom(), fromClose1()]" >생성</el-button>
+      <el-button type="primary" @click="formRoom()" >생성</el-button>
       <el-button @click="formClose()">취소</el-button>
     </span>
     </template>
@@ -257,6 +257,7 @@ export default {
       })
       .then(() => {
         this.$router.push({ name : 'MeetingRoom', params: { roomName: this.mySessionId }  })
+        this.fromClose1()
       })
       .catch((err) => {
         if (err.response.status === 500) {

@@ -206,6 +206,7 @@ export default {
 <style>
 .pinning-header {
   height: 70px;
+  text-align: center;
 }
 .pinning-header .pinning-header-container {
   position: relative;
