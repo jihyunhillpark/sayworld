@@ -123,13 +123,15 @@ public class RoomController {
 			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input,page));
 		else if(searchType.equals("keyword")) // Set 으로 반환
 			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input,page));
-		else if(searchType.equals("movie")){
-			Long movieId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
-		}
-		else if(searchType.equals("book")){
-			Long bookId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByBookId(bookId));
+		else if(searchType.equals("category")){
+			if(page == 0L){ //영화의 카테고리 검색
+				Long movieId = Long.parseLong(input);
+				return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
+			}
+			else{ //책의 카테고리 검색
+				Long bookId = Long.parseLong(input);
+				return ResponseEntity.status(200).body(roomService.getRoomListByBookId(bookId));
+			}
 		}
 		else
 			return ResponseEntity.status(200).body(null);
