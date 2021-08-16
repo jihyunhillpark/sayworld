@@ -1,12 +1,12 @@
 <template>
   <el-row>
   <!-- <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0"> -->
-  <el-col :span="8" v-for="info in roomList" :key="info" cols="4" > 
+  <el-col :span="8" v-for="info in state.roomList" :key="info" cols="4" >
     <el-card :body-style="{ padding: '0px' }">
     <div class="image-wrapper">
       <el-skeleton style="width: 100%">
         <template #template>
-          <el-image :src="src">
+          <el-image :src="state.src">
             <template #placeholder>
               <div class="image-slot">
                 Loading<span class="dot">...</span>
@@ -24,8 +24,8 @@
       </span>
       <div class="bottom">
         <!-- 테마 다르게 나오게 -->
-        <span>{{ info.movieCategory }}</span>
-
+        <span v-if="curPage">{{ info.bookCategory }}</span>
+        <span v-else>{{ info.movieCategory }}</span>
         <div>
         <i v-if="info.password.length>0" class="el-icon-lock"></i>&nbsp
         <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
@@ -39,56 +39,59 @@
   </el-row>
 </template>
 <script>
-import axios from 'axios';
-import _ from 'lodash';
-import { OpenVidu } from 'openvidu-browser';
-import UserVideo from '../webrtc/UserVideo';
-import { useStore } from 'vuex';
-import { useRouter } from "vue-router"
+import axios from 'axios'
+import _ from 'lodash'
+import UserVideo from '../webrtc/UserVideo'
+import { useStore } from 'vuex'
+import { reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
-  name: 'Home',
+  name: 'Conference',
   components: {
     UserVideo,
   },
-  data(){
-    const store = useStore();
-    return{
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+    const state = reactive({
       title : '',
-      desc : "",
-      curPage: store.state.root.curPage,
       roomList: [],
       src: 'https://ifh.cc/g/FieTKm.png'
-    }
-  },
-  mounted(){
-    const _ = require("lodash"); 
-    axios({
-        url: 'rooms',
-        method: 'GET',
-      }).then((res)=>{
-        console.log("roomList start")
-        this.roomList=_.sortBy(res.data,'roomId').reverse();
-        //_.sortBy(this.roomList,'this.roomList.roomName');
-        console.log(this.roomList)
-        console.log("roomList end")
-      });
-      //_.sortBy(res.data,'roomId').reverse();
-  },
-  methods: {
-    participate(rName,lock,pwd){
+
+    })
+
+    const curPage = computed({
+      get: () => store.state.root.curPage,
+    })
+
+    watch (curPage, (curValue, oldValue) => {
+      console.log(curValue)
+
+      axios({
+          url: `rooms/page/${curValue}`,
+          method: 'GET',
+        })
+        .then((res) => {
+          state.roomList = _.sortBy(res.data, 'roomId').reverse();
+        });
+    }, { immediate:true })
+
+    const participate = (rName, lock, pwd) => {
       console.log(rName);
       var allow = true;
-      if(lock==0){
+      if (lock == 0){
         allow = false;
         var pwdInput = prompt("비밀번호를 입력하세요"+"");
-        if(pwdInput==pwd) allow=true;
+        if (pwdInput == pwd) allow=true;
         else if(pwdInput.length>0 && pwdInput !=pwd) alert("틀렸습니다.")
       }
-      if(allow)
-      this.$router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+      if (allow)
+      router.push({ name : 'MeetingRoom', params: { roomName: rName } })
     }
+    return { state, curPage, participate }
   }
+
 }
 </script>
 <style>

@@ -70,6 +70,7 @@ export default {
       } else {
         store.commit('root/SET_CURRENT_PAGE', 1)
       }
+      // router.go()
     }
 
     const clickMyPage = () => {
@@ -95,13 +96,7 @@ export default {
     return { state, checked, clickLogout, clickMyPage, searchRoom, changeToggle }
   },
 
-
-
-
-  }
-
-
-
+}
 </script>
 
 <style lang="scss">
