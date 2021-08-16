@@ -50,11 +50,13 @@
       </div>
     </div>
     <footer class="footer">
-      <div>
+      <div class="meeting-btn">
         <el-button v-if="state.block%2==0" icon="el-icon-video-play" @click="blockUnblock(state.block++)" circle></el-button>
-        <el-button v-else icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button> 
+        <el-button v-else icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button>
         <el-button v-if="state.mute%2==0" icon="el-icon-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
         <el-button v-else icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+      </div>
+      <div class="leave-btn">
         <el-button size="middle" id="buttonLeaveSession" @click="[leaveSession()]">나가기</el-button>
       </div>
     </footer>
@@ -251,7 +253,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-button+.el-button {
     margin-left: 10px;
     margin-right: 20px;
@@ -273,7 +275,6 @@ export default {
 }
 
 #buttonLeaveSession {
-  float: right;
   margin-top: 10px;
   background: #A1C3CA;
 }
@@ -309,11 +310,27 @@ video {
 
 /*  */
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #acacac;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #acacac;
+  /* z-index: 1; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer .meeting-btn {
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+
+.footer .leave-btn {
+  display: flex;
+  justify-content: flex-end;
+  z-index: 2;
 }
 
 /* 채팅방 */

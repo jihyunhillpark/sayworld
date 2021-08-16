@@ -73,7 +73,7 @@
   </el-dialog>
 </template>
 <script>
-import { reactive, computed, ref, onMounted } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -153,17 +153,6 @@ export default {
       movieCategories: computed(() => props.movieCategories),
       pageNum: computed(() => state.page),
       formLabelWidth: '120px'
-    })
-
-    onMounted(() => {
-      // store.dispatch('root/requestCategory', { category: 'book' })
-      // .then((res) => {
-      //   state.bookCategories = res.data
-      // })
-      // store.dispatch('root/requestCategory', { category: 'movie' })
-      // .then((res) => {
-      //   state.movieCategories = res.data
-      // })
     })
 
     const checkButton = function () {
