@@ -27,7 +27,7 @@
         <span v-if="curPage">{{ info.bookCategory }}</span>
         <span v-else>{{ info.movieCategory }}</span>
         <div>
-        <i v-if="info.password==='Y'" class="el-icon-lock" size=30px></i>&nbsp;
+        <i v-if="info.password==='Y'" class="el-icon-lock"></i>&nbsp;
         <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
         <el-button v-if="info.password==='Y'" type="primary" class ="button" size="mini" @click="participate(info.roomName,0)">입장하기</el-button>
         <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1)">입장하기</el-button>
@@ -58,6 +58,7 @@ export default {
       title : '',
       roomList: [],
       src: 'https://ifh.cc/g/FieTKm.png'
+
     })
 
     const curPage = computed({
@@ -65,16 +66,17 @@ export default {
     })
 
     watch (curPage, (curValue, oldValue) => {
+      console.log(curValue)
+
       axios({
           url: `rooms/page/${curValue}`,
           method: 'GET',
         })
         .then((res) => {
-          state.roomList = _.sortBy(res.data, 'roomId').reverse()
-        })
-    }, { immediate: true })
+          state.roomList = _.sortBy(res.data, 'roomId').reverse();
+        });
+    }, { immediate:true })
 
-<<<<<<< HEAD
     const participate = (rName, lock) => {
       var allow = true;
       if (lock == 0){
@@ -100,15 +102,6 @@ export default {
           alert("틀렸습니다.")
           reject(response)
         })
-=======
-    const participate = (rName, lock, pwd) => {
-      var allow = true
-      if (lock == 0){
-        allow = false
-        var pwdInput = prompt("비밀번호를 입력하세요"+"")
-        if (pwdInput == pwd) allow=true
-        else if(pwdInput.length>0 && pwdInput !=pwd) alert("틀렸습니다.")
->>>>>>> 4448683f4f000803d41b873328c95c0155ef8440
       }
       if(allow)
         router.push({ name : 'MeetingRoom', params: { roomName: rName } })
