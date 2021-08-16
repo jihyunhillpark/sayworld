@@ -3,12 +3,12 @@
     <a> 내 블로그 페이지</a>
     <br>
     <el-row :gutter="10">
-      <el-button>+</el-button>
+      <el-button v-on:click="goEditor(0)">+</el-button>
       <el-col v-for="(blog, idx) in blogs.blogs" :span="6" :key="idx">
         <div>
           <div>{{blog.blogTitle}}</div>
           <div>{{blog.blogContent}}</div>
-          <button>수정</button>
+          <button @click="goEditor(blog)">수정</button>
           <button @click="blogDelete(blog.blogId)">삭제</button>
         </div>
 <!--        <el-button>{{blog.blogTitle}}, {{blog.blogContent}}</el-button>-->
@@ -21,8 +21,7 @@
 <script>
   import {onUpdated, onMounted, reactive} from 'vue'
   import {useStore} from 'vuex'
-  import { QuillEditor } from '@vueup/vue-quill'
-  import '@vueup/vue-quill/dist/vue-quill.snow.css';
+  import {useRouter} from "vue-router"
 
   export default {
     name: "MyBlog",
@@ -32,6 +31,8 @@
       const blogs = reactive({
         blogs: [],
       })
+      const router = useRouter()
+      const create = false
 
       onMounted(() => {
         store.dispatch('root/blogList')
@@ -58,14 +59,16 @@
           })
         const idx = blogs.blogs.findIndex(function(item) {return item.blogId === blogId})
         blogs.blogs.splice(idx,1)
-
       }
 
-      return {blogs, blogDelete}
+      function goEditor(blog) {
+        router.push({name: "TextEditor", params: blog})
+      }
+
+      return {blogs, blogDelete, goEditor}
     },
 
     components: {
-      QuillEditor
     }
 
   }
