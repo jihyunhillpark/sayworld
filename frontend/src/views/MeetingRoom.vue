@@ -67,7 +67,8 @@ import { useRoute } from 'vue-router'
 import { useRouter } from "vue-router"
 import { computed, onMounted, reactive } from 'vue'
 import UserVideo from '@/components/webrtc/UserVideo'
-import { OpenVidu } from 'openvidu-browser';
+import { OpenVidu } from 'openvidu-browser'
+import { Inko } from 'inko'
 
 export default {
   name: 'MeetingRoom',
@@ -78,6 +79,7 @@ export default {
     ...mapGetters(['getUserInfo']),
   },
   setup() {
+    let inko = new Inko()
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
@@ -97,9 +99,9 @@ export default {
     })
     // const mySessionId = store.state.root.mySessionId
     // const mySessionId = computed(() => route.params.roomName)
-    const mySessionId = route.params.roomName
+    const mySessionId = inko.ko2en(route.params.roomName)
     const userInfo = store.state.root.userInfo
-    
+
     console.log(userInfo.nickname);
 
     const blockUnblock = (num1) => {
@@ -109,7 +111,7 @@ export default {
       state.publisher.publishVideo(videoEnabled)
     }
     const muteUnmute = (num2) => {
-      var audioEnabled 
+      var audioEnabled
       if(num2%2==1) audioEnabled=true;
       else  audioEnabled =false;
       state.publisher.publishAudio(audioEnabled)
