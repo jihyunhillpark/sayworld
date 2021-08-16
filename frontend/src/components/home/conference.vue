@@ -58,7 +58,6 @@ export default {
       title : '',
       roomList: [],
       src: 'https://ifh.cc/g/FieTKm.png'
-
     })
 
     const curPage = computed({
@@ -66,24 +65,21 @@ export default {
     })
 
     watch (curPage, (curValue, oldValue) => {
-      console.log(curValue)
-
       axios({
           url: `rooms/page/${curValue}`,
           method: 'GET',
         })
         .then((res) => {
           state.roomList = _.sortBy(res.data, 'roomId').reverse();
-        });
-    }, { immediate:true })
+        })
+    }, { immediate: true })
 
     const participate = (rName, lock, pwd) => {
-      console.log(rName);
-      var allow = true;
+      var allow = true
       if (lock == 0){
-        allow = false;
-        var pwdInput = prompt("비밀번호를 입력하세요"+"");
-        if (pwdInput == pwd) allow=true;
+        allow = false
+        var pwdInput = prompt("비밀번호를 입력하세요"+"")
+        if (pwdInput == pwd) allow=true
         else if(pwdInput.length>0 && pwdInput !=pwd) alert("틀렸습니다.")
       }
       if (allow)
