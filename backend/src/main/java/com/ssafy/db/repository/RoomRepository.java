@@ -14,15 +14,18 @@ import java.util.Optional;
 */
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
+    //    Optional<Room> findBySessionId(String SessionId);
     Optional<Room> findByRoomId(Long roomId);
     Optional<Room> findByRoomTitle(String roomTitle);
-//    Optional<Room> findBySessionId(String SessionId);
-    List<Room> findByRoomTitleContains(String roomTitle);
     List<Room> findByMovieCategoryId(Long movieId);
     List<Room> findByBookCategoryId(Long bookId);
     List<Room> findByHostId(Long hostId);
     List<Room> findByMovieCategoryIdGreaterThan(Long categoryId);
     List<Room> findByBookCategoryIdGreaterThan(Long categoryId);
+    List<Room> findByRoomTitleContainsAndMovieCategoryIdGreaterThan(String roomTitle, Long categoryId);
+    List<Room> findByRoomTitleContainsAndBookCategoryIdGreaterThan(String roomTitle, Long categoryId);
+    List<Room> findByHostIdAndMovieCategoryIdGreaterThan(Long hostId, Long categoryId);
+    List<Room> findByHostIdAndBookCategoryIdGreaterThan(Long hostId, Long categoryId);
 //    @Query(value="select * from room where room_host_id := hostId", nativeQuery = true)
 //    List<Room> findRoomsByHostId(@Param("room_host_id") Long hostId);
 

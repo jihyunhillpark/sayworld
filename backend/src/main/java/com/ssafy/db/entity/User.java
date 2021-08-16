@@ -93,6 +93,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
     private Set<MovieCategory> movieCategories = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_host_id" )
+    private List<Room> rooms = new ArrayList<>();
 //    @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    String password;

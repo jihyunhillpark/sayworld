@@ -16,11 +16,13 @@ public interface RoomService {
     void addTags(List<String> keywords, Room room);
     void deleteRoom(Room selectedRoom);
     Optional<Room> getRoomByRoomId(Long roomId);
+    Optional<Room> getRoomByRoomName(String roomName);
     RoomRes detailRoom(Long roomId);
     List<RoomRes> getRoomList(Long page);
-    List<RoomRes> getRoomListByRoomTitle(String roomName);
-    List<RoomRes> getRoomListByHostNickname(String nickname);
-    List<RoomRes> getRoomListByKeyword(String keyword);
+    List<RoomRes> getRoomListByRoomTitle(String roomName, Long page);
+    List<RoomRes> getRoomListByHostNickname(String nickname, Long page);
+    List<RoomRes> getRoomListByKeyword(String keyword, Long page);
     List<RoomRes> getRoomListByMovieId(Long movieId);
     List<RoomRes> getRoomListByBookId(Long bookId);
+    boolean checkPassword(String password, String roomName);
 }
