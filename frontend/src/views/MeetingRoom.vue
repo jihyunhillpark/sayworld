@@ -3,8 +3,13 @@
     <div id="session-header">
       <h1 id="session-title">{{$route.params.roomName}}</h1>
       <div>
-        <el-checkbox v-model="state.block" @click="blockUnblock()">비디오중지</el-checkbox>
-        <el-checkbox v-model="state.mute" @click="muteUnmute()">음소거</el-checkbox>
+        <el-button v-if="state.block%2==0" type="primary" icon="el-icon-video-play" @click="blockUnblock(state.block++)" circle></el-button>
+        <el-button v-else type="primary" icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button>
+        
+        <el-button v-if="state.mute%2==0" type="primary" icon="el-icon-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+        <el-button v-else type="primary" icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+        <!-- <el-checkbox v-model="state.block" @click="blockUnblock()">비디오중지</el-checkbox> -->
+        <!-- <el-checkbox v-model="state.mute" @click="muteUnmute()">음소거</el-checkbox> -->
       </div>
         <el-button type="primary" size="small"  @click="[leaveSession()]">나가기</el-button>
       <!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[leaveSession()]" value="Leave session"> -->
@@ -43,19 +48,23 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      block: 'false',
-      mute: 'false',
+      block: 0,
+      mute: 0,
     })
     // const mySessionId = store.state.root.mySessionId
     // const mySessionId = computed(() => route.params.roomName)
     const mySessionId = route.params.roomName
 
-    const blockUnblock = () => {
-      var videoEnabled = state.block
+    const blockUnblock = (num1) => {
+      var videoEnabled
+      if(num1%2==1) videoEnabled=true;
+      else  videoEnabled =false;
       state.publisher.publishVideo(videoEnabled)
     }
-    const muteUnmute = () => {
-      var audioEnabled = state.mute
+    const muteUnmute = (num2) => {
+      var audioEnabled 
+      if(num2%2==1) audioEnabled=true;
+      else  audioEnabled =false;
       state.publisher.publishAudio(audioEnabled)
     }
     const updateMainVideoStreamManager = (stream) => {
@@ -141,19 +150,6 @@ export default {
       state.subscribers = [];
 
       router.push({ name: "Home" })
-      // if (state.session) state.session.disconnect()
-
-      // delete state.session;
-      // delete state.OV;
-      // delete state.publisher;
-      // state.subscribers = [];
-
-
-      // state.session = undefined
-      // state.mainStreamManager = undefined
-      // state.publisher = undefined
-      // state.subscribers = []
-      // state.OV = undefined
 
       window.removeEventListener('beforeunload', leaveSession);
     }

@@ -27,7 +27,7 @@
         <span v-if="curPage">{{ info.bookCategory }}</span>
         <span v-else>{{ info.movieCategory }}</span>
         <div>
-        <i v-if="info.password==='Y'" class="el-icon-lock"></i>&nbsp;
+        <i v-if="info.password==='Y'" class="el-icon-lock" ></i>&nbsp;
         <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
         <el-button v-if="info.password==='Y'" type="primary" class ="button" size="mini" @click="participate(info.roomName,0)">입장하기</el-button>
         <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1)">입장하기</el-button>
