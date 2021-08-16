@@ -20,11 +20,12 @@ public class BooksApiController {
     public Mono<BooksApiPostRes> findBookByQuery(@RequestBody Map<String, Map> title) {
 
         Object keyword = title.get("params").get("title");
-        System.out.println(keyword);
+        //System.out.println(keyword);
         //HashMap<String, Object> resultMap = new HashMap<>();
         String result = String.valueOf(keyword);
 
         //System.out.println("되냐?");
+        //System.out.println(booksService.findBookByQuery((result)));
         return booksService.findBookByQuery(result);
     }
 

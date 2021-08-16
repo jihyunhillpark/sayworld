@@ -125,10 +125,14 @@ public class UserController {
 			@ApiResponse(code=401, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버오류")
 	})
-	public ResponseEntity<? extends BaseResponseBody> culturePost(@PathVariable String myEmail,
+	public ResponseEntity<? extends BaseResponseBody> postCulture(@PathVariable String myEmail,
 			@RequestBody @ApiParam(value = "문화력 정보",required = true) CulturePostReq culturePostReq){
 
 		cultureService.postCulture(culturePostReq, myEmail);
+		//System.out.println(myEmail);
+		//System.out.println(culturePostReq.getCultureTitle());
+		//System.out.println(culturePostReq.getCultureCategory());
+
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}

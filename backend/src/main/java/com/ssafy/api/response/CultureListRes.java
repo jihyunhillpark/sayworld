@@ -1,7 +1,6 @@
 package com.ssafy.api.response;
 
 import com.ssafy.db.entity.Culture;
-import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -13,15 +12,21 @@ import java.util.List;
 @Setter
 @ApiModel("CultureListResponse")
 public class CultureListRes {
+    @ApiModelProperty(name = "문화력 글 번호")
+    Long CulturePowerId;
     @ApiModelProperty(name = "Culture Title")
-    String title;
+    String cultureTitle;
     @ApiModelProperty(name = "Culture Category")
-    char category;
+    int cultureCategory;
+    @ApiModelProperty(name = "이메일")
+    String userEmail;
 
-    public static CultureListRes create(Culture culture){
+    public static CultureListRes create(Culture culture, String email){
         CultureListRes res = new CultureListRes();
-        res.setTitle(culture.getCultureTitle());
-        res.setCategory(culture.getCultureCategory());
+        res.setCulturePowerId(culture.getCulturePowerId());
+        res.setUserEmail(email);
+        res.setCultureTitle(culture.getCultureTitle());
+        res.setCultureCategory(culture.getCultureCategory());
         return res;
     }
 }

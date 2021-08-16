@@ -7,6 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,11 +16,8 @@ import javax.persistence.*;
 @ToString
 @DynamicInsert
 @NoArgsConstructor
-@AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 @Table(name = "culture_power")
 public class Culture {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "culture_power_id")
@@ -29,7 +28,7 @@ public class Culture {
     User user;
 
     @Column(name = "culture_category")
-    char cultureCategory;
+    int cultureCategory;
 
     @Column(name = "culture_title")
     String cultureTitle;
