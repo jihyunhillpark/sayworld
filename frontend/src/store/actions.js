@@ -142,6 +142,19 @@ export function createToken ({ dispatch }, sessionId) {
   })
 }
 
+export function requestHistory ({ state }) {
+  const url = `/users/history/${state.email}`
+  let headers = {
+    Authorization: "Bearer " + state.token
+  }
+  return $axios.get(url, {headers: headers})
+}
+
+export function deleteRoom ({state}, payload) {
+  const url =`/rooms/${payload}`
+  return $axios.delete(url);
+}
+
 export function requestBook ({ state }, payload) {
   const url = '/users/books'
   let body = payload

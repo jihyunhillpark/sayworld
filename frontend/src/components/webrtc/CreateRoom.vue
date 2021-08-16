@@ -53,7 +53,8 @@
       <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
       <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
     </el-form-item>
-    <div class="room-file-upload-wrapper">
+    <!--사진 업로드  -->
+    <!-- <div class="room-file-upload-wrapper">
       <div v-if="!files.length" class="room-file-upload-example-container">
           <div class="room-file-notice-item room-file-upload-button">
             <div class="image-box">
@@ -70,7 +71,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     </el-form>
     <template #footer>
     <span class="dialog-footer">

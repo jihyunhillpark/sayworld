@@ -3,24 +3,65 @@
     <div id="session-header">
       <h1 id="session-title">{{$route.params.roomName}}</h1>
       <div>
-        <el-checkbox v-model="state.block" @click="blockUnblock()">비디오중지</el-checkbox>
-        <el-checkbox v-model="state.mute" @click="muteUnmute()">음소거</el-checkbox>
+        <el-button v-if="state.block%2==0" type="primary" icon="el-icon-video-play" @click="blockUnblock(state.block++)" circle></el-button>
+        <el-button v-else type="primary" icon="el-icon-video-pause" @click="blockUnblock(state.block++)" circle></el-button>
+        
+        <el-button v-if="state.mute%2==0" type="primary" icon="el-icon-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
+        <el-button v-else type="primary" icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
       </div>
         <el-button type="primary" size="small"  @click="[leaveSession()]">나가기</el-button>
-      <!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="[leaveSession()]" value="Leave session"> -->
     </div>
     <!-- <div id="main-video" class="col-md-6">
       <user-video :stream-manager="mainStreamManager"/>
     </div> -->
-    <div id="video-container" class="col-md-6">
-      <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-      <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+    <div class="container">
+    <div class="messaging">
+        <div class="inbox_msg">
+          <div class="video_section">
+            <div id="video-container" class="col-md-6">
+              <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+              <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+            </div>
+          </div>
+          <div class="mesgs">
+            <h2>SayWorld</h2>
+            <div ref="chatDisplay" class="msg_history">
+              <div v-for="(chat,index) in state.chats" :key="index">
+                <div v-if="chat.nickname !== userInfo.nickname" class="incoming_msg">
+                  <div class="incoming_msg_img">
+                    <div class="incoming_msg_img_wrap">
+                      <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                    </div>
+                    <span class="participant_name">{{ chat.nickname }} </span>
+                  </div>
+                  <div class="received_msg">
+                    <div class="received_withd_msg">
+                      <p>{{ chat.message }}</p>
+                      <span class="time_date"> {{ state.recvDate}} </span></div>
+                  </div>
+                </div>
+                <div v-else class="outgoing_msg">
+                  <div class="sent_msg">
+                    <p>{{ chat.message }}</p>
+                    <span class="time_date"> {{ state.nowDate }}       </span> </div>
+                </div>
+              </div>
+            </div>
+            <div class="type_msg">
+              <div class="input_msg_write">
+                <input type="text" v-model="state.sendMsg" class="write_msg" placeholder="메세지를 입력해주세요" @keydown.enter="submitMsg"/>
+                <button class="msg_send_btn" type="button"><i class="fa el-icon-s-promotion" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import { mapGetters, useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useRouter } from "vue-router"
 import { computed, onMounted, reactive } from 'vue'
@@ -31,6 +72,9 @@ export default {
   name: 'MeetingRoom',
   components: {
     UserVideo,
+  },
+  computed: {
+    ...mapGetters(['getUserInfo']),
   },
   setup() {
     const store = useStore()
@@ -43,19 +87,30 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      block: 'false',
-      mute: 'false',
+      sendMsg: undefined,
+      chats: [],
+      recvDate: "",
+      nowDate: "",
+      block: 0,
+      mute: 0,
     })
     // const mySessionId = store.state.root.mySessionId
     // const mySessionId = computed(() => route.params.roomName)
     const mySessionId = route.params.roomName
+    const userInfo = store.state.root.userInfo
+    
+    console.log(userInfo.nickname);
 
-    const blockUnblock = () => {
-      var videoEnabled = state.block
+    const blockUnblock = (num1) => {
+      var videoEnabled
+      if(num1%2==1) videoEnabled=true;
+      else  videoEnabled =false;
       state.publisher.publishVideo(videoEnabled)
     }
-    const muteUnmute = () => {
-      var audioEnabled = state.mute
+    const muteUnmute = (num2) => {
+      var audioEnabled 
+      if(num2%2==1) audioEnabled=true;
+      else  audioEnabled =false;
       state.publisher.publishAudio(audioEnabled)
     }
     const updateMainVideoStreamManager = (stream) => {
@@ -71,6 +126,12 @@ export default {
       state.session = state.OV.initSession()
       // --- Specify the actions when events take place in the session ---
 
+      state.session.on('signal:chat', event => {
+        state.chats.push(JSON.parse(event.data));
+        let date = new Date();
+        state.recvDate = date.getHours() + ":" + date.getMinutes();
+        setTimeout(this.chat_on_scroll, 10);
+      });
       // On every new Stream received...
       state.session.on('streamCreated', ({ stream }) => {
         const subscriber = state.session.subscribe(stream)
@@ -126,7 +187,36 @@ export default {
 
       window.addEventListener('beforeunload', leaveSession)
     }
+    const chat_on_scroll = () => {
+      this.$refs.chatDisplay.scrollTop = this.$refs.chatDisplay.scrollHeight;
+    }
 
+    // Newly added - OpenVidu에 REST API로 채팅관련 전송 요청
+    const submitMsg = () => {
+      console.log('USER NICKNAME = ', userInfo.nickname);
+      if (state.sendMsg.trim === '') return;
+      const sendData = {
+        userId: userInfo.id,
+        // profileImage: this.getUserInfo.profileImage,
+        nickname: userInfo.nickname,
+        message: state.sendMsg,
+      };
+      let date = new Date();
+      state.nowDate = date.getHours() + ":" + date.getMinutes();
+      state.sendMsg = '';
+      state.session
+        .signal({ // SEND PART = chat 시그널로 data PUBLISH
+          data: JSON.stringify(sendData), // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: 'chat', // The type of message (optional)
+        })
+        .then(() => {
+          console.log('Message successfully sent');
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
     const leaveSession = (e) => {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       console.log("leaveRoom");
@@ -141,19 +231,6 @@ export default {
       state.subscribers = [];
 
       router.push({ name: "Home" })
-      // if (state.session) state.session.disconnect()
-
-      // delete state.session;
-      // delete state.OV;
-      // delete state.publisher;
-      // state.subscribers = [];
-
-
-      // state.session = undefined
-      // state.mainStreamManager = undefined
-      // state.publisher = undefined
-      // state.subscribers = []
-      // state.OV = undefined
 
       window.removeEventListener('beforeunload', leaveSession);
     }
@@ -166,11 +243,172 @@ export default {
       joinSession()
     })
 
-    return { state, mySessionId, blockUnblock, muteUnmute, updateMainVideoStreamManager, leaveSession }
+    return { state, mySessionId, userInfo, blockUnblock, muteUnmute, updateMainVideoStreamManager, leaveSession, chat_on_scroll, submitMsg}
   }
 }
 </script>
 
 <style>
+.container{max-width:1170px; margin:auto;}
+img{ max-width:100%;}
+.video_section {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 70%; border-right:1px solid #c4c4c4;
+  box-sizing: border-box;
+}
+.inbox_people {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 40%; border-right:1px solid #c4c4c4;
+}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+}
+.top_spac{ margin: 20px 0 0;}
 
+
+.recent_heading {float: left; width:40%;}
+.srch_bar {
+  display: inline-block;
+  text-align: right;
+  width: 60%;
+}
+.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+
+.recent_heading h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: auto;
+}
+.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+
+.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+.chat_ib h5 span{ font-size:13px; float:right;}
+.chat_ib p{ font-size:14px; color:#989898; margin:auto}
+.chat_img {
+  float: left;
+  width: 11%;
+}
+.chat_ib {
+  float: left;
+  padding: 0 0 0 15px;
+  width: 88%;
+}
+
+.chat_people{ overflow:hidden; clear:both;}
+.chat_list {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 18px 16px 10px;
+}
+.inbox_chat { height: 550px; overflow-y: scroll;}
+
+.active_chat{ background:#ebebeb;}
+
+.incoming_msg_img {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  text-align: left;
+}
+.incoming_msg_img_wrap {
+  float: left;
+  width: 7%;
+}
+.incoming_msg_img > .participant_name{
+  margin-left: 10px;
+}
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  text-align: left;
+ }
+ .received_withd_msg p {
+  /* background: #ebebeb none repeat scroll 0 0; */
+  background: #252C34 none repeat scroll 0 0;
+  border-radius: 10px;
+  /* color: #646464; */
+  color: #c9c9c9;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+  word-break: break-all;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 7px;
+  margin: 0 0 0 10px;
+}
+.received_withd_msg { width: 57%;}
+.mesgs {
+  float: left;
+  /* padding: 30px 15px 0 25px; */
+  width: 30%;
+  box-sizing: border-box;
+}
+
+.sent_msg p {
+  background: #d5e7ec none repeat scroll 0 0;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  /* width:100%; */
+  word-break: break-all;
+}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  margin-right: 10px;
+  float: right;
+  width: 46%;
+  text-align: right;
+}
+.input_msg_write input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
+
+.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.msg_send_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.messaging { padding: 0 0 50px 0;}
+.msg_history {
+  /* background-color: whitesmoke; */
+  background-color: #1C2128;
+  height: 400px;
+  overflow-y: scroll;
+}
 </style>

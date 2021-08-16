@@ -52,6 +52,6 @@ export default {
   mainStreamManager: undefined,
   publisher: {},
   subscribers: [],
-
+  roomHistory: [],
 
 }
