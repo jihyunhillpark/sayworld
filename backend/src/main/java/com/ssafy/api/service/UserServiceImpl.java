@@ -6,6 +6,7 @@ import com.ssafy.api.response.FriendBlackRes;
 import com.ssafy.api.response.InterestRes;
 import com.ssafy.db.entity.BookCategory;
 import com.ssafy.db.entity.MovieCategory;
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.repository.BookRepository;
 import com.ssafy.db.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,5 +219,15 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		userRepository.save(me);
+	}
+	@Override
+	public List<Room> getRoomHistory(String myEmail){
+		List<Room> history = new ArrayList<>();
+		Optional<User> user = userRepository.findByEmail(myEmail);
+		if(user.isPresent()){
+			User selectedUser = user.get();
+			history = selectedUser.getRooms();
+		}
+		return history;
 	}
 }
