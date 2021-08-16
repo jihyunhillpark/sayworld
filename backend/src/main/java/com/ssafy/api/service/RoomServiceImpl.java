@@ -149,10 +149,10 @@ public class RoomServiceImpl implements RoomService{
                 Room room = roomTag.getRoom();
                 if(page == 0L) {
                     //영화인 것만 넣는다.
-                    if( 0 < room.getMovieCategoryId()) rooms.add(room);
+                    if( 0L < room.getMovieCategoryId()) rooms.add(room);
                 } else {
                     //책인 것만 넣는다.
-                    if( 0 < room.getBookCategoryId()) rooms.add(room);
+                    if( 0L < room.getBookCategoryId()) rooms.add(room);
                 }
             }
         }
@@ -160,11 +160,11 @@ public class RoomServiceImpl implements RoomService{
     }
     @Override
     public List<RoomRes> getRoomListByRoomTitle(String roomName, Long page) {
-        List<Room> rooms = new ArrayList<>();
+        List<Room> rooms;
         if( page == 0L )
-            roomRepository.findByRoomTitleContainsAndMovieCategoryIdGreaterThan(roomName, 0L);
+            rooms = roomRepository.findByRoomTitleContainsAndMovieCategoryIdGreaterThan(roomName, 0L);
         else
-            roomRepository.findByRoomTitleContainsAndBookCategoryIdGreaterThan(roomName,0L);
+            rooms =roomRepository.findByRoomTitleContainsAndBookCategoryIdGreaterThan(roomName,0L);
         return makeRoomResponseList(rooms);
     }
 
