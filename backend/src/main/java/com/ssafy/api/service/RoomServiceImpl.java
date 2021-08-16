@@ -2,15 +2,9 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.RoomCreatePostRequest;
 import com.ssafy.api.response.RoomRes;
-import com.ssafy.api.response.UserRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
-import io.openvidu.java.client.Session;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.expression.spel.ast.OpInc;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,7 +32,7 @@ public class RoomServiceImpl implements RoomService{
 
     @Override
     public List<RoomRes> getRoomList(Long page) {
-        List<Room> rooms = new ArrayList<>();
+        List<Room> rooms;
         if( page == 0L ) //기본 페이지가 영화일 때
             rooms = roomRepository.findByMovieCategoryIdGreaterThan(0L);
         else  //기본 페이지가 책일 때
@@ -53,11 +47,11 @@ public class RoomServiceImpl implements RoomService{
             return null;
         }
         Long bookCategoryId = ( roomCreateInfo.getBookCategoryId() == null)? 0L: roomCreateInfo.getBookCategoryId();
-        Long movieCategoryid = ( roomCreateInfo.getMovieCategoryId() == null)? 0L: roomCreateInfo.getMovieCategoryId();
+        Long movieCategoryId = ( roomCreateInfo.getMovieCategoryId() == null)? 0L: roomCreateInfo.getMovieCategoryId();
         Room room = Room.builder().roomTitle(roomCreateInfo.getRoomName())
                 .hostId(roomCreateInfo.getHostId())
                 .roomInviteCode("request_invite_url")
-                .movieCategoryId(movieCategoryid)
+                .movieCategoryId(movieCategoryId)
                 .bookCategoryId(bookCategoryId)
                 .roomPassword(roomCreateInfo.getPassword())
                 .roomImg(roomCreateInfo.getThumbnailUrl())
@@ -74,7 +68,7 @@ public class RoomServiceImpl implements RoomService{
     }
     @Override
     public void addTags(List<String> keywords, Room room) {
-        Optional<Tag> wrappedTag = null;
+        Optional<Tag> wrappedTag;
         Tag tag;
 
         for(String keyword: keywords){
@@ -105,6 +99,11 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
+    public Optional<Room> getRoomByRoomName(String roomName){
+        return roomRepository.findByRoomTitle(roomName);
+    }
+
+    @Override
     public RoomRes detailRoom(Long roomId) {
         RoomRes roomRes = null;
         Optional<Room> roomOpt = roomRepository.findByRoomId(roomId);
@@ -120,7 +119,7 @@ public class RoomServiceImpl implements RoomService{
 
     @Override //TO-DO : 유저부분 one-to-many 설정해줘야함? ㅇㅇ - DONE
     public List<RoomRes> getRoomListByHostNickname(String nickname, Long page) {
-        List<Room> rooms = null;
+        List<Room> rooms;
         List<RoomRes> roomResList = new ArrayList<>();
         Optional<User> user = userRepository.findByNickname(nickname);
 
@@ -186,14 +185,23 @@ public class RoomServiceImpl implements RoomService{
         return makeRoomResponseList(rooms);
     }
 
+    @Override
+    public boolean checkPassword(String password, String roomName) {
+        Optional<Room> room = roomRepository.findByRoomTitle(roomName);
+        if( room.isPresent() ){
+            Room selectedRoom =room.get();
+            System.out.println(password + " same? " + selectedRoom.getRoomPassword());
+            return selectedRoom.getRoomPassword().equals(password);
+        }
+        return false;
+    }
+
     private List<RoomRes> makeRoomResponseList(List<Room> rooms){
         List<RoomRes> roomResList = new ArrayList<>();
         for(Room room : rooms) {
             System.out.println("HOST==" + room.getHostId());
             Optional<User> userOpt = userRepository.findByUserId(room.getHostId());
-            if (userOpt.isPresent()) {
-                roomResList.add(makeRoomResponse(room, userOpt.get()));
-            }
+            userOpt.ifPresent(user -> roomResList.add(makeRoomResponse(room, user)));
         }
         return roomResList;
     }
@@ -201,23 +209,23 @@ public class RoomServiceImpl implements RoomService{
         Optional<BookCategory> bookCategory = bookCategoryRepository.findById(room.getBookCategoryId());
         Optional<MovieCategory> movieCategory = movieCategoryRepository.findById(room.getMovieCategoryId());
         List<String> keywords = new ArrayList<>();
+        String password = room.getRoomPassword();
+        password = (password != null && 0 < password.length())? "Y" : "N";
 
         RoomRes roomRes = RoomRes.builder()
                 .roomId(room.getRoomId())
                 .roomName(room.getRoomTitle())
                 .hostNickname(user.getNickname())
                 .limit(5)
-                .password(room.getRoomPassword())
+                .password(password)
                 .thumbnailUrl(room.getRoomImg())
                 .sessionId(room.getSessionId()).build();
 
-        Iterator<RoomTag> roomTags =  room.getRoomTags().iterator();
-        while(roomTags.hasNext())
-            keywords.add(roomTags.next().getTag().getTagName());
+        for (RoomTag roomTag : room.getRoomTags()) keywords.add(roomTag.getTag().getTagName());
         roomRes.setKeywords(keywords);
 
-        if(bookCategory.isPresent()) roomRes.setBookCategory(bookCategory.get().getBookCategory());
-        if(movieCategory.isPresent()) roomRes.setMovieCategory(movieCategory.get().getMovieCategory());
+        bookCategory.ifPresent(category -> roomRes.setBookCategory(category.getBookCategory()));
+        movieCategory.ifPresent(category -> roomRes.setMovieCategory(category.getMovieCategory()));
 
         return roomRes;
     }
