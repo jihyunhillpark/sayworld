@@ -97,7 +97,9 @@ export default {
             })
           })
           .catch(function (err) {
-            console.log(err)
+            if (err.response.status === 401) {
+              alert('비밀번호가 틀렸습니다. 다시 입력해주세요.')
+            }
           })
         } else {
           alert('올바른 정보를 다시 입력해주세요.')

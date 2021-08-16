@@ -70,7 +70,7 @@ export default {
           method: 'GET',
         })
         .then((res) => {
-          state.roomList = _.sortBy(res.data, 'roomId').reverse();
+          state.roomList = _.sortBy(res.data, 'roomId').reverse()
         })
     }, { immediate: true })
 

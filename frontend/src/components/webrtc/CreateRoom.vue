@@ -258,8 +258,10 @@ export default {
       .then(() => {
         this.$router.push({ name : 'MeetingRoom', params: { roomName: this.mySessionId }  })
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        if (err.response.status === 500) {
+          alert('이미 존재하는 방 제목입니다. 다른 방 제목을 입력해주세요.')
+        }
       });
     },
     //방삭제 API
