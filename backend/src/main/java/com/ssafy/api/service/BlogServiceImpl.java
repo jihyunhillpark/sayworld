@@ -72,7 +72,7 @@ public class BlogServiceImpl implements BlogService {
         List<Blog> blogList = user.getBlogs();
 
         blogList.remove(blogRepository.findByBlogId(blogId).get());
-        blogRepository.deleteById(blogId);
+        //blogRepository.deleteById(blogId);
         userRepository.save(user);
     }
 }

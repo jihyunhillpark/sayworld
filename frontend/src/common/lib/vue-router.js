@@ -10,6 +10,7 @@ import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
 import CultureRegister from "../../components/mypage/CultureRegister";
 import MyBlog from "../../components/mypage/MyBlog";
+import TextEditor from "../../components/mypage/TextEditor"
 import RoomChat from "@/views/RoomChat";
 
 const routes = [
@@ -69,11 +70,16 @@ const routes = [
     component: MyBlog
   },
   {
+    path: "/editor",
+    name: "TextEditor",
+    component: TextEditor,
+    props: true
+  },
+  {
     path: "/roomchat",
     name: "RoomChat",
     component: RoomChat
   }
-
 
 ]
 
