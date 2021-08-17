@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CultureRepository extends JpaRepository<Culture, Long> {
-    Optional<Culture> findByCultureTitleAndCultureCategory(String cultureTitle, int cultureCategory);
+    Optional<Culture> findByCultureTitleAndCultureCategory(String cultureTitle, Long cultureCategory);
 }

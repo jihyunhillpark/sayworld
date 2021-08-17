@@ -17,7 +17,7 @@ import java.util.List;
 public class CulturePostReq {
 
     @ApiModelProperty(name = "책(1) 또는 영화(0)", example = "0")
-    int cultureCategory;
+    Long cultureCategory;
 
     @ApiModelProperty(name = "책/영화 제목", example = "7년의 밤")
     String cultureTitle;

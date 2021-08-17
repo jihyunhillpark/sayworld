@@ -17,7 +17,7 @@ public class CultureListRes {
     @ApiModelProperty(name = "Culture Title")
     String cultureTitle;
     @ApiModelProperty(name = "Culture Category")
-    int cultureCategory;
+    Long cultureCategory;
     @ApiModelProperty(name = "이메일")
     String userEmail;
 

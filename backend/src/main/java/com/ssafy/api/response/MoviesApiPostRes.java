@@ -15,17 +15,18 @@ import java.util.List;
 public class MoviesApiPostRes implements Serializable {
 
     private int display;
-    private List<BooksApiPostRes.naverDocument> items;
-
+    private List<naverDocument> items;
     @Data
     public static class naverDocument {
         @ApiModelProperty(name = "영화이름", example = "모가디슈")
         String title;
         @ApiModelProperty(name = "이미지", example = "http://bookthumb.phinf.naver.net/cover/108/346/10834650.jpg?type=m1&udate=20160902")
         String image;
-        @ApiModelProperty(name = "작가", example = "류승완")
+        @ApiModelProperty(name="감독", example="류승완")
         String director;
-        @ApiModelProperty(name = "평점", example = "사용자 평점")
+        @ApiModelProperty(name="배우", example="김윤석")
+        String actor;
+        @ApiModelProperty(name="평점", example="사용자 평점")
         String userRating;
     }
 }

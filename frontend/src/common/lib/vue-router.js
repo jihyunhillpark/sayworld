@@ -14,6 +14,7 @@ import CultureRegister from "../../components/mypage/CultureRegister";
 import MyBlog from "../../components/mypage/MyBlog";
 import RoomChat from "@/views/RoomChat";
 
+
 const routes = [
   {
     path: "/register",

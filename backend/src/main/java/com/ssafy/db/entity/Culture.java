@@ -28,7 +28,7 @@ public class Culture {
     User user;
 
     @Column(name = "culture_category")
-    int cultureCategory;
+    Long cultureCategory;
 
     @Column(name = "culture_title")
     String cultureTitle;

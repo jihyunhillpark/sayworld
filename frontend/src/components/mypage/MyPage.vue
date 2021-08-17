@@ -63,7 +63,7 @@
 
     </el-card>
   </template>
-  <script>
+<script>
   import axios from "axios";
   import {useRouter} from "vue-router";
 

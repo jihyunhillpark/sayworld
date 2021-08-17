@@ -25,11 +25,7 @@ public class MoviesApiController {
     public Mono<MoviesApiPostRes> findMovieByQuery(@RequestBody Map<String, Map> title) {
 
         Object keyword = title.get("params").get("title");
-        System.out.println(keyword);
-        //HashMap<String, Object> resultMap = new HashMap<>();
         String result = String.valueOf(keyword);
-
-        //System.out.println("되냐?");
         return movieService.findMovieByQuery(result);
     }
 

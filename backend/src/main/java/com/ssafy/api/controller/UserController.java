@@ -143,7 +143,7 @@ public class UserController {
 	}
 
 	// 문화력 정보 목록 조회
-	@GetMapping("/culture/{myEmail}")
+	@GetMapping("/cultureInfo/{myEmail}")
 	@ApiOperation(value = "회원 문화력 조회", notes = "사용자가 본 영화나 책정보(제목)을 조회한다")
 	@ApiResponses({
 			@ApiResponse(code=200, message = "성공"),
@@ -157,7 +157,7 @@ public class UserController {
 	}
 
 	// 문화력 삭제
-	@DeleteMapping("/culture/{myEmail}")
+	@DeleteMapping("/deleteCulture/{myEmail}")
 	@ApiOperation(value = "회원 문화력 삭제", notes = "문화력 카테고리와 제목을 받아와 문화력 목록에서 삭제")
 	@ApiResponses({
 			@ApiResponse(code=200, message = "성공"),
@@ -166,9 +166,9 @@ public class UserController {
 			@ApiResponse(code=500, message = "서버오류")
 	})
 	public ResponseEntity<? extends BaseResponseBody> deleteCulture(@PathVariable String myEmail,
-			@RequestBody @ApiParam(value = "문화력 정보",required = true) CulturePostReq culturePostReq){
+			@RequestBody @ApiParam(value = "문화력 정보",required = true) CultureDeleteReq cultureDeleteReq){
 
-		cultureService.deleteCulture(myEmail, culturePostReq.getCultureTitle(), culturePostReq.getCultureCategory());
+		cultureService.deleteCulture(myEmail,cultureDeleteReq.getCultureTitle(), cultureDeleteReq.getCultureCategory());
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
 	}

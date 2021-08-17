@@ -6,9 +6,10 @@
       <a><input type="text" name="title" v-model="state.title" placeholder="검색어를 입력하세요"> &nbsp;&nbsp;</a>
       <button size="md" variant="danger" type="submit">검색</button>
     </form>
-
     </a>
+  <a><button size="md" variant="danger" type="submit" style="float: left" @click="GoMyPage">뒤로가기</button></a>
   <a><button size="md" variant="danger" type="submit" style="float: right" @click="RegisterOK">등록하기</button></a>
+
   <p>목록</p>
 
   <div class="wrapper">
@@ -31,6 +32,7 @@ export default {
   el: '#myForm',
   setup() {
     const store = useStore()
+    const router = useRouter()
     const state = reactive({
       culture_check: '책',
       title: '',
@@ -135,7 +137,12 @@ export default {
           })
         }
       }
-    return {state, sendPost, RegisterOK}
+
+      const GoMyPage = function () {
+        router.push({ name: 'MyPage' })
+      }
+
+    return {state, sendPost, RegisterOK, GoMyPage}
   }
 
 }
