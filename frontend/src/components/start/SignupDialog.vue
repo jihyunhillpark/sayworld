@@ -1,6 +1,6 @@
 <template>
   <el-dialog custom-class="signup-dialog" title="회원가입" v-model="state.dialogVisible" @close="handleClose1">
-    <div v-show="state.pageNum === 2">
+    <div class="signup-input" v-show="state.pageNum === 2">
       <el-form :model="state.form" :rules="state.rules" ref="signupForm" :label-position="state.form.align"  @change="checkButton">
         <el-form-item prop="email" label="이메일" :label-width="state.formLabelWidth" >
           <el-input v-model="state.form.email" autocomplete="off"></el-input>
@@ -39,8 +39,8 @@
         </el-form-item>
       </el-form>
     </div>
-    <div v-show="state.pageNum === 1">
-      <h3>관심있는 책 장르 3가지를 골라주세요.</h3>
+    <div class="book-input" v-show="state.pageNum === 1">
+      <h2>관심있는 책 장르 3가지를 골라주세요.</h2>
       <div>
         <el-row :gutter="12">
         <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
@@ -50,8 +50,8 @@
         </el-row>
       </div>
     </div>
-    <div v-show="!state.pageNum">
-      <h3>관심있는 영화 장르 3가지를 골라주세요.</h3>
+    <div class="movie-input" v-show="!state.pageNum">
+      <h2>관심있는 영화 장르 3가지를 골라주세요.</h2>
       <div>
         <el-row :gutter="12">
         <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
@@ -263,11 +263,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+h2 {
+  padding-bottom: 25px;
+}
 .signup-dialog {
-  /* width: 430px !important; */
   width: 60vw !important;
-  /* height: 575px; */
   height: 80vh !important;
   margin-top: 10vh !important;
   margin-bottom: 5vh !important;
@@ -305,5 +306,64 @@ export default {
   height: 8vw;
   background-color: #f4f4f5;
   text-align: center;
+}
+.signup-input {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: 90%;
+  margin: auto;
+  flex-direction: column;
+}
+.book-input, .movie-input {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  margin: auto;
+  flex-direction: column;
+}
+</style>
+<style lang="scss" scoped>
+.el-input {
+  --el-input-focus-border: #92a8d1;
+}
+.el-button--primary {
+  background: #92a8d1;
+  border-color: #92a8d1;
+
+  &:hover,
+  &.active,
+  &:focus {
+    background: lighten(#92a8d1, 7);
+    border-color: lighten(#92a8d1, 7);
+  };
+}
+.el-button--primary.is-disabled {
+  color: white;
+  background-color: #b7c6e1;
+  border-color: #b7c6e1;
+
+  &:hover {
+    background-color: #b7c6e1;
+    border-color: #b7c6e1;
+  }
+}
+.el-form-item.is-error .el-input__inner {
+  border-color: #f5bebd;
+  color: #f1a8a7;
+
+  &:focus {
+    border-color: #f5bebd;
+    color: #f1a8a7;
+  }
+}
+.el-radio__input.is-checked {
+  color: #92a8d1 !important;
+}
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #92a8d1 !important;
+  background: #92a8d1 !important;
 }
 </style>
