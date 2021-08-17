@@ -1,10 +1,35 @@
 <template>
   <div>
-    <p>{{blogId}}</p>
-    <input type="text" placeholder="제목을 입력하세요" v-model="blogTitle"/>
-    <QuillEditor theme="snow" v-model:content="editor._content" @update:content="onEditorChange($event)"/>
+    <el-page-header @back="goBack" content="글 작성">
+    </el-page-header>
+    <el-divider></el-divider>
+    <el-input type="text" placeholder="제목을 입력하세요" v-model="blogTitle">
+      <template #prepend>제목 : </template>
+    </el-input>
+    <QuillEditor :options="options" theme="snow" v-model:content="editor.content" @update:content="onEditorChange($event)"/>
   </div>
-  <el-button v-on:click="blogPost">저장</el-button>
+  <el-row class="bottom">
+    <el-col :span="6">
+<!--      <el-switch-->
+<!--        v-model="lockButton.value"-->
+<!--        active-text="잠금"-->
+<!--        inactive-text="잠금해제"-->
+<!--      ></el-switch>-->
+      <el-switch
+        style="display: block"
+        v-model="cateButton.value"
+        active-color="#13ce66"
+        inactive-color="#ff4949"
+        active-text="책"
+        inactive-text="영화"
+      ></el-switch>
+    </el-col>
+    <el-col :span="6" :offset="12">
+      <el-button type="text" v-on:click="blogPost">저장</el-button>
+    </el-col>
+
+  </el-row>
+
 </template>
 <script>
   import {reactive} from 'vue'
@@ -21,7 +46,7 @@
       },
       blogTitle: {
         type: String,
-        default: "제목을 입력하세요"
+        default: ""
       },
       blogContent: {
         type: String,
@@ -45,17 +70,42 @@
       },
     },
     setup(props) {
+      let lockTF
+      if(props.blogLock == 1){
+        lockTF = true
+      }else {
+        lockTF = false
+      }
+      let cateTF
+      if(props.blogCategory == 1){
+        cateTF = true
+      }else {
+        cateTF = false
+      }
       const store = useStore()
       const blogs = reactive({
         blogs: [],
       })
+
       const editor = reactive({
-        content:"props.blogId",
+        content:"",
         _content: {
           ops: [
             { insert: props.blogContent }
           ]
         }
+      })
+
+      const options = reactive({
+        debug: 'info',
+        placeholder: '내용을 작성하세요',
+      })
+
+      const lockButton = reactive({
+        value: lockTF
+      })
+      const cateButton = reactive({
+        value: cateTF
       })
 
       const router = useRouter()
@@ -66,8 +116,16 @@
         if(props.blogId != 0){
           blogs.blogs.blogTitle = props.blogTitle
           blogs.blogs.blogContent = editor.content
-          blogs.blogs.blogCategory = 1
-          blogs.blogs.blogLock = 0
+          if(cateButton.value){
+            blogs.blogs.blogCategory = 1
+          }else {
+            blogs.blogs.blogCategory = 0
+          }
+          if(lockButton.value){
+            blogs.blogs.blogLock = 1
+          }else {
+            blogs.blogs.blogLock = 0
+          }
           blogs.blogs.blogId = props.blogId
 
           store.dispatch('root/putBlog', blogs.blogs)
@@ -83,8 +141,16 @@
         else {
           blogs.blogs.blogTitle = props.blogTitle
           blogs.blogs.blogContent = editor.content
-          blogs.blogs.blogCategory = 1
-          blogs.blogs.blogLock = 0
+          if(cateButton.value){
+            blogs.blogs.blogCategory = 1
+          }else {
+            blogs.blogs.blogCategory = 0
+          }
+          if(lockButton.value){
+            blogs.blogs.blogLock = 1
+          }else {
+            blogs.blogs.blogLock = 0
+          }
 
           store.dispatch('root/postBlog', blogs.blogs)
             .then(res => {
@@ -111,7 +177,11 @@
         console.log("editor focus!", quill);
       };
 
-      return {blogPost, editor, onEditorChange, onEditorFocus}
+      function goBack() {
+        router.push({name: "MyBlog"})
+      }
+
+      return {goBack, options, blogPost, editor,cateButton,lockButton, onEditorChange, onEditorFocus}
     },
 
     components: {
@@ -123,4 +193,8 @@
 <style scoped>
   @import "~@vueup/vue-quill/dist/vue-quill.snow.css";
 
+  .bottom {
+
+    align-items: center;
+  }
 </style>
