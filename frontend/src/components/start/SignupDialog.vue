@@ -41,24 +41,22 @@
     </div>
     <div v-show="state.pageNum === 1">
       <h3>관심있는 책 장르 3가지를 골라주세요.</h3>
-      <!-- progress bar 추가 -->
       <div>
         <el-row :gutter="12">
         <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
         <el-col v-for="(category, idx) in state.bookCategories" :span="6" :key="idx">
-          <el-button class="categoryBtn" type="info" @click="clickCategory(category.bookCategoryId)" plain>{{ category.bookCategory }}</el-button>
+          <el-button :id="`book${idx+1}`" class="categoryBtn" type="info" @click="clickCategory(category.bookCategoryId)" plain>{{ category.bookCategory }}</el-button>
         </el-col>
         </el-row>
       </div>
     </div>
     <div v-show="!state.pageNum">
       <h3>관심있는 영화 장르 3가지를 골라주세요.</h3>
-      <!-- progress bar 추가 -->
       <div>
         <el-row :gutter="12">
         <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
         <el-col v-for="(category, idx) in state.movieCategories" :span="6" :key="idx">
-          <el-button class="categoryBtn" type="info" @click="clickCategory(category.movieCategoryId)" plain>{{ category.movieCategory }}</el-button>
+          <el-button :id="`movie${idx+1}`" class="categoryBtn" type="info" @click="clickCategory(category.movieCategoryId)" plain>{{ category.movieCategory }}</el-button>
         </el-col>
         </el-row>
       </div>
@@ -165,12 +163,23 @@ export default {
     }
 
     const clickCategory = function (categoryId) {
+      var btn = null
+      if (state.page == 1) {
+        btn = document.getElementById(`book${categoryId}`)
+      } else {
+        btn = document.getElementById(`movie${categoryId}`)
+      }
+      console.log(btn)
       if (state.selected.indexOf(categoryId) === -1) {
         state.selected.push(categoryId)
         state.isClick = true
+        btn.style.backgroundColor = "#909399"
+        btn.style.color = "white"
       } else {
         state.selected.splice(state.selected.indexOf(categoryId), 1)
         state.isClick = false
+        btn.style.backgroundColor = "#f4f4f5"
+        btn.style.color = "#909399"
       }
     }
 
