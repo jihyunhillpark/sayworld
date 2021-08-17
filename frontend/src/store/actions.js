@@ -245,3 +245,10 @@ export function requestBook ({ state }, payload) {
   console.log(payload)
   return $axios.post(url, body)
 }
+
+export function requestCulture ({ state }, payload) {
+  const url = '/users/culture'
+  let body = payload
+  console.log(payload)
+  return $axios.post(url, body)
+}

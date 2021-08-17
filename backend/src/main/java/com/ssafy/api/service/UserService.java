@@ -5,6 +5,7 @@ import com.ssafy.api.request.UserFixPutReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.FriendBlackRes;
 import com.ssafy.api.response.InterestRes;
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 
 import java.util.List;
@@ -31,5 +32,6 @@ public interface UserService {
 	List<InterestRes> getInterest(String myEmail);
 	void addInterest(String myEmail, List<InterestReq> interestReq);
 	void fixInterest(String myEmail, List<InterestReq> interestReq);
+	List<Room> getRoomHistory(String myEmail);
 
 }

@@ -17,10 +17,10 @@ public interface RoomService {
     void deleteRoom(Room selectedRoom);
     Optional<Room> getRoomByRoomId(Long roomId);
     RoomRes detailRoom(Long roomId);
-    List<RoomRes> getRoomList();
-    List<RoomRes> getRoomListByRoomTitle(String roomName);
-    List<RoomRes> getRoomListByHostNickname(String nickname);
-    List<RoomRes> getRoomListByKeyword(String keyword);
+    List<RoomRes> getRoomList(Long page);
+    List<RoomRes> getRoomListByRoomTitle(String roomName, Long page);
+    List<RoomRes> getRoomListByHostNickname(String nickname, Long page);
+    List<RoomRes> getRoomListByKeyword(String keyword, Long page);
     List<RoomRes> getRoomListByMovieId(Long movieId);
     List<RoomRes> getRoomListByBookId(Long bookId);
 }

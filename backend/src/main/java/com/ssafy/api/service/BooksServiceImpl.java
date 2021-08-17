@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class BooksServiceImpl implements BooksService{
-    @Value("${naver.openapi.book.url}")
+    @Value("https://openapi.naver.com/v1/search/book.json")
     private String naverOpenApiUrl;
 
     @Value("${naver.openapi.client.id}")
@@ -26,8 +26,8 @@ public class BooksServiceImpl implements BooksService{
         return WebClient.create(naverOpenApiUrl)
                 .method(HttpMethod.GET)
                 .uri("?query=" + query)
-                .header("X-Naver-Client-Id", naverOpenApiClientId)
-                .header("X-Naver-Client-Secret", naverOpenApiClientSecret)
+                .header("X-Naver-Client-Id", "fj19qSeYZpP5xmRuUQ_l")
+                .header("X-Naver-Client-Secret", "ZeN6POhLUU")
                 .retrieve()
                 .bodyToMono(BooksApiPostRes.class);
     }

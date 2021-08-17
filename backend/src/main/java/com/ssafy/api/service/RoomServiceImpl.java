@@ -37,8 +37,12 @@ public class RoomServiceImpl implements RoomService{
     MovieCategoryRepository movieCategoryRepository;
 
     @Override
-    public List<RoomRes> getRoomList() {
-        List<Room> rooms = roomRepository.findAll();
+    public List<RoomRes> getRoomList(Long page) {
+        List<Room> rooms = new ArrayList<>();
+        if( page == 0L ) //기본 페이지가 영화일 때
+            rooms = roomRepository.findByMovieCategoryIdGreaterThan(0L);
+        else  //기본 페이지가 책일 때
+            rooms = roomRepository.findByBookCategoryIdGreaterThan(0L);
         return makeRoomResponseList(rooms);
     }
 
@@ -60,11 +64,12 @@ public class RoomServiceImpl implements RoomService{
                 .sessionId(roomCreateInfo.getSessionId() + roomCreateInfo.getRoomName()).build();
         addTags(roomCreateInfo.getKeywords(), room);  //키워드가 있다면 db에 추가
 
-//        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());
-//        if(user.isPresent()) { //hostId로 유저를 찾아서 관계 테이블들에 쏙쏙
-//            User insertUser = user.get();
-//            room.setUser(insertUser);
-//        }
+        Optional<User> user = userRepository.findByUserId(roomCreateInfo.getHostId());
+        if(user.isPresent()) { //hostId로 유저를 찾아서 관계 테이블들에 쏙쏙
+            User insertUser = user.get();
+            insertUser.getRooms().add(room);
+            userRepository.save(insertUser);
+      }
         return room;
     }
     @Override
@@ -114,14 +119,17 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override //TO-DO : 유저부분 one-to-many 설정해줘야함? ㅇㅇ - DONE
-    public List<RoomRes> getRoomListByHostNickname(@Param("nickname") String nickname) {
+    public List<RoomRes> getRoomListByHostNickname(String nickname, Long page) {
         List<Room> rooms = null;
         List<RoomRes> roomResList = new ArrayList<>();
         Optional<User> user = userRepository.findByNickname(nickname);
 
         if(user.isPresent()){
             User searchedUser = user.get();
-            rooms = roomRepository.findByHostId(searchedUser.getUserId());
+            if(page == 0L)
+                rooms = roomRepository.findByHostIdAndMovieCategoryIdGreaterThan(searchedUser.getUserId(), 0L);
+            else
+                rooms = roomRepository.findByHostIdAndBookCategoryIdGreaterThan(searchedUser.getUserId(), 0L);
             for(Room room : rooms){
                 RoomRes roomRes = makeRoomResponse(room,searchedUser);
                 roomResList.add(roomRes);
@@ -131,7 +139,7 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public List<RoomRes> getRoomListByKeyword(String keyword) {
+    public List<RoomRes> getRoomListByKeyword(String keyword, Long page) {
         //해당 키워드로 검색
         Optional<Tag> find = tagRepository.findByTagName(keyword);
         List<Room> rooms = new ArrayList<>();
@@ -139,14 +147,25 @@ public class RoomServiceImpl implements RoomService{
             List<RoomTag> roomTags = roomTagRepository.findRoomTagsByRoomTagIDTagId(find.get().getTagId());
             for(RoomTag roomTag : roomTags){
                 // System.out.println("ROOM == " + roomTag.getRoom().getRoomTitle());
-                rooms.add(roomTag.getRoom());
+                Room room = roomTag.getRoom();
+                if(page == 0L) {
+                    //영화인 것만 넣는다.
+                    if( 0 < room.getMovieCategoryId()) rooms.add(room);
+                } else {
+                    //책인 것만 넣는다.
+                    if( 0 < room.getBookCategoryId()) rooms.add(room);
+                }
             }
         }
         return makeRoomResponseList(rooms);
     }
     @Override
-    public List<RoomRes> getRoomListByRoomTitle(String roomName) {
-        List<Room> rooms = roomRepository.findByRoomTitleContains(roomName);
+    public List<RoomRes> getRoomListByRoomTitle(String roomName, Long page) {
+        List<Room> rooms = new ArrayList<>();
+        if( page == 0L )
+            roomRepository.findByRoomTitleContainsAndMovieCategoryIdGreaterThan(roomName, 0L);
+        else
+            roomRepository.findByRoomTitleContainsAndBookCategoryIdGreaterThan(roomName,0L);
         return makeRoomResponseList(rooms);
     }
 
@@ -170,6 +189,7 @@ public class RoomServiceImpl implements RoomService{
     private List<RoomRes> makeRoomResponseList(List<Room> rooms){
         List<RoomRes> roomResList = new ArrayList<>();
         for(Room room : rooms) {
+            System.out.println("HOST==" + room.getHostId());
             Optional<User> userOpt = userRepository.findByUserId(room.getHostId());
             if (userOpt.isPresent()) {
                 roomResList.add(makeRoomResponse(room, userOpt.get()));

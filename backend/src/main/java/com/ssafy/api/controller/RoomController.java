@@ -92,7 +92,7 @@ public class RoomController {
 	/**
 	 * 방 리스트 조회
 	 */
-	@GetMapping
+	@GetMapping("/page/{page}")
 	@ApiOperation(value = "방 전체 조회", notes = "DB에 저장한 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -100,14 +100,14 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<List<RoomRes>> getRoomList(){
-		return ResponseEntity.status(200).body(roomService.getRoomList());
+	public ResponseEntity<List<RoomRes>> getRoomList(@PathVariable Long page){
+		return ResponseEntity.status(200).body(roomService.getRoomList(page));
 	}
 
 	/**
 	 * 방 리스트 - 검색하기
 	 * */
-	@GetMapping("/search")
+	@GetMapping("page/{page}/search")
 	@ApiOperation(value = "선택하여 방 검색", notes = "검색 종류에 따라 검색 단어를 포함하는 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -115,13 +115,13 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends Collection> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
+	public ResponseEntity<? extends Collection> getRoomListBySearch(@PathVariable Long page, @RequestParam("search_type") String searchType, @RequestParam String input){
 		if(searchType.equals("title"))
-			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input,page));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
-			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input,page));
 		else if(searchType.equals("keyword")) // Set 으로 반환
-			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input,page));
 		else if(searchType.equals("movie")){
 			Long movieId = Long.parseLong(input);
 			return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
