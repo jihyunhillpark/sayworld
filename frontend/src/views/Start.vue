@@ -192,6 +192,7 @@ export default {
 
 .main-container {
   width: 80vw;
+  max-width: 1300px;
   display: flex;
   justify-content: center;
   flex-direction: column;
