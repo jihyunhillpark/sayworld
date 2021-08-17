@@ -2,6 +2,7 @@
 <div>
   <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
   <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
+    
     <el-form :model="form">
     <el-form-item prop="name" label="방 이름" :label-width="formLabelWidth"
       :rules="[
