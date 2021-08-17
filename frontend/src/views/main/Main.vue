@@ -9,7 +9,7 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <MainFooter :height="`110px`" />
+    <!-- <MainFooter :height="`110px`" /> -->
   </el-container>
 </template>
 <style>

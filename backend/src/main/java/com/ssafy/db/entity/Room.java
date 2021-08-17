@@ -52,7 +52,7 @@ public class Room {
     @Column(name="session_id", nullable = false)
     private String sessionId;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Set<RoomTag> roomTags;
 
 //    public void addTag(Tag tag) {

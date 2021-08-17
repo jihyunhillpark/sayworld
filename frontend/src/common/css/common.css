@@ -1,12 +1,16 @@
 /* 공통으로 적용되어야할 css */
+
 html, body {
   height: 100vh;
 }
 
-body {
+* {
   margin: 0;
-  font-family: SpoqaHanSansNeo;
-  font-weight: 400;
+  /* font-family: SpoqaHanSansNeo;
+  font-weight: 400; */
+  font-family: 'S-CoreDream-5Medium';
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* @media (max-width: 1269px) {
@@ -45,4 +49,25 @@ body {
   font-family: 'SpoqaHanSansNeo';
   font-weight: 400;
   src: url('../../assets/fonts/SpoqaHanSansNeo-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'S-CoreDream-5Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'EliceDigitalBaeum_Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/EliceDigitalBaeum_Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
 }

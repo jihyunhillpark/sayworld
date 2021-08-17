@@ -11,7 +11,7 @@
 
 </style>
 <script>
-import Conference from "@/components/home/conference"
+import Conference from "@/components/home/Conference"
 import CreateRoom from "@/components/webrtc/CreateRoom"
 import { reactive } from "vue"
 import { useRouter } from "vue-router"
