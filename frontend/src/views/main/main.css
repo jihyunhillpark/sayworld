@@ -1,7 +1,7 @@
 /* 공통으로 적용되어야할 css */
 /* @media (max-width: 700px) {
   .main-container {
-    height: calc(100% - 275px) !important;
+    height: calc(100% - 275px);
   }
 } */
 
@@ -14,9 +14,18 @@
   height: 100%;
   display: inline-block;
 } */
-
+/* header {
+  height: 100px;
+  display: ;
+} */
+.hide-on-small {
+  width: 200px;
+  padding-left: 2%;
+  /* max-width: 250px;
+  min-width: 200px; */
+}
 .main-container {
-  height: calc(100% - 70px);
+  height: calc(100% - 100px);
   /* height: 85vh; */
   /* height: 100%; */
 }

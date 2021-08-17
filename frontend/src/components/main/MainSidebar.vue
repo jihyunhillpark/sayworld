@@ -112,9 +112,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .main-sidebar {
   height: 100%;
+  width: 100%;
 }
 
 .main-sidebar .main-sidebar-container {
@@ -125,5 +126,8 @@ export default {
   width: 80%;
   display: inline-block;
   text-overflow: ellipsis;
+}
+.el-submenu .el-menu-item {
+  padding: 0 15px;
 }
 </style>
