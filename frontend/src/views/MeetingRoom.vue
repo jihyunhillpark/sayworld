@@ -1,7 +1,11 @@
 <template>
   <div id="session" v-if="state.session">
     <div id="session-header">
+      <!-- <i class="el-icon-user"></i> -->
       <h1 id="session-title">{{$route.params.roomName}}</h1>
+      <span class="mid" v-for="keyW in $route.params.keywords" :key="keyW">
+      &nbsp; #{{keyW}}
+      </span>
     </div>
     <!-- <div id="main-video" class="col-md-6">
       <user-video :stream-manager="mainStreamManager"/>
@@ -16,7 +20,7 @@
             </div>
           </div>
           <div class="mesgs">
-            <!-- <h2>SayWorld</h2> -->
+            <h4 id=chatName>{{userInfo.nickname}}</h4>
             <div ref="chatDisplay" class="msg_history">
               <div v-for="(chat,index) in state.chats" :key="index">
                 <div v-if="chat.nickname !== userInfo.nickname" class="incoming_msg">
@@ -42,7 +46,7 @@
             <div class="type_msg">
               <div class="input_msg_write">
                 <input type="text" v-model="state.sendMsg" class="write_msg" placeholder="메세지를 입력해주세요" @keydown.enter="submitMsg"/>
-                <button class="msg_send_btn" type="button"><i class="fa el-icon-s-promotion" aria-hidden="true"></i></button>
+                <button class="msg_send_btn" type="button"><i class="fa el-icon-s-promotion" aria-hidden="true" @click="submitMsg"></i></button>
               </div>
             </div>
           </div>
@@ -57,7 +61,7 @@
         <el-button v-else icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
       </div>
       <div class="leave-btn">
-        <el-button size="middle" id="buttonLeaveSession" @click="[leaveSession()]">나가기</el-button>
+        <el-button size="middle" id="buttonLeaveSession" @click="[leaveSession()]" round>나가기</el-button>
       </div>
     </footer>
   </div>
@@ -200,7 +204,8 @@ export default {
     const submitMsg = () => {
       console.log('USER NICKNAME = ', userInfo.nickname);
       if (state.sendMsg.trim === '') return;
-      const sendData = {
+      if(state.sendMsg.length>0){
+        const sendData = {
         userId: userInfo.id,
         // profileImage: this.getUserInfo.profileImage,
         nickname: userInfo.nickname,
@@ -221,6 +226,8 @@ export default {
         .catch(error => {
           console.error(error);
         });
+      }
+      
     }
     const leaveSession = (e) => {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -243,6 +250,7 @@ export default {
     onMounted(() => {
       console.log('123', mySessionId)
       console.log(route.params.roomName)
+      console.log('??',route.params.keywords)
       // mySessionId = route.params.roomName
       store.dispatch('root/joinSession', mySessionId)
       joinSession()
@@ -260,29 +268,47 @@ export default {
 }
 .el-button.is-circle {
   position: relative;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 50%;
     padding: 12px;
     background-color: #6AC3D7;
 }
+
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
 #session-header {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  margin-block-start: 0px;
+  margin-block-end: 0px; 
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 #session-title {
-  display: inline-block;
+  /* display: inline-block; */
   background-color: #abc990;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 #buttonLeaveSession {
-  margin-top: 10px;
+  margin-top: 5px;
   background: #A1C3CA;
 }
 
 #video-container video {
   position: relative;
   float: left;
-  width: 50%;
+  margin-inline-start : 5px; 
+  width: 48%;
   cursor: pointer;
 }
 
@@ -290,7 +316,7 @@ export default {
   float: left;
   width: 50%;
   position: relative;
-  margin-left: -50%;
+  margin-left: -45%;
 }
 
 #video-container p {
@@ -323,24 +349,42 @@ video {
 
 .footer .meeting-btn {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 1;
+  flex-grow: 1;
 }
 
 .footer .leave-btn {
   display: flex;
   justify-content: flex-end;
   z-index: 2;
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
-/* 채팅방 */
-.container{max-width:1170px; margin:auto;}
+/* 채팅 */
+
+#chatName {
+    display: block;
+    background:#d3d3d3 ;
+    padding-block: 3px;
+    padding-left: 10px;
+    margin-block-start: 0px;
+    margin-block-end: 0px; 
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.container{max-width:100%; margin-left:0px; margin-right: 0px;}
 img{ max-width:100%;}
 .video_section {
-  background: #f8f8f8 none repeat scroll 0 0;
+  background: #ffffff none repeat scroll 0 0;
   float: left;
   overflow: hidden;
-  width: 70%; border-right:1px solid #c4c4c4;
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 70%;
   box-sizing: border-box;
 }
 .inbox_people {
@@ -350,9 +394,11 @@ img{ max-width:100%;}
   width: 40%; border-right:1px solid #c4c4c4;
 }
 .inbox_msg {
-  border: 1px solid #c4c4c4;
+  border: 1px transparent;
   clear: both;
   overflow: hidden;
+  max-width: 100%;
+  
 }
 .top_spac{ margin: 20px 0 0;}
 
@@ -416,6 +462,7 @@ img{ max-width:100%;}
 }
 .incoming_msg_img > .participant_name{
   margin-left: 10px;
+  font-size: 14px;
 }
 .received_msg {
   display: inline-block;
@@ -426,7 +473,7 @@ img{ max-width:100%;}
  }
  .received_withd_msg p {
   /* background: #ebebeb none repeat scroll 0 0; */
-  background: #252C34 none repeat scroll 0 0;
+  background: #526070 none repeat scroll 0 0;
   border-radius: 10px;
   /* color: #646464; */
   color: #c9c9c9;
@@ -448,10 +495,11 @@ img{ max-width:100%;}
   /* padding: 30px 15px 0 25px; */
   width: 30%;
   box-sizing: border-box;
+  padding-right: 2px;
 }
 
 .sent_msg p {
-  background: #d5e7ec none repeat scroll 0 0;
+  background: #94c8ff none repeat scroll 0 0;
   border-radius: 10px;
   font-size: 14px;
   margin: 0; color:#fff;
@@ -459,11 +507,12 @@ img{ max-width:100%;}
   /* width:100%; */
   word-break: break-all;
 }
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.outgoing_msg{ overflow:hidden; margin:13px 0 13px;}
 .sent_msg {
   margin-right: 10px;
   float: right;
-  width: 46%;
+  width: auto;
+  max-width: 80%;
   text-align: right;
 }
 .input_msg_write input {
@@ -472,12 +521,12 @@ img{ max-width:100%;}
   color: #4c4c4c;
   font-size: 15px;
   min-height: 48px;
-  width: 100%;
+  width: 90%;
 }
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
 .msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
+  background: #90c8d8 none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
@@ -489,11 +538,11 @@ img{ max-width:100%;}
   top: 11px;
   width: 33px;
 }
-.messaging { padding: 0 0 50px 0;}
+.messaging { padding: 0% 10% 0% 10%;}
 .msg_history {
-  /* background-color: whitesmoke; */
-  background-color: #1C2128;
-  height: 400px;
+  background-color: whitesmoke;
+  /* background-color: #1C2128; */
+  height: 600px;
   overflow-y: scroll;
 }
 
