@@ -37,7 +37,8 @@ export default {
       countDisplay: '',
       infos: '',
       cultureTitle: [],
-      cultureCategory:''
+      cultureCategory:'',
+      a: ''
 
     })
 
@@ -92,22 +93,21 @@ export default {
 
     const RegisterOK = function() {
       console.log(state.cultureTitle.slice(0))
-      //console.log(state.cultureTitle[1])
-      //console.log(this.state.cultureTitle)
-      //console.log(state.infos.title)
       //체크 박스 선택된 것들의 title과 category를 뽑아서 전달해줘야지
       const k = localStorage.getItem('email')
+      const result = state.cultureTitle.slice(0)
 
       //책이면 문화카테고리 1
       if(state.culture_check == '책') {
-        axios.post("/users/culture/" + k, {
-          cultureCategory: '1',
-          cultureTitle: this.state.cultureTitle[0]
-        })
+        const cultureData = result.map((culturename, idx) => ({
+          cultureCategory: 1,
+          cultureTitle: culturename
+        }))
+        axios.post("/users/culture/" + k, cultureData)
           .then(response => {
             this.info = response.data;
             console.log(this.info)
-            alert("내 문화력에 등록되었습니다!")
+            alert("내 문화력(책)에 등록되었습니다!")
             window.location.reload()
           })
           .catch(e => {
@@ -117,14 +117,15 @@ export default {
       }
       //영화면 컬쳐 카테고리는 0
       else {
-        axios.post("/users/culture/" + k, {
-          cultureCategory: '0',
-          cultureTitle: this.state.cultureTitle[0]
-        })
+        const cultureData = result.map((culturename, idx) => ({
+          cultureCategory: 0,
+          cultureTitle: culturename
+        }))
+        axios.post("/users/culture/" + k, cultureData)
           .then(response => {
             this.info = response.data;
             console.log(this.info)
-            alert("내 문화력에 등록되었습니다!")
+            alert("내 문화력(영화)에 등록되었습니다!")
             window.location.reload()
           })
           .catch(e => {

@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
@@ -22,6 +23,7 @@ import com.ssafy.db.repository.UserRepositorySupport;
 
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -125,10 +127,13 @@ public class UserController {
 			@ApiResponse(code=401, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버오류")
 	})
-	public ResponseEntity<? extends BaseResponseBody> postCulture(@PathVariable String myEmail,
-			@RequestBody @ApiParam(value = "문화력 정보",required = true) CulturePostReq culturePostReq){
 
-		cultureService.postCulture(culturePostReq, myEmail);
+	public ResponseEntity<? extends BaseResponseBody> postCulture(@PathVariable String myEmail,
+			@RequestBody @ApiParam(value = "문화력 정보",required = true) Collection<CulturePostReq> culturePostReq){
+
+		for (CulturePostReq culture: culturePostReq ) {
+			cultureService.postCulture(culture, myEmail);
+		}
 		//System.out.println(myEmail);
 		//System.out.println(culturePostReq.getCultureTitle());
 		//System.out.println(culturePostReq.getCultureCategory());

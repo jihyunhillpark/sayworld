@@ -1,13 +1,20 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
     <div class="image-wrapper" align="left" style="float: left">
-      <el-skeleton style="width: 100%">
+      <el-skeleton style="width: 100%" >
         <template #template>
           <el-skeleton-item variant="image" style="width: 100%; height: 190px" />
         </template>
       </el-skeleton>
     </div>
 
+    <div id="profile">
+      <ul>
+        <li v-for = "item in items">
+        <img :src="item.image">
+        </li>
+      </ul>
+    </div>
       <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
       <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
 
@@ -45,15 +52,14 @@
       </section>
       <section>
         <h2>문화력</h2>
-        <p>Content...</p>
+        <a><button size="md" variant="danger" type="submit" v-on:click="goMovieHistory">영화</button></a>
+        <a><button size="md" variant="danger" type="submit" v-on:click="goBookHistory">독서</button></a>
       </section>
       <section>
         <h2>친구관리</h2>
         <p>Content...</p>
       </section>
     </article>
-
-
 
     </el-card>
   </template>
@@ -66,7 +72,21 @@
     data(){
       return{
         info: [{}],
-        culture_check: []
+        culture_check: [],
+        items: [
+          {
+            id:1,
+            image: "https://picsum.photos/210/118/?image=1"
+          },
+          {
+            id:2,
+            image: "https://picsum.photos/210/118/?image=100"
+          },
+          {
+            id:3,
+            image: "https://picsum.photos/210/118/?image=200"
+          }
+        ]
       }
     },
 
@@ -103,8 +123,6 @@
       })
     },
 
-
-
       goCulturePage() {
         this.$router.push({
           name: "CultureRegister"
@@ -115,7 +133,20 @@
         this.$router.push({
           name: "MyBlog"
         })
-      }
+      },
+
+    goMovieHistory() {
+      this.$router.push({
+        name: "MyMovieHistory"
+      })
+    },
+
+    goBookHistory() {
+      this.$router.push({
+        name: "MyBookHistory"
+      })
+    },
+
 
 
   },

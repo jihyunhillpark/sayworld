@@ -1,6 +1,7 @@
 package com.ssafy.api.request;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.db.entity.Culture;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
