@@ -182,7 +182,9 @@ export default {
 .el-main {
   height: 100vh;
   width: 100%;
+  background-color: #ecf5ff !important;
 }
+
 .el-main .main-wrapper {
   padding-left: 40px;
   padding-right: 40px;
@@ -192,7 +194,7 @@ export default {
 
 .main-container {
   width: 80vw;
-  max-width: 1300px;
+  max-width: 1080px;
   display: flex;
   justify-content: center;
   flex-direction: column;
