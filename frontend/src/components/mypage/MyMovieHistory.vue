@@ -1,6 +1,5 @@
 <template>
-  <p><button size="md" variant="danger" type="submit" style="float: left" @click="ShowMyMovie">나의 영화 히스토리가 궁금해?!</button></p>
-  <p></p>
+  <p><button size="md" variant="danger" type="submit" style="float: left" @click="ShowMyMovie">나의 영화 히스토리</button></p><br><br>
   <table class='table table-dark'  style="width: 100%; height: 100%" border='2px' v-show="state.ok">
     <thead>
     <tr>
@@ -10,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="info in state.infos" v-bind:key="info">
+    <tr v-for="info in state.infos" v-bind:key="info" v-show="info.cultureCategory == 0">
       <td>{{info.cultureTitle}}</td>
       <td>
         <button size="md" variant="danger" type="submit" v-on:click="openPopup($event)"  :value="info.cultureTitle">자세히</button>
@@ -107,6 +106,8 @@ export default {
       axios.delete('/users/deleteCulture/' + t, {
         data: {
           cultureTitle : buttonValue,
+          cultureCategory : 0
+
         }
       })
         .then(res => {

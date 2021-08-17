@@ -28,7 +28,6 @@
       <a>{{info.age}}</a> <br>
       <a>기본 페이지 설정 : </a>
       <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a> <br>
-      <a>회원등급 : </a> <br>
     </div>
       <button size="md" variant="danger" type="submit"  v-on:click="getout">회원탈퇴</button>
 
