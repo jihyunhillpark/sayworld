@@ -16,14 +16,13 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/images")
 @Api(value = "이미지 API", tags = {"Image"})
-public class HelloController {
+public class ImageController {
 
     private final S3Uploader s3Uploader;
 
     @PostMapping
     @ApiOperation(value = "이미지 업로드", notes = "이미지 업로드/ 얻어온다.")
     public String upload(@RequestParam("images") MultipartFile multipartFile) throws IOException {
-        s3Uploader.upload(multipartFile, "static");
-        return "test";
+        return s3Uploader.upload(multipartFile, "static");
     }
 }
