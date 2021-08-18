@@ -18,8 +18,8 @@
       <el-switch
         style="display: block"
         v-model="cateButton.value"
-        active-color="#13ce66"
-        inactive-color="#ff4949"
+        active-color="#7fc6a6"
+        inactive-color="#f1a4a4"
         active-text="책"
         inactive-text="영화"
       ></el-switch>

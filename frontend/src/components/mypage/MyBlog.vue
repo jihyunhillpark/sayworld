@@ -123,6 +123,7 @@
 </script>
 
 <style scoped>
+  /*@import "~@vueup/vue-quill/dist/vue-quill.snow.css";*/
   .bottom {
     margin-top: 13px;
     line-height: 12px;
