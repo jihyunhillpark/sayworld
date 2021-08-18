@@ -355,7 +355,7 @@ export default {
       await this.$store.dispatch(`root/createRoom`, data)
       .then((res) => {
         console.log(res.data)
-        this.$router.push({ name : 'MeetingRoom', params: { roomName: this.form.name }  })
+        this.$router.push({ name : 'MeetingRoom', params: { roomName: this.form.name, keywords: this.dynamicTags }  })
         this.fromClose1()
       })
       .catch((err) => {
@@ -364,30 +364,6 @@ export default {
         }
       });
     },
-    //방삭제 API
-    deleteRoom(){
-        console.log("deleteRoom");
-        // axios.delete("rooms").then(function(response){
-        //     console.log(response);
-        // }).catch(function(ex){
-        //     throw new Error(ex)
-        // });
-
-        // axios.delete('/rooms/val') //val = 특정 값
-        // .then(res => {
-        //     console.log(res);
-        // })
-
-        // axios.delete(`rooms${rId}`)
-        // .then((res)=>{
-        //         console.log(res);
-        //     }).catch(error=>{
-        //         console.log(error);
-        //         throw new Error(error);
-        //     });
-        //store.dispatch('root/requestRoomInfo', roomInfo)
-    },
-
   }
 }
 </script>

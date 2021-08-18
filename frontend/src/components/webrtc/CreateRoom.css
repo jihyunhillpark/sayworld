@@ -221,18 +221,26 @@ a:hover .demo-logo {
   margin-top: 20px;
 }
 
+#video-container {
+  padding-left: 20%;
+  padding-top: 5%;
+}
+
 #video-container video {
   position: relative;
   float: left;
-  width: 50%;
+  width: 35%;
   cursor: pointer;
+  /* height: 40vh; */
 }
 
 #video-container video + div {
   float: left;
-  width: 50%;
+  width: 35%;
   position: relative;
   margin-left: -50%;
+  height: 40vh;
+  text-align: center;
 }
 
 #video-container p {
