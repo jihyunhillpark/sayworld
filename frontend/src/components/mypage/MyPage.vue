@@ -9,12 +9,14 @@
     </div>
 
     <div id="profile">
-      <ul>
-        <li v-for = "item in items">
+        <p v-for = "item in items">
         <img :src="item.image">
-        </li>
-      </ul>
+        </p>
     </div>
+    <div>
+      <avataaars></avataaars>
+    </div>
+
       <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
       <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
 
@@ -52,7 +54,9 @@
       <section>
         <h2>문화력</h2>
         <a><button size="md" variant="danger" type="submit" v-on:click="goMovieHistory">영화</button></a>
+        <a>야{{moviecnt}}</a><br><br>
         <a><button size="md" variant="danger" type="submit" v-on:click="goBookHistory">독서</button></a>
+        <a>호{{bookcnt}}</a>
       </section>
       <section>
         <h2>친구관리</h2>
@@ -65,25 +69,32 @@
 <script>
   import axios from "axios";
   import {useRouter} from "vue-router";
-
+  import Avataaars from 'vuejs-avataaars'
   export default {
+    components: {
+      Avataaars
+    },
+
     name: "MyPage",
     data(){
       return{
         info: [{}],
         culture_check: [],
+        moviecnt: '',
+        bookcnt: '',
+
         items: [
           {
             id:1,
-            image: "https://picsum.photos/210/118/?image=1"
+            image: "https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400"
           },
           {
             id:2,
-            image: "https://picsum.photos/210/118/?image=100"
+            image: "https://www.gravatar.com/avatar/{userId}?d=identicon&s=400"
           },
           {
             id:3,
-            image: "https://picsum.photos/210/118/?image=200"
+            image: "https://img1.daumcdn.net/thumb/S272x320/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGUVuD%2FbtqB6Zdi5iH%2FDK96QNZL62nsdwro9vjLMk%2Fimg.jpg"
           }
         ]
       }
@@ -94,6 +105,7 @@
       //this.info.push(localStorage.getItem('email'));
       axios.get("/users/userInfo/" + k)
         .then(response => {
+          //alert("이건 사용자정보")
           this.info = response.data;
           console.log(this.info)
         })
@@ -102,7 +114,32 @@
         })
     },
 
-  methods: {
+    mounted() {
+      const t = localStorage.getItem('email')
+      axios.get('users/cultureInfo/' + t)
+        .then(function (res) {
+          //alert("이건 문화력정보")
+          console.log(res)
+          console.log(res.data)
+
+          let moviecnt = 0;
+          let bookcnt = 0;
+          for(var i=0; i<res.data.length; i++) {
+            if(res.data[i].cultureCategory == 1) {
+              bookcnt++;
+            } else {
+              moviecnt++;
+            }
+          }
+          console.log(bookcnt)
+          console.log(moviecnt)
+
+
+        })
+    },
+
+
+    methods: {
     getout() {
       const router = useRouter()
       const t = localStorage.getItem('email')
