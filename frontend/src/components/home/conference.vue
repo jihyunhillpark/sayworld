@@ -6,7 +6,7 @@
     <div class="image-wrapper">
       <el-skeleton style="width: 100%">
         <template #template>
-          <el-image :src="info.thumbnailUrl">
+          <el-image :src="state.src">
             <template #placeholder>
               <div class="image-slot">
                 Loading<span class="dot">...</span>
