@@ -61,7 +61,7 @@
         <el-button v-else icon="el-icon-turn-off-microphone" @click="muteUnmute(state.mute++)" circle></el-button>
       </div>
       <div class="leave-btn">
-        <el-button size="middle" id="buttonLeaveSession" @click="[leaveSession()]" round>나가기</el-button>
+        <el-button size="middle" id="buttonLeaveSession" @click="leaveSession" round>나가기</el-button>
       </div>
     </footer>
   </div>
@@ -164,11 +164,13 @@ export default {
 
       // 'getToken' method is simulating what your server-side should do.
       // 'token' parameter should be retrieved and returned by your own backend
+
       store.dispatch('root/getToken', mySessionId)
       .then(token => {
         console.log(token)
         state.session.connect(token, { clientData: store.state.root.userInfo.nickname })
         // session.connect(token)
+
         .then(() => {
           // --- Get your own camera stream with the desired properties ---
           let publisher = state.OV.initPublisher(undefined, {
@@ -193,7 +195,6 @@ export default {
           console.log('There was an error connecting to the session:', error.code, error.message);
         })
       })
-
       window.addEventListener('beforeunload', leaveSession)
     }
     const chat_on_scroll = () => {
@@ -227,7 +228,7 @@ export default {
           console.error(error);
         });
       }
-      
+
     }
     const leaveSession = (e) => {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -287,7 +288,7 @@ h1 {
 #session-header {
   /* margin-bottom: 20px; */
   margin-block-start: 0px;
-  margin-block-end: 0px; 
+  margin-block-end: 0px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -307,7 +308,7 @@ h1 {
 #video-container video {
   position: relative;
   float: left;
-  margin-inline-start : 5px; 
+  margin-inline-start : 5px;
   width: 48%;
   cursor: pointer;
 }
@@ -370,7 +371,7 @@ video {
     padding-block: 3px;
     padding-left: 10px;
     margin-block-start: 0px;
-    margin-block-end: 0px; 
+    margin-block-end: 0px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
@@ -398,7 +399,7 @@ img{ max-width:100%;}
   clear: both;
   overflow: hidden;
   max-width: 100%;
-  
+
 }
 .top_spac{ margin: 20px 0 0;}
 
