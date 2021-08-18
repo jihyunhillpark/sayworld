@@ -1,7 +1,7 @@
 <template>
   <el-row>
   <!-- <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0"> -->
-  <el-col :span="8" v-for="info in state.roomList" :key="info" cols="4" >
+  <el-col :span="6" v-for="info in state.roomList" :key="info" cols="4" >
     <el-card :body-style="{ padding: '0px' }">
     <div class="image-wrapper">
       <el-skeleton style="width: 100%">
@@ -29,8 +29,8 @@
         <div>
         <i v-if="info.password==='Y'" class="el-icon-lock" ></i>&nbsp;
         <!-- <search v-if="info.password.length>0" style="width: 1em; height: 1em; margin-right: 8px;" /> -->
-        <el-button v-if="info.password==='Y'" type="primary" class ="button" size="mini" @click="participate(info.roomName,0)">입장하기</el-button>
-        <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1)">입장하기</el-button>
+        <el-button v-if="info.password==='Y'" type="primary" class ="button" size="mini" @click="participate(info.roomName,0,info.keywords)">입장하기</el-button>
+        <el-button v-else type="primary" class ="button" size="mini" @click="participate(info.roomName,1,info.keywords)">입장하기</el-button>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ export default {
         });
     }, { immediate:true })
 
-    const participate = (rName, lock) => {
+    const participate = (rName, lock, arrK) => {
       var allow = true;
       if (lock == 0){
         allow = false;
@@ -93,7 +93,7 @@ export default {
         .then(response=>{
           if(response.status==200){
               console.log(response),
-              router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+              router.push({ name : 'MeetingRoom', params: { roomName: rName, keywords:arrK } })
           }
         }
         )
@@ -104,7 +104,7 @@ export default {
         })
       }
       if(allow)
-        router.push({ name : 'MeetingRoom', params: { roomName: rName } })
+        router.push({ name : 'MeetingRoom', params: { roomName: rName, keywords:arrK   } })
     }
     return { state, curPage, participate }
   }

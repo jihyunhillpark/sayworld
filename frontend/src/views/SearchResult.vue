@@ -6,7 +6,7 @@
         <el-tab-pane label="방 제목">
           <h3 v-show="!searchTitle.length">방 제목에 해당하는 결과가 없습니다.</h3>
           <el-row v-if="searchTitle">
-              <el-col :span="8" v-for="(room, index) of searchTitle" :key="index" cols="4" >
+              <el-col :span="6" v-for="(room, index) of searchTitle" :key="index" cols="4" >
             <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
               <el-card :body-style="{ padding: '0px' }">
               <!-- <el-card class="box-card"> -->
@@ -52,7 +52,7 @@
         <el-tab-pane label="키워드">
           <h3 v-show="!searchKeyword.length">키워드에 해당하는 결과가 없습니다.</h3>
           <el-row>
-            <el-col :span="8" v-for="(room, index) of searchKeyword" :key="index" cols="4" >
+            <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index" cols="4" >
             <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
               <el-card :body-style="{ padding: '0px' }">
               <!-- <el-card class="box-card"> -->

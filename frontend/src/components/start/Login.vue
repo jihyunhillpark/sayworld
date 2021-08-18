@@ -117,6 +117,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  background-color: rgba( 255, 255, 255, 0.5 );
 }
 .login-button {
   width: 100%;
@@ -136,8 +138,8 @@ export default {
 }
 
 </style>
-<style lang="scss">
-$teal: rgb(0, 124, 137);
+<style lang="scss" scoped>
+$teal: #92a8d1;
 .el-button--primary {
   background: $teal;
   border-color: $teal;
@@ -148,6 +150,28 @@ $teal: rgb(0, 124, 137);
     background: lighten($teal, 7);
     border-color: lighten($teal, 7);
   };
+}
+.el-button--primary.is-disabled {
+  color: white;
+  background-color: #b7c6e1;
+  border-color: #b7c6e1;
+
+  &:hover {
+    background-color: #b7c6e1;
+    border-color: #b7c6e1;
+  }
+}
+.el-form-item.is-error .el-input__inner {
+  border-color: #f5bebd;
+  color: #f1a8a7;
+
+  &:focus {
+    border-color: #f5bebd;
+    color: #f1a8a7;
+  }
+}
+.el-input {
+  --el-input-focus-border: #92a8d1;
 }
 .login .el-input__inner:hover {
   border-color: $teal;
@@ -171,12 +195,12 @@ $teal: rgb(0, 124, 137);
   padding-bottom: 30px;
 }
 a {
-  color: $teal;
+  color: #6285b7;
   text-decoration: none;
   &:hover,
   &:active,
   &:focus {
-    color: lighten($teal, 7);
+    color: lighten(#6285b7, 7);
   }
 }
 .login .el-card {

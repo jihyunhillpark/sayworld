@@ -54,7 +54,8 @@ export default {
       isCollapse: true,
       title: 'title',
       keyword: 'keyword',
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      // circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: `https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400`,
     })
 
     const checked = computed({

@@ -22,7 +22,7 @@ public class QCulture extends EntityPathBase<Culture> {
 
     public static final QCulture culture = new QCulture("culture");
 
-    public final ComparablePath<Character> cultureCategory = createComparable("cultureCategory", Character.class);
+    public final NumberPath<Long> cultureCategory = createNumber("cultureCategory", Long.class);
 
     public final NumberPath<Long> culturePowerId = createNumber("culturePowerId", Long.class);
 

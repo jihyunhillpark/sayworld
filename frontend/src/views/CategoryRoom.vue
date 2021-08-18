@@ -8,7 +8,7 @@
       </el-card>
     </el-col> -->
     <h3 v-show="!searchCategory.length">해당 카테고리의 방이 없습니다.</h3> 
-    <el-col :span="8" v-for="(room, index) of searchCategory" :key="index" cols="4" >
+    <el-col :span="6" v-for="(room, index) of searchCategory" :key="index" cols="4" >
     <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
       <el-card :body-style="{ padding: '0px' }">
       <!-- <el-card class="box-card"> -->
