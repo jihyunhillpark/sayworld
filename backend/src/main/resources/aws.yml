@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAYXWMPBTA3S2WYCME
+      secretKey: 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
+    s3:
+      bucket: sayworld-img
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
