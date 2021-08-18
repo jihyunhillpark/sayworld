@@ -1,13 +1,14 @@
 package com.ssafy.db.entity;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +18,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "culture_power")
 public class Culture {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "culture_power_id")
@@ -28,7 +28,7 @@ public class Culture {
     User user;
 
     @Column(name = "culture_category")
-    char cultureCategory;
+    Long cultureCategory;
 
     @Column(name = "culture_title")
     String cultureTitle;

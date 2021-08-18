@@ -26,10 +26,8 @@ public class BooksApiPostRes implements Serializable {
         String image;
         @ApiModelProperty(name="책이름", example="불곰 박선목")
         String author;
-        @ApiModelProperty(name="책이름", example="부키")
-        String publisher;
+        @ApiModelProperty(name="책요약", example="책 간단하게 요약되어있는 칸")
+        String description;
     }
-
-
 
 }

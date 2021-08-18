@@ -16,7 +16,7 @@ public class BookApiPostReq {
     String image;
     @ApiModelProperty(name="저자", example="불곰 박선목")
     String author;
-    @ApiModelProperty(name="책이름", example="부키")
-    String publisher;
+    @ApiModelProperty(name="요약본", example="책 간단 요약 샬라샬라")
+    String description;
 
 }

@@ -8,10 +8,13 @@ import CategoryRoom from "@/views/CategoryRoom";
 import MeetingRoom from "@/views/MeetingRoom";
 import CreateRoom from "@/components/webrtc/CreateRoom";
 import MyPage from "@/components/mypage/MyPage";
+import MyMovieHistory from "../../components/mypage/MyMovieHistory";
+import MyBookHistory from "../../components/mypage/MyBookHistory";
 import CultureRegister from "../../components/mypage/CultureRegister";
 import MyBlog from "../../components/mypage/MyBlog";
 import TextEditor from "../../components/mypage/TextEditor"
 import RoomChat from "@/views/RoomChat";
+
 
 const routes = [
   {
@@ -70,10 +73,21 @@ const routes = [
     component: MyBlog
   },
   {
+<<<<<<< HEAD
+    path: "/myMovie",
+    name: "MyMovieHistory",
+    component: MyMovieHistory
+  },
+  {
+    path: "/myBook",
+    name: "MyBookHistory",
+    component: MyBookHistory
+=======
     path: "/editor",
     name: "TextEditor",
     component: TextEditor,
     props: true
+>>>>>>> 17d0520d6b2eaa3f1034af64cbd5b15353ee02a5
   },
   {
     path: "/roomchat",
