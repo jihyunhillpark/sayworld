@@ -225,4 +225,5 @@ export default {
   background-repeat: no-repeat;
   background-image: url("../assets/images/sayworld-logo.png");
 }
+
 </style>
