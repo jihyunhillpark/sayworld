@@ -13,13 +13,8 @@
         <img :src="item.image">
         </p>
     </div>
-    <div>
-      <avataaars></avataaars>
-    </div>
-
       <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
       <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
-
     <div>
       <!--   <p v-for="(value, name) in info" v-bind:key="value">{{ name }} : {{value}}</p> -->
       <a>이메일 : </a>
@@ -54,9 +49,9 @@
       <section>
         <h2>문화력</h2>
         <a><button size="md" variant="danger" type="submit" v-on:click="goMovieHistory">영화</button></a>
-        <a>야{{moviecnt}}</a><br><br>
+        <a >{{sendmoviecnt}} 편</a><br><br>
         <a><button size="md" variant="danger" type="submit" v-on:click="goBookHistory">독서</button></a>
-        <a>호{{bookcnt}}</a>
+        <a>{{sendbookcnt}} 권</a>
       </section>
       <section>
         <h2>친구관리</h2>
@@ -67,22 +62,18 @@
     </el-card>
   </template>
 <script>
-  import axios from "axios";
-  import {useRouter} from "vue-router";
-  import Avataaars from 'vuejs-avataaars'
-  export default {
-    components: {
-      Avataaars
-    },
+import axios from "axios";
+import {useRouter} from "vue-router";
 
+
+export default {
     name: "MyPage",
     data(){
       return{
         info: [{}],
         culture_check: [],
-        moviecnt: '',
-        bookcnt: '',
-
+        moviecnt: 0,
+        bookcnt: 0,
         items: [
           {
             id:1,
@@ -112,31 +103,59 @@
         .catch(e => {
           console.log('error : ', e)
         })
+
     },
 
-    mounted() {
+    computed: {
+      sendmoviecnt: function() {
       const t = localStorage.getItem('email')
+        let moviecnt = 0;
+        let bookcnt = 0;
       axios.get('users/cultureInfo/' + t)
         .then(function (res) {
           //alert("이건 문화력정보")
           console.log(res)
           console.log(res.data)
 
-          let moviecnt = 0;
-          let bookcnt = 0;
           for(var i=0; i<res.data.length; i++) {
             if(res.data[i].cultureCategory == 1) {
-              bookcnt++;
+              bookcnt++
             } else {
-              moviecnt++;
+              moviecnt++
             }
           }
           console.log(bookcnt)
           console.log(moviecnt)
-
-
         })
+        return moviecnt
     },
+
+      sendbookcnt: function() {
+        const t = localStorage.getItem('email')
+        let moviecnt = 0;
+        let bookcnt = 0;
+        axios.get('users/cultureInfo/' + t)
+          .then(function (res) {
+            //alert("이건 문화력정보")
+            console.log(res)
+            console.log(res.data)
+
+            for(var i=0; i<res.data.length; i++) {
+              if(res.data[i].cultureCategory == 1) {
+                bookcnt++;
+              } else {
+                moviecnt++;
+              }
+            }
+            //console.log(this.bookcnt)
+            //console.log(this.moviecnt)
+
+          })
+        return this.bookcnt
+      }
+
+    },
+
 
 
     methods: {
@@ -182,6 +201,8 @@
         name: "MyBookHistory"
       })
     },
+
+
 
 
 
