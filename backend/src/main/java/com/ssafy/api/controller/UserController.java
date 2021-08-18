@@ -6,6 +6,7 @@ import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.CultureService;
 import com.ssafy.db.entity.Culture;
+import com.ssafy.db.entity.Room;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -317,6 +318,19 @@ public class UserController {
 		userService.fixInterest(myEmail, interestReqs);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+
+	// 사용자가 생성한 방 내역 조회하기
+	@GetMapping("/history/{myEmail}")
+	@ApiOperation(value = "로그인 한 사용자 방 히스토리 조회", notes = "로그인 유저가 생성한 방리스트 보이기")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=400, message = "인증 실패"),
+			@ApiResponse(code=401, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버오류")
+	})
+	public ResponseEntity<List<Room>> getRoomHistory(@PathVariable String myEmail){
+		return ResponseEntity.status(200).body(userService.getRoomHistory(myEmail));
 	}
 
 

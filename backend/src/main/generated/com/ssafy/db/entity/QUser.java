@@ -46,6 +46,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath profileImg = createString("profileImg");
 
+    public final ListPath<Room, QRoom> rooms = this.<Room, QRoom>createList("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> tierBook = createNumber("tierBook", Integer.class);
 
     public final NumberPath<Integer> tierMovie = createNumber("tierMovie", Integer.class);

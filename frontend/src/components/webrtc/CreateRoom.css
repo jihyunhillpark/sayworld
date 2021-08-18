@@ -20,20 +20,19 @@
   transition: var(--el-border-transition-base);
   width: 80%;
 }
-.el-tag + .el-tag {
-  margin-left: 10px;
+.el-tag {
+  margin-right: 10px;
 }
 .button-new-tag {
-  margin-left: 10px;
-  height: 32px;
+  height: 34px;
   line-height: 30px;
   padding-top: 0;
   padding-bottom: 0;
 }
 .input-new-tag {
   width: 90px;
-  margin-left: 10px;
   vertical-align: bottom;
+  min-height: 50px;
 }
 .el-dropdown {
   vertical-align: top;
@@ -322,7 +321,6 @@ width: 100%; */
 .room-file-notice-item-red {
   color: #ef4351;
 }
-
 .image-box {
   margin-top: 30px;
   padding-bottom: 20px;

@@ -20,6 +20,7 @@ import com.ssafy.api.response.RoomCreatePostRes;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -92,7 +93,7 @@ public class RoomController {
 	/**
 	 * 방 리스트 조회
 	 */
-	@GetMapping
+	@GetMapping("/page/{page}")
 	@ApiOperation(value = "방 전체 조회", notes = "DB에 저장한 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -100,14 +101,14 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<List<RoomRes>> getRoomList(){
-		return ResponseEntity.status(200).body(roomService.getRoomList());
+	public ResponseEntity<List<RoomRes>> getRoomList(@PathVariable Long page){
+		return ResponseEntity.status(200).body(roomService.getRoomList(page));
 	}
 
 	/**
 	 * 방 리스트 - 검색하기
 	 * */
-	@GetMapping("/search")
+	@GetMapping("page/{page}/search")
 	@ApiOperation(value = "선택하여 방 검색", notes = "검색 종류에 따라 검색 단어를 포함하는 방리스트를 얻어온다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -115,22 +116,43 @@ public class RoomController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends Collection> getRoomListBySearch(@RequestParam("search_type") String searchType, @RequestParam String input){
+	public ResponseEntity<? extends Collection> getRoomListBySearch(@PathVariable Long page, @RequestParam("search_type") String searchType, @RequestParam String input){
 		if(searchType.equals("title"))
-			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByRoomTitle(input,page));
 		else if(searchType.equals("nickname")) //TO-DO : one-to-many관계테이블 만들어야함
-			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input));
+			return ResponseEntity.status(200).body(roomService.getRoomListByHostNickname(input,page));
 		else if(searchType.equals("keyword")) // Set 으로 반환
-			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input));
-		else if(searchType.equals("movie")){
-			Long movieId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
-		}
-		else if(searchType.equals("book")){
-			Long bookId = Long.parseLong(input);
-			return ResponseEntity.status(200).body(roomService.getRoomListByBookId(bookId));
+			return ResponseEntity.status(200).body(roomService.getRoomListByKeyword(input,page));
+		else if(searchType.equals("category")){
+			if(page == 0L){ //영화의 카테고리 검색
+				Long movieId = Long.parseLong(input);
+				return ResponseEntity.status(200).body(roomService.getRoomListByMovieId(movieId));
+			}
+			else{ //책의 카테고리 검색
+				Long bookId = Long.parseLong(input);
+				return ResponseEntity.status(200).body(roomService.getRoomListByBookId(bookId));
+			}
 		}
 		else
 			return ResponseEntity.status(200).body(null);
+	}
+	/**
+	 * 비밀번호 요청
+	 * */
+	@PostMapping("/check/{roomName}")
+	@ApiOperation(value = "비밀번호 확인", notes = "채팅방 접속시 비밀번호를 확인한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "사용자 인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 401, message = "비밀번호 인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<? extends BaseResponseBody> checkPassword(@RequestBody Map<String,String> password, @PathVariable String roomName, HttpSession httpSession) throws Exception {
+		if (roomService.checkPassword(password.get("password"), roomName)){ // 비밀번호가 맞는 경우
+			// 방생성 성공 응답
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		}
+		return ResponseEntity.status(403).body(BaseResponseBody.of(403, "Password is not Correct!"));
 	}
 }

@@ -1,13 +1,18 @@
 <template>
   <el-container>
-    <el-header class="main-header">
+    <!-- <el-header class="main-header">
       <div class="logo"></div>
-    </el-header>
-    <el-main class="main-container">
-      <el-row>
-        <el-col :span="14"><ServiceCarousel /></el-col>
-        <el-col :span="10"><Login @openSignupDialog="onOpenSignupDialog" /></el-col>
-      </el-row>
+    </el-header> -->
+    <el-main class="main-wrapper">
+      <div class="main-container">
+        <div class="main-logo">
+          <div class="logo"></div>
+        </div>
+        <el-row class="main-content">
+          <el-col :span="14"><ServiceCarousel /></el-col>
+          <el-col :span="10"><Login @openSignupDialog="onOpenSignupDialog" /></el-col>
+        </el-row>
+      </div>
     </el-main>
     <!-- <button @click="onOpenSignupDialog">회원가입</button> -->
   </el-container>
@@ -173,19 +178,49 @@ export default {
 };
 </script>
 
-<style>
-.main-container {
-  height: calc(100% - 100px);
+<style scoped>
+.el-main {
+  height: 100vh;
   width: 100%;
+  background-color: #ecf5ff !important;
+}
+
+.el-main .main-wrapper {
   padding-left: 40px;
   padding-right: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  width: 80vw;
+  max-width: 1080px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+}
+/* .main-content {
+  display: flex;
+  justify-content: center;
+} */
+.main-header {
+ height: 90px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ background: transparent;
+}
+
+.main-logo {
+  padding-bottom: 8vh;
 }
 
 .logo {
   display: inline-block;
-  margin: 0 calc(50% - 51px);
-  width: 200px;
-  height: 50px;
+  /* margin: 0 calc(50% - 51px); */
+  width: 400px;
+  height: 100px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url("../assets/images/sayworld-logo.png");

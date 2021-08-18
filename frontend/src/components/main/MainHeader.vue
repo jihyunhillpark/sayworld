@@ -54,7 +54,8 @@ export default {
       isCollapse: true,
       title: 'title',
       keyword: 'keyword',
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      // circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: `https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400`,
     })
 
     const checked = computed({
@@ -70,6 +71,7 @@ export default {
       } else {
         store.commit('root/SET_CURRENT_PAGE', 1)
       }
+      // router.go()
     }
 
     const clickMyPage = () => {
@@ -95,13 +97,7 @@ export default {
     return { state, checked, clickLogout, clickMyPage, searchRoom, changeToggle }
   },
 
-
-
-
-  }
-
-
-
+}
 </script>
 
 <style lang="scss">
@@ -182,7 +178,7 @@ export default {
     }
 
     &:before {
-      background: #ff3a19;
+      background: #f1a4a4;
       content: attr(data-tg-off);
     }
 
@@ -211,6 +207,7 @@ export default {
 <style>
 .pinning-header {
   height: 70px;
+  text-align: center;
 }
 .pinning-header .pinning-header-container {
   position: relative;
