@@ -7,7 +7,7 @@
       <el-row :gutter="12">
       <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
       <el-col v-for="(genre, idx) in state.bookCategory" :span="6" :key="idx">
-        <el-button class="categoryBtn" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button>
+        <el-button :id="idx+1" class="categoryBtn" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button>
         <!-- <el-button :class="{categoryBtn: !state.isClick, categoryBtnClick: state.isClick}" type="info" @click="clickCategory(idx+1)" plain>{{ genre }}</el-button> -->
         <!-- <el-card :class="{categoryBtn: !state.isClick, categoryBtnClick: state.isClick}" @click="clickCategory(idx+1)" shadow="hover">{{ genre }}</el-card> -->
       </el-col>
@@ -41,12 +41,19 @@ export default {
     })
 
     const clickCategory = function (idx) {
+      var btn = document.getElementById(idx)
+
       if (state.selected.indexOf(idx) === -1) {
         state.selected.push(idx)
         state.isClick = true
+        btn.style.backgroundColor = "#909399"
+        btn.style.color = "white"
+
       } else {
         state.selected.splice(state.selected.indexOf(idx), 1)
         state.isClick = false
+        btn.style.backgroundColor = "#f4f4f5"
+        btn.style.color = "#909399"
       }
     }
 

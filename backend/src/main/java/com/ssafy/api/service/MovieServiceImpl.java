@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.response.BooksApiPostRes;
+import com.ssafy.api.response.MoviesApiPostRes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
-public class BooksServiceImpl implements BooksService{
-    @Value("https://openapi.naver.com/v1/search/book.json")
+public class MovieServiceImpl implements MovieService{
+    @Value("https://openapi.naver.com/v1/search/movie.json")
     private String naverOpenApiUrl;
 
     @Value("${naver.openapi.client.id}")
@@ -20,7 +20,7 @@ public class BooksServiceImpl implements BooksService{
 
 
     @Override
-    public Mono<BooksApiPostRes> findBookByQuery(String query) {
+    public Mono<MoviesApiPostRes> findMovieByQuery(String query) {
 
         return WebClient.create(naverOpenApiUrl)
                 .method(HttpMethod.GET)
@@ -28,6 +28,6 @@ public class BooksServiceImpl implements BooksService{
                 .header("X-Naver-Client-Id", "fj19qSeYZpP5xmRuUQ_l")
                 .header("X-Naver-Client-Secret", "ZeN6POhLUU")
                 .retrieve()
-                .bodyToMono(BooksApiPostRes.class);
+                .bodyToMono(MoviesApiPostRes.class);
     }
 }

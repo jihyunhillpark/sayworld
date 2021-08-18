@@ -1,11 +1,20 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
     <div class="image-wrapper" align="left" style="float: left">
-      <el-skeleton style="width: 100%">
+      <el-skeleton style="width: 100%" >
         <template #template>
           <el-skeleton-item variant="image" style="width: 100%; height: 190px" />
         </template>
       </el-skeleton>
+    </div>
+
+    <div id="profile">
+        <p v-for = "item in items">
+        <img :src="item.image">
+        </p>
+    </div>
+    <div>
+      <avataaars></avataaars>
     </div>
 
       <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
@@ -21,7 +30,6 @@
       <a>{{info.age}}</a> <br>
       <a>기본 페이지 설정 : </a>
       <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a> <br>
-      <a>회원등급 : </a> <br>
     </div>
       <button size="md" variant="danger" type="submit"  v-on:click="getout">회원탈퇴</button>
 
@@ -45,7 +53,10 @@
       </section>
       <section>
         <h2>문화력</h2>
-        <p>Content...</p>
+        <a><button size="md" variant="danger" type="submit" v-on:click="goMovieHistory">영화</button></a>
+        <a>야{{moviecnt}}</a><br><br>
+        <a><button size="md" variant="danger" type="submit" v-on:click="goBookHistory">독서</button></a>
+        <a>호{{bookcnt}}</a>
       </section>
       <section>
         <h2>친구관리</h2>
@@ -53,20 +64,39 @@
       </section>
     </article>
 
-
-
     </el-card>
   </template>
-  <script>
+<script>
   import axios from "axios";
   import {useRouter} from "vue-router";
-
+  import Avataaars from 'vuejs-avataaars'
   export default {
+    components: {
+      Avataaars
+    },
+
     name: "MyPage",
     data(){
       return{
         info: [{}],
-        culture_check: []
+        culture_check: [],
+        moviecnt: '',
+        bookcnt: '',
+
+        items: [
+          {
+            id:1,
+            image: "https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400"
+          },
+          {
+            id:2,
+            image: "https://www.gravatar.com/avatar/{userId}?d=identicon&s=400"
+          },
+          {
+            id:3,
+            image: "https://img1.daumcdn.net/thumb/S272x320/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGUVuD%2FbtqB6Zdi5iH%2FDK96QNZL62nsdwro9vjLMk%2Fimg.jpg"
+          }
+        ]
       }
     },
 
@@ -75,6 +105,7 @@
       //this.info.push(localStorage.getItem('email'));
       axios.get("/users/userInfo/" + k)
         .then(response => {
+          //alert("이건 사용자정보")
           this.info = response.data;
           console.log(this.info)
         })
@@ -83,7 +114,32 @@
         })
     },
 
-  methods: {
+    mounted() {
+      const t = localStorage.getItem('email')
+      axios.get('users/cultureInfo/' + t)
+        .then(function (res) {
+          //alert("이건 문화력정보")
+          console.log(res)
+          console.log(res.data)
+
+          let moviecnt = 0;
+          let bookcnt = 0;
+          for(var i=0; i<res.data.length; i++) {
+            if(res.data[i].cultureCategory == 1) {
+              bookcnt++;
+            } else {
+              moviecnt++;
+            }
+          }
+          console.log(bookcnt)
+          console.log(moviecnt)
+
+
+        })
+    },
+
+
+    methods: {
     getout() {
       const router = useRouter()
       const t = localStorage.getItem('email')
@@ -103,8 +159,6 @@
       })
     },
 
-
-
       goCulturePage() {
         this.$router.push({
           name: "CultureRegister"
@@ -115,7 +169,20 @@
         this.$router.push({
           name: "MyBlog"
         })
-      }
+      },
+
+    goMovieHistory() {
+      this.$router.push({
+        name: "MyMovieHistory"
+      })
+    },
+
+    goBookHistory() {
+      this.$router.push({
+        name: "MyBookHistory"
+      })
+    },
+
 
 
   },

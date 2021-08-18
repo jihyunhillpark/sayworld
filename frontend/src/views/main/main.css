@@ -16,11 +16,22 @@
 } */
 
 .main-container {
-  height: calc(100% - 195px);
+  height: calc(100% - 100px);
+  /* height: 85vh; */
+  /* height: 100%; */
+}
+.hide-on-small {
+  width: 200px;
+  padding-left: 2%;
+  /* max-width: 250px;
+  min-width: 200px; */
+}
+.main-container .hide-on-small::-webkit-scrollbar {
+  display: none;
 }
 
 .el-row.main-footer {
-  z-index: -1;
+  /* z-index: -1; */
   margin-left: 0 !important;
   margin-right: 0 !important;
   border-top: 1px solid #dcdfe6;

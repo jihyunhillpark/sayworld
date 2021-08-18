@@ -1,3 +1,5 @@
+import state from "./state"
+
 export function setPlatform (state, isDesktop) {
   state.isDesktopPlatform = isDesktop
 }
@@ -37,9 +39,7 @@ export function SET_SEARCH_CATEGORY (state, searchCategory) {
 }
 
 export function SET_CURRENT_PAGE (state, page) {
-  console.log('state', page)
   state.curPage = page
-  console.log(state.curPage)
 }
 
 // Openvidu
@@ -74,4 +74,13 @@ export function SET_PUBLISHER(state, publisher) {
 
 export function SET_SUBSCRIBERS(state, subscribers) {
   state.subscribers = subscribers
+}
+
+export function SET_HISTORY(state, roomHistory){
+  console.log("mutation IN")
+  let filteredRoomHistory = [];
+  for(let room of roomHistory){
+    filteredRoomHistory.push({roomTitle : room.roomTitle, roomId: room.roomId});
+  }
+  state.roomHistory = filteredRoomHistory
 }
