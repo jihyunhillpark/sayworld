@@ -31,14 +31,11 @@
     "vue-card-element": "^0.1.2",
     "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.6",
-<<<<<<< HEAD
     "vue-upload-image": "^1.1.5",
     "vuejs-avataaars": "^4.0.1",
-=======
+    "vuex": "^4.0.0",
     "vue3-editor": "0.1.0-alpha.3",
     "vue3-quill": "^0.2.6",
->>>>>>> 17d0520d6b2eaa3f1034af64cbd5b15353ee02a5
-    "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
