@@ -183,13 +183,15 @@ li {
 
 img {
   width: 20%;
-  background: #ebebeb;
+  height: 30%;
+  background: #7fc6a6;
   border-radius: 4px;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  background: #b3c2ab
 }
 </style>

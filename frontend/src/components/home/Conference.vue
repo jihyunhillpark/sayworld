@@ -6,7 +6,7 @@
     <div class="image-wrapper">
       <el-skeleton style="width: 100%">
         <template #template>
-          <el-image :src="state.src">
+          <el-image :src="info.thumbnailUrl">
             <template #placeholder>
               <div class="image-slot">
                 Loading<span class="dot">...</span>
@@ -117,11 +117,20 @@ export default {
   margin-bottom: 40px;
 }
 .el-card .image-wrapper {
-  width: 100%;
   height: 250px;
 }
 .el-card .title {
   font-weight: bold;
+}
+.el-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.el-image__inner {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 .bottom {
     margin-top: 13px;

@@ -12,7 +12,7 @@
     <tr v-for="info in state.infos" v-bind:key="info" v-show="info.cultureCategory == 0">
       <td>{{info.cultureTitle}}</td>
       <td>
-        <button size="md" variant="danger" type="submit" v-on:click="openPopup($event)"  :value="info.cultureTitle">자세히</button>
+        <button size="md" variant="danger" type="submit" v-on:click="openPopup($event)"  :value="info.cultureTitle">Click!</button>
       </td>
       <td>
         <button size="md" variant="danger" type="submit" v-on:click="DeleteMovie($event)" :value="info.cultureTitle">삭제</button>
@@ -101,8 +101,6 @@ export default {
     const DeleteMovie = function (e) {
       const buttonValue = e.target.value;
       const t = localStorage.getItem('email')
-
-      alert("정말 삭제하시겠어요? DB에서도 삭제됩니다.")
       axios.delete('/users/deleteCulture/' + t, {
         data: {
           cultureTitle : buttonValue,
@@ -128,5 +126,13 @@ export default {
 </script>
 
 <style scoped>
+
+table{
+  background: #f1a4a4;
+}
+
+button{
+  background: #ECF5FF;
+}
 
 </style>
