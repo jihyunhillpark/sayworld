@@ -13,8 +13,13 @@
         <img :src="item.image">
       </p>
     </div>
+<<<<<<< HEAD
     <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
     <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
+=======
+      <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
+      <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
     <div>
       <!--   <p v-for="(value, name) in info" v-bind:key="value">{{ name }} : {{value}}</p> -->
       <a>이메일 : </a>
@@ -26,7 +31,11 @@
       <a>기본 페이지 설정 : </a>
       <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a> <br>
     </div>
+<<<<<<< HEAD
     <button size="md" variant="danger" type="submit"  v-on:click="getout">회원탈퇴</button>
+=======
+      <button size="md" variant="danger" type="submit"  v-on:click="getout">회원탈퇴</button>
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
 
     <div style="text-align: left; padding: 14px;">
       <span class="title">{{ title }}</span>
@@ -67,6 +76,7 @@ import {useRouter} from "vue-router";
 
 
 export default {
+<<<<<<< HEAD
   name: "MyPage",
   data(){
     return{
@@ -90,6 +100,44 @@ export default {
       ]
     }
   },
+=======
+    name: "MyPage",
+    data(){
+      return{
+        info: [{}],
+        culture_check: [],
+        moviecnt: 0,
+        bookcnt: 0,
+        items: [
+          {
+            id:1,
+            image: "https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400"
+          },
+          {
+            id:2,
+            image: "https://www.gravatar.com/avatar/{userId}?d=identicon&s=400"
+          },
+          {
+            id:3,
+            image: "https://img1.daumcdn.net/thumb/S272x320/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGUVuD%2FbtqB6Zdi5iH%2FDK96QNZL62nsdwro9vjLMk%2Fimg.jpg"
+          }
+        ]
+      }
+    },
+
+    created() {
+      const k = localStorage.getItem('email')
+      //this.info.push(localStorage.getItem('email'));
+      axios.get("/users/userInfo/" + k)
+        .then(response => {
+          //alert("이건 사용자정보")
+          this.info = response.data;
+          console.log(this.info)
+        })
+        .catch(e => {
+          console.log('error : ', e)
+        })
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
 
   created() {
     const k = localStorage.getItem('email')
@@ -104,6 +152,7 @@ export default {
         console.log('error : ', e)
       })
 
+<<<<<<< HEAD
   },
 
   computed: {
@@ -111,6 +160,13 @@ export default {
       const t = localStorage.getItem('email')
       //let moviecnt = 0;
       //let bookcnt = 0;
+=======
+    computed: {
+      sendmoviecnt: function() {
+      const t = localStorage.getItem('email')
+        let moviecnt = 0;
+        let bookcnt = 0;
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
       axios.get('users/cultureInfo/' + t)
         .then(function (res) {
           //alert("이건 문화력정보")
@@ -119,6 +175,7 @@ export default {
 
           for(var i=0; i<res.data.length; i++) {
             if(res.data[i].cultureCategory == 1) {
+<<<<<<< HEAD
               this.bookcnt++
             } else {
               this.moviecnt++
@@ -126,6 +183,15 @@ export default {
           }
           //console.log(bookcnt)
           //console.log(moviecnt)
+=======
+              bookcnt++
+            } else {
+              moviecnt++
+            }
+          }
+          console.log(bookcnt)
+          console.log(moviecnt)
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
         })
       return this.moviecnt
     },
@@ -154,11 +220,15 @@ export default {
       return this.bookcnt
     }
 
+<<<<<<< HEAD
   },
 
 
 
   methods: {
+=======
+    methods: {
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
     getout() {
       const router = useRouter()
       const t = localStorage.getItem('email')
@@ -204,13 +274,22 @@ export default {
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
   },
 };
 
 </script>
 
+<<<<<<< HEAD
 <style scoped>
 
 </style>
+=======
+  <style scoped>
+
+  </style>
+>>>>>>> 14380b35e3afaef6f384aa642b63aa005e8989da
