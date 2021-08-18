@@ -6,7 +6,7 @@
     <el-input type="text" placeholder="제목을 입력하세요" v-model="blogTitle">
       <template #prepend>제목 : </template>
     </el-input>
-    <QuillEditor :options="options" theme="snow" v-model:content="editor.content" @update:content="onEditorChange($event)"/>
+    <QuillEditor :options="options" theme="snow" v-model:content="editor._content" @update:content="onEditorChange($event)"/>
   </div>
   <el-row class="bottom">
     <el-col :span="6">
