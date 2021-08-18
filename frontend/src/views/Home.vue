@@ -5,8 +5,8 @@
       <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
     </div>
     <Conference />
-  </div>
 
+  </div>
 </template>
 
 <script>
@@ -40,7 +40,6 @@ export default {
         }
       })
     }
-
     return { state, load, clickConference };
   }
 };
