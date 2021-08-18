@@ -84,7 +84,7 @@
       <div class="container">
          <div class="wrapper">
             <div class="image">
-               <img id="thumbnail-image" src="" alt=" ">
+               <img id="thumbnail-image" src=" " alt=" ">
             </div>
             <div class="content">
                <div class="icon">
@@ -221,6 +221,7 @@ export default {
       uploadImage.src = "";
       const wrapper = document.querySelector(".wrapper");
       wrapper.classList.add("active");
+      this.image = undefined;
     },
     fromClose1(){
       this.dialogFormVisible = false;
@@ -306,8 +307,6 @@ export default {
     //방생성 API
     async formRoom(){
       //console.log(this.files[0]);
-      let frm = new FormData();
-      frm.append('images', this.image);
       var data = {
         roomName : this.form.name,
         hostId: this.hostId,
@@ -322,13 +321,16 @@ export default {
         password: this.form.pwd,
         sessionId: this.form.name,
       };
+      if(this.image != undefined ){
+        let frm = new FormData();
+        frm.append('images', this.image);
 
-      await axios.post('/images', frm,{ Headers: {'Content-Type': 'multipart/form-data'}})
-      .then(res=>{
-        data.thumbnailUrl = res.data;
-        console.log(res.data);
-      })
-
+        await axios.post('/images', frm,{ Headers: {'Content-Type': 'multipart/form-data'}})
+        .then(res=>{
+          data.thumbnailUrl = res.data;
+          console.log(res.data);
+        })
+      }
       // axios({
       //   method:"POST",
       //   url: "rooms",
