@@ -36,3 +36,7 @@
   margin-right: 0 !important;
   border-top: 1px solid #dcdfe6;
 }
+
+.el-carousel__button {
+  background-color: #5780c1;
+}
