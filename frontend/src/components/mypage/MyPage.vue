@@ -89,9 +89,9 @@
       <section>
         <h2>문화력</h2>
         <a><button size="md" variant="danger" type="submit" v-on:click="goMovieHistory">영화</button></a>
-        <a>야{{moviecnt}}</a><br><br>
+        <a>{{getMovieCount}}</a><br><br>
         <a><button size="md" variant="danger" type="submit" v-on:click="goBookHistory">독서</button></a>
-        <a>호{{bookcnt}}</a>
+        <a>{{getBookCount}}</a>
       </section>
       <section>
         <h2>친구관리</h2>
@@ -100,25 +100,23 @@
     </article>
   </el-card>
 
-  <el-button class="last" type="danger" plain v-on:click="getout">회원 탈퇴</el-button>
+  <el-button class="last" type="danger" plain v-on:click="getOut">회원 탈퇴</el-button>
 </template>
 <script>
 import axios from "axios";
 import {useRouter} from "vue-router";
-import Avataaars from 'vuejs-avataaars'
-export default {
-  components: {
-    // Avataaars
-  },
 
+export default {
   name: "MyPage",
   data(){
     return{
       info: [{}],
       culture_check: [],
-      moviecnt: '',
-      bookcnt: '',
-
+      movieCnt: 0,
+      bookCnt: 0,
+      ResultMovie: '',
+      ResultBook: '',
+      myInfo: [],
       items: [
         {
           id:1,
@@ -150,33 +148,54 @@ export default {
       })
   },
 
-  mounted() {
-    const t = localStorage.getItem('email')
+  computed: {
+    getMovieCount() {
+    const t = localStorage.getItem('email');
+    let myMovieCnt = this.movieCnt
     axios.get('users/cultureInfo/' + t)
-      .then(function (res) {
+      .then(res => {
         //alert("이건 문화력정보")
-        console.log(res)
+        this.myInfo = res.data
         console.log(res.data)
-
-        let moviecnt = 0;
-        let bookcnt = 0;
-        for(var i=0; i<res.data.length; i++) {
-          if(res.data[i].cultureCategory == 1) {
-            bookcnt++;
-          } else {
-            moviecnt++;
+        //console.log(this.myInfo)
+        for(let i=0; i<this.myInfo.length; i++) {
+          if(this.myInfo[i].cultureCategory == 0) {
+            myMovieCnt++;
           }
         }
-        console.log(bookcnt)
-        console.log(moviecnt)
-
-
+        //console.log(myMovieCnt)
+        //ResultMovie변수에 이 값을 저장해두고
+        this.ResultMovie = myMovieCnt
       })
+      //console.log(myMovieCnt)
+      //이걸 리턴하자!
+      return this.ResultMovie
+    },
+
+    getBookCount() {
+      const t = localStorage.getItem('email');
+      let myBookCnt = this.bookCnt
+      axios.get('users/cultureInfo/' + t)
+        .then(res => {
+          //alert("이건 문화력정보")
+          this.myInfo = res.data
+          console.log(res.data)
+          //console.log(this.myInfo)
+          for(let i=0; i<this.myInfo.length; i++) {
+            if(this.myInfo[i].cultureCategory == 1) {
+              myBookCnt++;
+            }
+          }
+          //ResultBook변수에 이 값을 저장해두고
+          this.ResultBook = myBookCnt
+        })
+      //이걸 리턴하자!
+      return this.ResultBook
+    }
   },
 
-
   methods: {
-    getout() {
+    getOut() {
       const router = useRouter()
       const t = localStorage.getItem('email')
       alert("정말 탈퇴하시겠어요?")
@@ -218,8 +237,6 @@ export default {
         name: "MyBookHistory"
       })
     },
-
-
 
   },
 };
