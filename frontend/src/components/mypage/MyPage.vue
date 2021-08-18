@@ -14,7 +14,7 @@
         </p>
     </div>
     <div>
-      <avataaars></avataaars>
+      <!-- <avataaars></avataaars> -->
     </div>
 
       <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>

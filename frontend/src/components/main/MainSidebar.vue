@@ -12,48 +12,19 @@
         </template>
         <div v-for="(room, i) in state.createdRoomHistory" :key="i">
           <el-menu-item :index="2+'-' +i">
-            <div class="el-menu-item-text">{{room.roomTitle}}</div>
+            <div class="el-menu-item-text" @click="$router.push({ name : 'MeetingRoom', params: { roomName: room.roomTitle} })">{{ room.roomTitle }}</div>
             <div style="float:right">
               <i class="el-icon-circle-close" @click="deleted(room.roomId)"></i>
             </div>
           </el-menu-item>
         </div>
-        <!-- <el-menu-item-group title="Group One">
-          <el-menu-item index="1-1" @click="deleted">
-            item one
-            <span><i class="el-icon-circle-close"></i></span></el-menu-item>
-          <el-menu-item index="1-2">
-            item one
-            <span><i class="el-icon-circle-close"></i></span>
-          </el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group title="Group Two">
-          <el-menu-item index="1-3">
-            item three
-            <span><i class="el-icon-circle-close"></i></span>
-          </el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
-          <template #title>item four</template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
-        </el-submenu> -->
       </el-submenu>
       <el-menu-item index="3" @click="blogSelect">
         <i class="el-icon-document"></i>
         <span>블로그</span>
       </el-menu-item>
-      <el-menu-item index="4" @click="boardSelect">
-        <i class="el-icon-edit-outline"></i>
-        <span>게시판</span>
-      </el-menu-item>
     </el-menu>
-    <!-- <form id="testForm" @submit.prevent="sendImg">
-      <input type="file" name="image" id="image">
-      <button>send</button>
-    </form> -->
   </div>
-
-  <form action="uploadFile"></form>
 </template>
 
 <script>
@@ -74,6 +45,9 @@ export default {
     })
     const homeSelect = function () {
       router.push({ name: 'Home' })
+    }
+    const blogSelect = function () {
+      router.push({ name: 'MyBlog' })
     }
     const deleted = (roomId) => {
       ElMessageBox.confirm('OK버튼을 누르면 방이 영원히 삭제됩니다. 진행하시겠습니까?', '경고', {
@@ -103,31 +77,13 @@ export default {
         });
       });
     }
-    const sendImg = () => {
-      let frm = new FormData();
-      var image = document.getElementById("image");
-      frm.append("images", image.files[0]);
-      axios.post('/images', frm,{ Headers: {'Content-Type': 'multipart/form-data'}})
-      .then(res=>{
-        console.log(res.data)
-    }
-      )
-    }
-    const submitUpload = () => {
-      this.$refs.upload.submit()
-    }
     onMounted(() => {
       store.dispatch('root/requestHistory')
-      .then(res=>{
-        console.log( res.data);
+      .then((res) => {
         state.createdRoomHistory = res.data
-        console.log(state.createdRoomHistory)
-        // store.commit('root/SET_HISTORY', res.data)
       })
     })
-
-
-    return { state, homeSelect, deleted, submitUpload,sendImg }
+    return { state, homeSelect, blogSelect, deleted }
   }
 }
 </script>
