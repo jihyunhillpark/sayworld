@@ -1,5 +1,9 @@
 <template>
-  <el-card :body-style="{ padding: '0px' }">
+  <el-page-header @back="goBack" content="마이 페이지">
+  </el-page-header>
+  <el-divider></el-divider>
+
+  <el-card>
     <div class="image-wrapper" align="left" style="float: left">
       <el-skeleton style="width: 100%" >
         <template #template>
@@ -14,24 +18,53 @@
         </p>
     </div>
     <div>
-      <avataaars></avataaars>
+<!--      <avataaars></avataaars>-->
     </div>
 
-      <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>
-      <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>
+<!--    <button size="md" variant="danger" type="submit" v-on:click="goCulturePage">문화력 등록</button>-->
+    <el-button type="text" v-on:click="goCulturePage">문화력 등록</el-button>
+    <el-divider direction="vertical"></el-divider>
+<!--    <button size="md" variant="danger" type="submit" v-on:click="goMyBlog">내 블로그 바로가기</button>-->
+    <el-button type="text" v-on:click="goMyBlog">내 블로그 바로가기</el-button>
 
-    <div>
-      <!--   <p v-for="(value, name) in info" v-bind:key="value">{{ name }} : {{value}}</p> -->
-      <a>이메일 : </a>
-      <a v-for="(email) in info.email" v-bind:key="email">{{email}}</a> <br>
-      <a>닉네임 : </a>
-      <a v-for="(nickname) in info.nickname" v-bind:key="nickname">{{nickname}}</a> <br>
-      <a>연령대 : </a>
-      <a>{{info.age}}</a> <br>
-      <a>기본 페이지 설정 : </a>
-      <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a> <br>
+
+    <div class="text item">
+      <el-row :gutter="20">
+        <el-col :span="6" >
+          <a>이메일 : </a>
+        </el-col>
+        <el-col :span="6">
+          <a v-for="(email) in info.email" v-bind:key="email">{{email}}</a>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6" >
+          <a>닉네임 :</a>
+          </el-col>
+        <el-col :span="6">
+          <a v-for="(nickname) in info.nickname" v-bind:key="nickname">{{nickname}}</a>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <a>연령대 : </a>
+        </el-col>
+        <el-col :span="6">
+          <a>{{info.age}}</a>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6" >
+          <a>기본 페이지 : </a>
+         </el-col>
+        <el-col :span="6">
+          <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a> <br>
+        </el-col>
+      </el-row>
     </div>
-      <button size="md" variant="danger" type="submit"  v-on:click="getout">회원탈퇴</button>
 
     <div style="text-align: left; padding: 14px;">
         <span class="title">{{ title }}</span>
@@ -39,6 +72,8 @@
           <span>{{ desc }}</span>
         </div>
       </div>
+
+    <el-divider content-position="left">관심사와 문화력</el-divider>
 
     <article style="text-align: left">
       <section>
@@ -63,8 +98,9 @@
         <p>Content...</p>
       </section>
     </article>
-
     </el-card>
+
+  <el-button class="last" type="danger" plain v-on:click="getout">회원 탈퇴</el-button>
   </template>
 <script>
   import axios from "axios";
@@ -72,7 +108,7 @@
   import Avataaars from 'vuejs-avataaars'
   export default {
     components: {
-      Avataaars
+      // Avataaars
     },
 
     name: "MyPage",
@@ -191,5 +227,16 @@
 </script>
 
   <style scoped>
+    .text {
+      font-size: 20px;
+      align-items: flex-end;
+    }
 
+    .item {
+      padding: 18px 0;
+    }
+
+    .last {
+      align-content: end;
+    }
   </style>

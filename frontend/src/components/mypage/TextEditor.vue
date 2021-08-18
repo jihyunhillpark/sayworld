@@ -6,7 +6,7 @@
     <el-input type="text" placeholder="제목을 입력하세요" v-model="blogTitle">
       <template #prepend>제목 : </template>
     </el-input>
-    <QuillEditor :options="options" theme="snow" v-model:content="editor.content" @update:content="onEditorChange($event)"/>
+    <QuillEditor :options="options" theme="snow" v-model:content="editor._content" @update:content="onEditorChange($event)"/>
   </div>
   <el-row class="bottom">
     <el-col :span="6">
@@ -18,8 +18,8 @@
       <el-switch
         style="display: block"
         v-model="cateButton.value"
-        active-color="#13ce66"
-        inactive-color="#ff4949"
+        active-color="#7fc6a6"
+        inactive-color="#f1a4a4"
         active-text="책"
         inactive-text="영화"
       ></el-switch>
