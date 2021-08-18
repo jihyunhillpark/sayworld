@@ -2,14 +2,13 @@
   <el-container class="main-wrapper">
     <MainHeader />
     <el-container class="main-container">
-      <el-aside class="hide-on-small" width="240px">
+      <el-aside class="hide-on-small"  style="width: 215px;">
         <MainSidebar />
       </el-aside>
       <el-main>
         <router-view></router-view>
       </el-main>
     </el-container>
-    <!-- <MainFooter :height="`110px`" /> -->
   </el-container>
 </template>
 <style>

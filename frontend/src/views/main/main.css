@@ -16,11 +16,16 @@
 } */
 
 .main-container {
-  height: calc(100% - 70px);
+  height: calc(100% - 100px);
   /* height: 85vh; */
   /* height: 100%; */
 }
-
+.hide-on-small {
+  width: 200px;
+  padding-left: 2%;
+  /* max-width: 250px;
+  min-width: 200px; */
+}
 .main-container .hide-on-small::-webkit-scrollbar {
   display: none;
 }
