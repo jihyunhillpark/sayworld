@@ -206,7 +206,7 @@ export default {
 </style>
 <style>
 .pinning-header {
-  height: 70px;
+  height: 100px;
   text-align: center;
 }
 .pinning-header .pinning-header-container {
@@ -219,7 +219,7 @@ export default {
 }
 .pinning-header .pinning-header-container .main-header {
   z-index: 2;
-  height: 70px;
+  height: 100px;
 }
 .pinning-header .main-header {
   position: relative;
@@ -250,6 +250,10 @@ export default {
 .nav-element {
   align-items: center;
   vertical-align: middle;
+}
+.nav-element .search-box {
+  width: 20vw;
+  max-width: 250px;
 }
 .pinning-header .secondary-navigation .nav-element:not(:last-child) {
   margin-right: 15px;

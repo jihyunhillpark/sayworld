@@ -2,8 +2,7 @@
 <div>
   <el-button type="primary" icon="el-icon-folder-add" @click="dialogFormVisible = true" circle></el-button>
   <el-dialog title="화상채팅방 생성" v-model="dialogFormVisible">
-    
-    <el-form :model="form">
+    <el-form :model="form" >
     <el-form-item prop="name" label="방 이름" :label-width="formLabelWidth"
       :rules="[
         { required: true, message: '필수 입력 항목입니다.', trigger: 'blur' },
@@ -82,6 +81,29 @@
         </div>
       </div>
     </div> -->
+      <div class="container">
+         <div class="wrapper">
+            <div class="image">
+               <img id="thumbnail-image" src="" alt=" ">
+            </div>
+            <div class="content">
+               <div class="icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+               </div>
+               <div class="text">
+                  방생성 썸네일 이미지를 추가해주세요.
+               </div>
+            </div>
+            <div id="cancel-btn" @click="removeImgAction">
+               <i class="fas fa-times"></i>
+            </div>
+            <div class="file-name">
+               {{ fileName }}
+            </div>
+         </div>
+         <button @click="chooseFile" type="button" id="custom-btn">Choose a file</button>
+         <input id="file-input" type="file" hidden @change="getFile">
+      </div>
     </el-form>
     <template #footer>
     <span class="dialog-footer">
@@ -90,6 +112,9 @@
     </span>
     </template>
   </el-dialog>
+  <el-dialog v-model="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" alt="" />
+  </el-dialog>
 </div>
 </template>
 <script>
@@ -97,6 +122,9 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import { useStore } from 'vuex';
 import { useRouter } from "vue-router"
+import { wrap } from 'lodash';
+
+let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
 
 export default {
   name: 'CreateRoom',
@@ -136,6 +164,12 @@ export default {
       block : false,
       mute : false,
       hostId : store.state.root.userInfo.userId,
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+
+      fileName: "파일을 올려주세요 (*.png, jpeg, jpg)",
+      image: undefined,
     };
   },
   mounted() {
@@ -158,6 +192,36 @@ export default {
     })
   },
   methods: {
+    chooseFile(){
+      const fileInput = document.getElementById('file-input');
+      fileInput.click();
+    },
+    getFile(e){
+      const file = e.target.files[0];
+      this.image = file;
+      if(file){
+        // this.image = file;
+        const reader = new FileReader();
+        reader.onload = function(){
+          const result = reader.result;
+          var uploadImage = document.getElementById("thumbnail-image");
+          uploadImage.src = result;
+          const wrapper = document.querySelector(".wrapper");
+          wrapper.classList.add("active");
+        }
+        reader.readAsDataURL(file);
+      }
+      if(e.target.value){
+        let valueStore = e.target.value.match(regExp);
+        this.fileName = valueStore;
+      }
+    },
+    removeImgAction(){
+      var uploadImage = document.getElementById("thumbnail-image");
+      uploadImage.src = "";
+      const wrapper = document.querySelector(".wrapper");
+      wrapper.classList.add("active");
+    },
     fromClose1(){
       this.dialogFormVisible = false;
     },
@@ -240,27 +304,55 @@ export default {
       this.files = this.files.filter(data => data.number !== Number(name));
     },
     //방생성 API
-    formRoom(){
-      console.log(this.files[0]);
-      axios({
-        method:"POST",
-        url: "rooms",
-        data:{
-          roomName : this.form.name,
-          hostId: this.hostId,
-          keywords : this.dynamicTags,
-          limit: this.num,
-          bookCategoryId:this.bValue,
-          movieCategoryId: this.mValue,
-          //"roomInviteCode": String,
-          //password: String,
-          thumbnailUrl: "idk",//window.URL.createObjectURL(this.files[0]),
-          //"email": email.value,
-          password: this.form.pwd,
-          sessionId: this.form.name,
-        }
+    async formRoom(){
+      //console.log(this.files[0]);
+      let frm = new FormData();
+      frm.append('images', this.image);
+      var data = {
+        roomName : this.form.name,
+        hostId: this.hostId,
+        keywords : this.dynamicTags,
+        limit: this.num,
+        bookCategoryId:this.bValue,
+        movieCategoryId: this.mValue,
+        //"roomInviteCode": String,
+        //password: String,
+        thumbnailUrl: 'https://ifh.cc/g/FieTKm.png',
+        //"email": email.value,
+        password: this.form.pwd,
+        sessionId: this.form.name,
+      };
+
+      await axios.post('/images', frm,{ Headers: {'Content-Type': 'multipart/form-data'}})
+      .then(res=>{
+        data.thumbnailUrl = res.data;
+        console.log(res.data);
       })
-      .then(() => {
+
+      // axios({
+      //   method:"POST",
+      //   url: "rooms",
+      //   data:{
+      //     roomName : this.form.name,
+      //     hostId: this.hostId,
+      //     keywords : this.dynamicTags,
+      //     limit: this.num,
+      //     bookCategoryId:this.bValue,
+      //     movieCategoryId: this.mValue,
+      //     //"roomInviteCode": String,
+      //     //password: String,
+      //     thumbnailUrl: this.files[0],
+      //     //"email": email.value,
+      //     password: this.form.pwd,
+      //     sessionId: this.form.name,
+      //   },
+      //   {
+      //     header: { 'Content-Type': 'multipart/form-data' }
+      // })
+
+      await this.$store.dispatch(`root/createRoom`, data)
+      .then((res) => {
+        console.log(res.data)
         this.$router.push({ name : 'MeetingRoom', params: { roomName: this.form.name }  })
         this.fromClose1()
       })
@@ -299,4 +391,99 @@ export default {
 </script>
 <style>
 @import "./CreateRoom.css";
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+.container{
+
+  height: 350px;
+  width: 100%;
+  /* width: 430px; */
+  position: relative;
+}
+.container .wrapper{
+  position: relative;
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
+  background: #fff;
+  border: 2px dashed #c2cdda;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.wrapper.active{
+  border: none;
+}
+.wrapper .image{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.wrapper .icon{
+  font-size: 100px;
+  color: #9658fe;
+}
+.wrapper .text{
+  font-size: 20px;
+  font-weight: 500;
+  color: #5B5B7B;
+}
+.wrapper #cancel-btn i{
+  position: absolute;
+  font-size: 20px;
+  right: 15px;
+  top: 15px;
+  color: #9658fe;
+  cursor: pointer;
+  display: none;
+}
+.wrapper.active:hover #cancel-btn i{
+  display: block;
+}
+.wrapper #cancel-btn i:hover{
+  color: #e74c3c;
+}
+.wrapper .file-name{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 18px;
+  color: #fff;
+  display: none;
+  background: linear-gradient(135deg,#3a8ffe 0%,#9658fe 100%);
+}
+.wrapper.active:hover .file-name{
+  display: block;
+}
+.container #custom-btn{
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  height: 30px;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: linear-gradient(135deg,#3a8ffe 0%,#9658fe 100%);
+}
 </style>

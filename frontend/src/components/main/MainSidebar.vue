@@ -47,7 +47,13 @@
         <span>게시판</span>
       </el-menu-item>
     </el-menu>
+    <!-- <form id="testForm" @submit.prevent="sendImg">
+      <input type="file" name="image" id="image">
+      <button>send</button>
+    </form> -->
   </div>
+
+  <form action="uploadFile"></form>
 </template>
 
 <script>
@@ -55,6 +61,7 @@ import { useRouter } from 'vue-router';
 import { defineComponent, onMounted, reactive } from "vue";
 import { ElMessageBox,ElMessage } from 'element-plus';
 import { useStore } from "vuex";
+import axios from 'axios';
 
 export default {
   name: "MainSidebar",
@@ -62,7 +69,8 @@ export default {
     const store = useStore()
     const router = useRouter()
     const state = reactive({
-      createdRoomHistory: undefined
+      createdRoomHistory: undefined,
+      // frm: new FormData,
     })
     const homeSelect = function () {
       router.push({ name: 'Home' })
@@ -95,7 +103,19 @@ export default {
         });
       });
     }
-
+    const sendImg = () => {
+      let frm = new FormData();
+      var image = document.getElementById("image");
+      frm.append("images", image.files[0]);
+      axios.post('/images', frm,{ Headers: {'Content-Type': 'multipart/form-data'}})
+      .then(res=>{
+        console.log(res.data)
+    }
+      )
+    }
+    const submitUpload = () => {
+      this.$refs.upload.submit()
+    }
     onMounted(() => {
       store.dispatch('root/requestHistory')
       .then(res=>{
@@ -107,14 +127,15 @@ export default {
     })
 
 
-    return { state, homeSelect, deleted }
+    return { state, homeSelect, deleted, submitUpload,sendImg }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .main-sidebar {
   height: 100%;
+  width: 100%;
 }
 
 .main-sidebar .main-sidebar-container {
@@ -125,5 +146,8 @@ export default {
   width: 80%;
   display: inline-block;
   text-overflow: ellipsis;
+}
+.el-submenu .el-menu-item {
+  padding: 0 15px;
 }
 </style>

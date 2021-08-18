@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.api.response.RoomCreatePostRes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
@@ -43,7 +44,6 @@ public class RoomController {
 	})
 	public ResponseEntity<? extends BaseResponseBody> createRoom(@RequestBody RoomCreatePostRequest roomCreatePostRequest, HttpSession httpSession) throws Exception {
 		Room room = null;
-
 		if ((room = roomService.createRoom(roomCreatePostRequest)) != null){ // 새로운 방일 경우 ( 기존에 존재하는 방이 아닐 경우)
 			// 방생성 성공 응답
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
