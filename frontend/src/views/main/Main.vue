@@ -2,7 +2,7 @@
   <el-container class="main-wrapper">
     <MainHeader />
     <el-container class="main-container">
-      <el-aside class="hide-on-small" style="width: 215px;">
+      <el-aside class="hide-on-small" style="width: 225px;">
         <MainSidebar />
       </el-aside>
       <el-main>

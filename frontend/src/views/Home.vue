@@ -1,15 +1,14 @@
 <template>
   <div>
-    <!-- 세부 위치 수정 추후에 -->
-    <CreateRoom />
-    <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+    <div class="room-btn">
+      <CreateRoom />
+      <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+    </div>
     <Conference />
   </div>
 
 </template>
-<style>
 
-</style>
 <script>
 import Conference from "@/components/home/Conference"
 import CreateRoom from "@/components/webrtc/CreateRoom"
@@ -46,3 +45,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.room-btn {
+  display: flex;
+
+}
+</style>
