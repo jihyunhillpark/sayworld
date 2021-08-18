@@ -11,7 +11,13 @@ export function getActiveMenuIndex (state) {
 	const keys = Object.keys(state.menus)
 	return keys.findIndex(item => item === state.activeMenu)
 }
+// 사용자의 방생성 내역 가져오기
+export function getRoomHistory(state) {
+  return state.roomHistory;
+}
 
 export function getUserinfo(state) {
   return state.userInfo;
 }
+
+

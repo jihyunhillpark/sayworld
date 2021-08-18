@@ -54,7 +54,8 @@ export default {
       isCollapse: true,
       title: 'title',
       keyword: 'keyword',
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      // circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: `https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400`,
     })
 
     const checked = computed({
@@ -70,6 +71,7 @@ export default {
       } else {
         store.commit('root/SET_CURRENT_PAGE', 1)
       }
+      // router.go()
     }
 
     const clickMyPage = () => {
@@ -95,13 +97,7 @@ export default {
     return { state, checked, clickLogout, clickMyPage, searchRoom, changeToggle }
   },
 
-
-
-
-  }
-
-
-
+}
 </script>
 
 <style lang="scss">
@@ -182,7 +178,7 @@ export default {
     }
 
     &:before {
-      background: #ff3a19;
+      background: #f1a4a4;
       content: attr(data-tg-off);
     }
 
@@ -210,7 +206,8 @@ export default {
 </style>
 <style>
 .pinning-header {
-  height: 70px;
+  height: 100px;
+  text-align: center;
 }
 .pinning-header .pinning-header-container {
   position: relative;
@@ -222,7 +219,7 @@ export default {
 }
 .pinning-header .pinning-header-container .main-header {
   z-index: 2;
-  height: 70px;
+  height: 100px;
 }
 .pinning-header .main-header {
   position: relative;
@@ -253,6 +250,10 @@ export default {
 .nav-element {
   align-items: center;
   vertical-align: middle;
+}
+.nav-element .search-box {
+  width: 20vw;
+  max-width: 250px;
 }
 .pinning-header .secondary-navigation .nav-element:not(:last-child) {
   margin-right: 15px;

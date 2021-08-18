@@ -41,21 +41,22 @@ export function requestCategory ({ state }, payload) {
   return $axios.get(url, {headers: headers})
 }
 
-// 카테고리 검색 추가해야함
 export function searchRoom ({ state, commit }, payload) {
   let headers = {
     Authorization: "Bearer " + state.token
   }
   $axios({
-    url: `rooms/search?input=${payload.searchValue}&search_type=${payload.searchType}`,
+    url: `rooms/page/${state.curPage}/search?search_type=${payload.searchType}&input=${payload.searchValue}`,
     method: 'get',
     headers: headers,
   })
   .then((res) => {
     if (payload.searchType === 'title') {
+      console.log(res.data)
       commit('SET_SEARCH_TITLE', res.data)
       router.push({name: "SearchResult", params: { searchValue: payload.searchValue }})
     } else if (payload.searchType === 'keyword') {
+      console.log(res.data)
       commit('SET_SEARCH_KEYWORD', res.data)
     } else {
       commit('SET_SEARCH_CATEGORY', res.data)
@@ -112,85 +113,6 @@ export function deleteBlog({state}, payload) {
   return $axios.delete(url, body)
 }
 
-// openvidu
-// export function joinSession({ state, dispatch, commit }, mySessionId) {
-//   console.log("vuex joinsession", mySessionId)
-//   // --- Get an OpenVidu object ---
-//   const OV = new OpenVidu()
-
-//   // --- Init a session ---
-//   const session = OV.initSession()
-//   // --- Specify the actions when events take place in the session ---
-
-//   // On every new Stream received...
-//   const subscribers = []
-//   session.on('streamCreated', ({ stream }) => {
-//     const subscriber = session.subscribe(stream)
-//     subscribers.push(subscriber)
-//   })
-
-//   // On every Stream destroyed...
-//   session.on('streamDestroyed', ({ stream }) => {
-//     const index = subscribers.indexOf(stream.streamManager, 0)
-//     if (index >= 0) {
-//       subscribers.splice(index, 1)
-//     }
-//   })
-
-//   // On every asynchronous exception...
-//   session.on('exception', ({ exception }) => {
-//       console.warn(exception)
-//   })
-
-//   // --- Connect to the session with a valid user token ---
-
-//   // 'getToken' method is simulating what your server-side should do.
-//   // 'token' parameter should be retrieved and returned by your own backend
-//   dispatch('getToken', mySessionId)
-//   .then(token => {
-//     console.log(token)
-//     session.connect(token, { clientData: state.userInfo.nickname })
-//     // session.connect(token)
-//     .then(() => {
-//       // --- Get your own camera stream with the desired properties ---
-//       let publisher = OV.initPublisher(undefined, {
-//         audioSource: undefined, // The source of audio. If undefined default microphone
-//         videoSource: undefined, // The source of video. If undefined default webcam
-//         publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
-//         publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-//         resolution: '640x480',  // The resolution of your video
-//         frameRate: 30,         // The frame rate of your video
-//         insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-//         mirror: false          // Whether to mirror your local video or not
-//       })
-
-//       // localStorage.setItem('OV', JSON.stringify(OV))
-//       // localStorage.setItem('mainStreamManager', JSON.stringify(publisher))
-//       // localStorage.setItem('publisher', JSON.stringify(publisher))
-//       // localStorage.setItem('session', JSON.stringify(session))
-//       // localStorage.setItem('subscribers', subscribers)
-//       // localStorage.setItem('ovToken', token)
-
-//       // console.log(publisher)
-//       // commit('SET_OV', OV);
-//       // commit('SET_MAINSTREAMMANAGER', publisher);
-//       // commit('SET_PUBLISHER', publisher);
-//       // commit('SET_SESSION', session);
-//       // commit('SET_SUBSCRIBERS', subscribers);
-//       // commit('SET_OVTOKEN', token);
-
-//       // --- Publish your stream ---
-//       session.publish(publisher)
-
-//     })
-//     .catch(error => {
-//       console.log('There was an error connecting to the session:', error.code, error.message);
-//     })
-//   })
-
-//   window.addEventListener('beforeunload', this.leaveSession)
-// }
-
 export function getToken ({ dispatch }, mySessionId) {
   console.log('getTOken: ', mySessionId)
   return dispatch('createSession', mySessionId).then(sessionId => dispatch('createToken', sessionId));
@@ -237,6 +159,22 @@ export function createToken ({ dispatch }, sessionId) {
     .then(data => resolve(data.token))
     .catch(error => reject(error.response))
   })
+}
+export function createRoom({state}, payload) {
+  const url = `/rooms`
+  return $axios.post(url,payload)
+}
+export function requestHistory ({ state }) {
+  const url = `/users/history/${state.email}`
+  let headers = {
+    Authorization: "Bearer " + state.token
+  }
+  return $axios.get(url, {headers: headers})
+}
+
+export function deleteRoom ({state}, payload) {
+  const url =`/rooms/${payload}`
+  return $axios.delete(url);
 }
 
 export function requestBook ({ state }, payload) {

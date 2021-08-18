@@ -8,26 +8,14 @@
   </el-row>
 </template>
 <style>
-@media (max-width: 700px) {
-  .main-footer {
-    height: 190px;
-  }
-  .main-footer .contents {
-    line-height: 190px;
-    text-align: center;
-    margin: 0 auto;
-  }
+.main-footer {
+  height: 80px;
+  position: absolute;
 }
-
-@media (min-width: 701px) {
-  .main-footer {
-    height: 110px;
-  }
-  .main-footer .contents {
-    line-height: 110px;
-    text-align: center;
-    margin: 0 auto;
-  }
+.main-footer .contents {
+  line-height: 80px;
+  text-align: center;
+  margin: 0 auto;
 }
 </style>
 <script>
@@ -40,7 +28,7 @@ export default {
   props: {
     height: {
       type: String,
-      default: '110px'
+      default: '80px'
     }
   },
 
