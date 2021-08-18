@@ -4,8 +4,8 @@
     <CreateRoom />
     <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
     <Conference />
-  </div>
 
+  </div>
 </template>
 <style>
 
@@ -41,7 +41,6 @@ export default {
         }
       })
     }
-
     return { state, load, clickConference };
   }
 };

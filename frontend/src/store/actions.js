@@ -141,7 +141,10 @@ export function createToken ({ dispatch }, sessionId) {
     .catch(error => reject(error.response))
   })
 }
-
+export function createRoom({state}, payload) {
+  const url = `/rooms`
+  return $axios.post(url,payload)
+}
 export function requestHistory ({ state }) {
   const url = `/users/history/${state.email}`
   let headers = {
