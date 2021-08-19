@@ -295,12 +295,13 @@ h1 {
 }
 #session-title {
   /* display: inline-block; */
-  background-color: #abc990;
+  /* background-color: #abc990; */
   margin-left: 10px;
   padding-right: 10px;
 }
 .header-content {
   height: 100%;
+  padding-left: 50px;
 }
 #buttonLeaveSession {
   margin-top: 5px;

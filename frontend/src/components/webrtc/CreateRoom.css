@@ -209,11 +209,12 @@ a:hover .demo-logo {
 
 #session-header {
   margin-bottom: 20px;
+  background-color: #97a3ae;
 }
 
 #session-title {
   display: inline-block;
-  background-color: #e9e6c4;
+  /* background-color: #e9e6c4; */
 }
 
 #buttonLeaveSession {
