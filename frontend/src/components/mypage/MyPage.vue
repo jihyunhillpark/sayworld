@@ -16,7 +16,7 @@
     <el-button type="text" v-on:click="goMyBlog">내 블로그 바로가기</el-button>
 
     <div class="text item">
-      <el-row :gutter="20" style="text-align: center">
+      <el-row :gutter="20">
         <el-col :span="6" >
           <a>이&nbsp;&nbsp;&nbsp;메&nbsp;&nbsp;&nbsp;일 </a>
         </el-col>
@@ -45,10 +45,17 @@
 
       <el-row :gutter="20">
         <el-col :span="6" >
-          <a>첫 페이지 (0:영화, 1:책) </a>
+          <a>관심 카테고리</a>
         </el-col>
         <el-col :span="6">
-          <a v-for="(defaultPage) in info.defaultPage" v-bind:key="defaultPage">{{defaultPage}}</a><br>
+           <el-switch
+            style="display: block"
+            v-model="info.defaultPage"
+            active-color="#7fc6a6"
+            inactive-color="#f1a4a4"
+            active-text="책"
+            inactive-text="영화"
+          ></el-switch> <br>
         </el-col>
       </el-row>
     </div>
@@ -234,11 +241,11 @@ export default {
 
 .item {
   padding: 18px 0;
-
 }
 
+
 .last {
-  align-content: end;
+  align-content: center;
 }
 
 
