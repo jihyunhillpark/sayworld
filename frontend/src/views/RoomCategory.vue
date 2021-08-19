@@ -53,7 +53,7 @@ export default {
 .bookcategoryBtn {
   width: 100%;
   margin-top: 10px;
-  height: 10vw;
+  height: 100%;
   background-color: #dcefe6;
   text-align: center;
   font-size: 1.5rem;
@@ -61,10 +61,13 @@ export default {
 .moviecategoryBtn {
   width: 100%;
   margin-top: 10px;
-  height: 10vw;
+  height: 100%;
   background-color: #dcefe6;
   text-align: center;
   font-size: 1.5rem;
+}
+.el-col {
+  margin-top: 10px !important;
 }
 .el-row {
   height: 90%;

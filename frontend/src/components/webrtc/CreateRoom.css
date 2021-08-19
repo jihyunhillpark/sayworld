@@ -22,6 +22,10 @@
 }
 .el-tag {
   margin-right: 10px;
+  --el-tag-background-color: #92a8d16b;
+  --el-tag-border-color: #d9ecff;
+  --el-tag-font-color: #74a0cc;
+  --el-tag-hover-color: #409eff;
 }
 .button-new-tag {
   height: 34px;
