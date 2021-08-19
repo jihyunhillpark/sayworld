@@ -65,7 +65,7 @@
       <span class="dialog-footer">
         <el-button v-show="state.pageNum === 2" type="primary" :disabled="state.signupButton" @click="clickSignup">다음으로</el-button>
         <el-button v-show="state.pageNum === 1" type="primary" :disabled="state.selected.length < 3" @click="clickNext">다음으로</el-button>
-        <el-button v-show="!state.pageNum" type="primary" :disabled="state.selected.length < 3" @click="[clickNext(), handleClose()]">가입하기</el-button>
+        <el-button v-show="!state.pageNum" type="primary" :disabled="state.selected.length < 3" @click="clickNext(), handleClose()">가입하기</el-button>
       </span>
     </template>
   </el-dialog>

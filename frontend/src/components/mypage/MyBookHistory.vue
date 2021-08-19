@@ -1,6 +1,6 @@
 <template>
-  <p><button size="md" variant="danger" type="submit" style="float: left" @click="ShowMyBook">나의 책 히스토리</button></p><br><br>
-  <p></p>
+  <el-page-header @back="GoMyPage" content="나의 독서 히스토리"></el-page-header>
+  <el-col :span="6" :offset="12"><el-button type="submit" style="float: left;" @click="ShowMyBook">Click!</el-button></el-col><br><br>
   <table class='table table-dark'  style="width: 100%; height: 100%" border='2px' v-show="state.ok">
     <thead>
     <tr>
@@ -13,7 +13,7 @@
     <tr v-for="info in state.infos" v-bind:key="info" v-show="info.cultureCategory == 1">
       <td>{{info.cultureTitle}}</td>
       <td>
-        <button size="md" variant="danger" type="submit" v-on:click="openPopup($event)"  :value="info.cultureTitle">Click!</button>
+        <button size="md" variant="danger" type="submit" v-on:click="openPopup($event)"  :value="info.cultureTitle">자세히 보기</button>
       </td>
       <td>
         <button size="md" variant="danger" type="submit" v-on:click="DeleteBook($event)" :value="info.cultureTitle">삭제</button>
@@ -119,7 +119,11 @@ export default {
       })
     }
 
-    return {state, ShowMyBook, openPopup, DeleteBook}
+    const GoMyPage = function () {
+      router.push({ name: 'MyPage' })
+    }
+
+    return {state, ShowMyBook, openPopup, DeleteBook, GoMyPage}
   }
 
 }

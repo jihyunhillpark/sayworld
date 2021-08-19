@@ -14,6 +14,9 @@
   height: 100%;
   display: inline-block;
 } */
+* {
+  --el-color-primary: #92a8d1;
+}
 
 .main-container {
   height: calc(100% - 100px);
@@ -35,4 +38,18 @@
   margin-left: 0 !important;
   margin-right: 0 !important;
   border-top: 1px solid #dcdfe6;
+}
+
+.el-carousel__button {
+  background-color: #5780c1;
+}
+
+.el-button--primary {
+  background:#92a8d1;
+  border-color:#92a8d1;
+  /* --el-button-hover-color: c9d4e8 */
+}
+
+.el-input {
+  --el-input-focus-border: #92a8d1;
 }

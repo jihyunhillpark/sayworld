@@ -22,6 +22,10 @@
 }
 .el-tag {
   margin-right: 10px;
+  --el-tag-background-color: #92a8d16b;
+  --el-tag-border-color: #d9ecff;
+  --el-tag-font-color: #74a0cc;
+  --el-tag-hover-color: #409eff;
 }
 .button-new-tag {
   height: 34px;
@@ -209,11 +213,12 @@ a:hover .demo-logo {
 
 #session-header {
   margin-bottom: 20px;
+  background-color: #97a3ae;
 }
 
 #session-title {
   display: inline-block;
-  background-color: #e9e6c4;
+  /* background-color: #e9e6c4; */
 }
 
 #buttonLeaveSession {
@@ -221,18 +226,26 @@ a:hover .demo-logo {
   margin-top: 20px;
 }
 
+#video-container {
+  padding-left: 20%;
+  padding-top: 5%;
+}
+
 #video-container video {
   position: relative;
   float: left;
-  width: 50%;
+  width: 35%;
   cursor: pointer;
+  /* height: 40vh; */
 }
 
 #video-container video + div {
   float: left;
-  width: 50%;
+  width: 35%;
   position: relative;
   margin-left: -50%;
+  height: 40vh;
+  text-align: center;
 }
 
 #video-container p {

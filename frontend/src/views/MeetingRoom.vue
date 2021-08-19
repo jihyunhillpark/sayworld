@@ -2,25 +2,23 @@
   <div id="session" v-if="state.session">
     <div id="session-header">
       <!-- <i class="el-icon-user"></i> -->
-      <h1 id="session-title">{{$route.params.roomName}}</h1>
-      <span class="mid" v-for="keyW in $route.params.keywords" :key="keyW">
-      &nbsp; #{{keyW}}
-      </span>
+      <div class="header-content">
+        <h1 id="session-title">{{ $route.params.roomName }}</h1>
+        <span class="mid" v-for="keyW in $route.params.keywords" :key="keyW">&nbsp; #{{keyW}}</span>
+      </div>
     </div>
-    <!-- <div id="main-video" class="col-md-6">
-      <user-video :stream-manager="mainStreamManager"/>
-    </div> -->
     <div class="container">
     <div class="messaging">
         <div class="inbox_msg">
           <div class="video_section">
-            <div id="video-container" class="col-md-6">
+            <div id="video-container">
               <user-video :stream-manager="state.publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
               <user-video v-for="sub in state.subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
             </div>
           </div>
           <div class="mesgs">
-            <h4 id=chatName>{{userInfo.nickname}}</h4>
+            <!-- <h4 id=chatName>{{userInfo.nickname}}</h4> -->
+            <h4 id=chatName>채팅</h4>
             <div ref="chatDisplay" class="msg_history">
               <div v-for="(chat,index) in state.chats" :key="index">
                 <div v-if="chat.nickname !== userInfo.nickname" class="incoming_msg">
@@ -272,9 +270,9 @@ export default {
     margin-top: 5px;
     border-radius: 50%;
     padding: 12px;
-    background-color: #6AC3D7;
+    background-color: #c1cde2;
+    color: white;
 }
-
 h1 {
     display: block;
     font-size: 2em;
@@ -284,28 +282,34 @@ h1 {
     margin-inline-end: 0px;
     font-weight: bold;
 }
-
+#session {
+  height: 100%;
+}
 #session-header {
   /* margin-bottom: 20px; */
   margin-block-start: 0px;
   margin-block-end: 0px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
+  height: 70px;
 }
-
 #session-title {
   /* display: inline-block; */
-  background-color: #abc990;
-  padding-left: 10px;
+  /* background-color: #abc990; */
+  margin-left: 10px;
   padding-right: 10px;
 }
-
+.header-content {
+  height: 100%;
+  padding-left: 50px;
+}
 #buttonLeaveSession {
   margin-top: 5px;
-  background: #A1C3CA;
+  background: #c1cde2;
+  color: white;
 }
 
-#video-container video {
+#video-container div video {
   position: relative;
   float: left;
   margin-inline-start : 5px;
@@ -330,18 +334,13 @@ h1 {
   border-bottom-right-radius: 4px;
 }
 
-video {
-  width: 100%;
-  height: auto;
-}
-
 /*  */
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px;
-  background-color: #acacac;
+  background-color: #e5edf7;
   /* z-index: 1; */
   display: flex;
   align-items: center;
@@ -363,11 +362,11 @@ video {
   margin-right: 10px;
 }
 
-/* 채팅 */
 
+/* 채팅 */
 #chatName {
     display: block;
-    background:#d3d3d3 ;
+    background:#c1cde2;
     padding-block: 3px;
     padding-left: 10px;
     margin-block-start: 0px;
@@ -375,9 +374,15 @@ video {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    color: white;
 }
 
-.container{max-width:100%; margin-left:0px; margin-right: 0px;}
+.container{
+  max-width:100%;
+  margin-left:0px;
+  margin-right: 0px;
+  height: calc(100% - 130px);
+}
 img{ max-width:100%;}
 .video_section {
   background: #ffffff none repeat scroll 0 0;
@@ -385,8 +390,9 @@ img{ max-width:100%;}
   overflow: hidden;
   padding-right: 10px;
   padding-left: 10px;
-  width: 70%;
+  width: calc(100% - 300px);
   box-sizing: border-box;
+  height: 100%;
 }
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -399,7 +405,7 @@ img{ max-width:100%;}
   clear: both;
   overflow: hidden;
   max-width: 100%;
-
+  height: 100%;
 }
 .top_spac{ margin: 20px 0 0;}
 
@@ -494,9 +500,10 @@ img{ max-width:100%;}
 .mesgs {
   float: left;
   /* padding: 30px 15px 0 25px; */
-  width: 30%;
+  width: 300px;
   box-sizing: border-box;
   padding-right: 2px;
+  height: 100%;
 }
 
 .sent_msg p {
@@ -522,12 +529,17 @@ img{ max-width:100%;}
   color: #4c4c4c;
   font-size: 15px;
   min-height: 48px;
-  width: 90%;
+  width: 260px;
+  padding-left: 15px;
 }
 
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.type_msg {
+  border-top: 1px solid #c4c4c4;
+  position: relative;
+  height: 50px;
+  }
 .msg_send_btn {
-  background: #90c8d8 none repeat scroll 0 0;
+  background: #c1cde2 none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
@@ -539,13 +551,14 @@ img{ max-width:100%;}
   top: 11px;
   width: 33px;
 }
-.messaging { padding: 0% 10% 0% 10%;}
+.messaging {
+  padding: 0;
+  height: 100%;
+}
 .msg_history {
-  background-color: whitesmoke;
+  background-color: #e5edf7;
   /* background-color: #1C2128; */
-  height: 600px;
+  height: calc(100% - 80px);
   overflow-y: scroll;
 }
-
-
 </style>

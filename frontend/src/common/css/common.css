@@ -13,27 +13,7 @@ html, body {
   font-style: normal;
 }
 
-/* @media (max-width: 1269px) {
-  .hide-on-small {
-    display: none !important;
-  }
-  .hide-on-big {
-    display: block;
-  }
-}
 
-@media (min-width: 1270px) {
-  html, body {
-    min-width: 1270px;
-  }
-
-  .hide-on-small {
-    display: block;
-  }
-  .hide-on-big {
-    display: none !important;
-  }
-} */
 
 @font-face {
   font-family: 'SpoqaHanSansNeo';
