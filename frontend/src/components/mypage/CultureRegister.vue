@@ -129,7 +129,7 @@ export default {
           .then(response => {
             this.info = response.data;
             console.log(this.info)
-            alert("내 문화력(영화)에 등록되었습니다!")
+            alert("내 문화력에 등록되었습니다!")
             window.location.reload()
           })
           .catch(e => {
