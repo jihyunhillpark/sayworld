@@ -67,7 +67,7 @@
         <h2>관심사</h2>
         <a v-if="ResultMovie > ResultBook"> 책보다 영화를 {{ResultMovie-ResultBook}} 개 더 보셨군요!</a>
         <a v-else-if="ResultMovie < ResultBook"> 영화보다 책을 {{ResultBook-ResultMovie}} 개 더 보셨군요!</a>
-        <a v-else-if="ResultMovie==0 && ResultBook==0"> 아직 등록된 문화력이 없네요.. 문화력을 먼저 등록해주세요!</a>
+        <a v-else-if="ResultMovie==0 && ResultBook==0"> 아직 등록된 문화력이 없네요. 문화력을 먼저 등록해주세요!</a>
         <a v-else> 최근에 회원님이 보신 영화와 책의 갯수가 {{ResultBook}}개로 똑같군요!</a><br>
       </section><br>
 
@@ -75,7 +75,8 @@
         <h2>문화력</h2>
         <el-button type="text" v-on:click="goMovieHistory">영화&nbsp;</el-button>
         <a>{{getMovieCount}}</a>
-        <a v-if="ResultMovie >= 5"> <img src="https://ww.namu.la/s/52ec96c36593cb9a5207c62eae6643e5c61feddd26f0d839448289c9ecd639d90c2bc52ca84a49a728d36bee6d49b2527ec1edacdf394aff7f0e9e4d97a9e98fcf2859e93edcdd5094d1cb03ed43959b2304d4b9d7f5b19d1065eb0d9453744b"> </a>
+        <a v-if="ResultMovie >= 7"> <img src="https://w.namu.la/s/51e9b4029ac1a490c24ea1718b11c895963a3c1b4d03e9d5938b083237f37eaeb52cf84bc5c57630cb71e41ae864b415728fcc9bd37530a87c750c3b565b1565259cd4d4d824cde6ce8c5ff1f2a89e64513e97ee940401469370f99c2f6131fb"> </a>
+        <a v-else-if="ResultMovie >= 5"> <img src="https://ww.namu.la/s/52ec96c36593cb9a5207c62eae6643e5c61feddd26f0d839448289c9ecd639d90c2bc52ca84a49a728d36bee6d49b2527ec1edacdf394aff7f0e9e4d97a9e98fcf2859e93edcdd5094d1cb03ed43959b2304d4b9d7f5b19d1065eb0d9453744b"> </a>
         <a v-else-if="ResultMovie >= 3"> <img src="https://ww.namu.la/s/12972d264f271356f0628c24e6a7a3c51a7899873758ce82539541afc4ab5cf253371d5cae03104d1c8d9c6144bf19a2319f6d655cba4a37bf070bec127325510607a65ee28c8f9aa82377b92df8b301fd73f22518694cc3f6e06da9da15ff49"> </a>
         <a v-else> <img src="https://w.namu.la/s/11942d0ba53861ba149c2bce0c0f1410d9b20b27df1aa9f57ffc581a9803135b8a40550d538265aabf27e9c9af7c7551137bf916ee48e7b46e24ff12715a4c9fe7cec0596a29f4a9b3f417c897f5b128c5a7ce0d6147386808f3b21dbb8a2be8"> </a>
 
@@ -83,7 +84,8 @@
 
         <el-button type="text" v-on:click="goBookHistory">독서&nbsp;</el-button>
         <a>{{getBookCount}}</a>
-        <a v-if="ResultBook >= 5"> <img src="https://ww.namu.la/s/52ec96c36593cb9a5207c62eae6643e5c61feddd26f0d839448289c9ecd639d90c2bc52ca84a49a728d36bee6d49b2527ec1edacdf394aff7f0e9e4d97a9e98fcf2859e93edcdd5094d1cb03ed43959b2304d4b9d7f5b19d1065eb0d9453744b"> </a>
+        <a v-if="ResultBook >= 7"> <img src="https://w.namu.la/s/51e9b4029ac1a490c24ea1718b11c895963a3c1b4d03e9d5938b083237f37eaeb52cf84bc5c57630cb71e41ae864b415728fcc9bd37530a87c750c3b565b1565259cd4d4d824cde6ce8c5ff1f2a89e64513e97ee940401469370f99c2f6131fb"> </a>
+        <a v-else-if="ResultBook >= 5"> <img src="https://ww.namu.la/s/52ec96c36593cb9a5207c62eae6643e5c61feddd26f0d839448289c9ecd639d90c2bc52ca84a49a728d36bee6d49b2527ec1edacdf394aff7f0e9e4d97a9e98fcf2859e93edcdd5094d1cb03ed43959b2304d4b9d7f5b19d1065eb0d9453744b"> </a>
         <a v-else-if="ResultBook >= 3"> <img src="https://ww.namu.la/s/12972d264f271356f0628c24e6a7a3c51a7899873758ce82539541afc4ab5cf253371d5cae03104d1c8d9c6144bf19a2319f6d655cba4a37bf070bec127325510607a65ee28c8f9aa82377b92df8b301fd73f22518694cc3f6e06da9da15ff49"> </a>
         <a v-else> <img src="https://w.namu.la/s/11942d0ba53861ba149c2bce0c0f1410d9b20b27df1aa9f57ffc581a9803135b8a40550d538265aabf27e9c9af7c7551137bf916ee48e7b46e24ff12715a4c9fe7cec0596a29f4a9b3f417c897f5b128c5a7ce0d6147386808f3b21dbb8a2be8"> </a>
 
