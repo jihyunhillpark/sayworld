@@ -54,7 +54,6 @@ export default {
   width: 100%;
   margin-top: 10px;
   height: 100%;
-  background-color: #dcefe6;
   text-align: center;
   font-size: 1.5rem;
 }
@@ -62,7 +61,6 @@ export default {
   width: 100%;
   margin-top: 10px;
   height: 100%;
-  background-color: #dcefe6;
   text-align: center;
   font-size: 1.5rem;
 }
@@ -87,6 +85,9 @@ export default {
   };
 }
 .el-button--danger.is-plain {
+  background-color: #fef0f0;
+  color: #f56c6c;
+
   &:hover,
   &.active,
   &:focus {
