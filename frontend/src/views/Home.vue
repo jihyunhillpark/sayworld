@@ -2,7 +2,7 @@
   <div>
     <div class="room-btn">
       <CreateRoom />
-      <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+      <el-button class="category-btn" type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
     </div>
     <Conference />
 
@@ -48,6 +48,11 @@ export default {
 <style scoped>
 .room-btn {
   display: flex;
-
+  justify-content: flex-end;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.category-btn {
+  margin-left: 5px !important;
 }
 </style>

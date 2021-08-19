@@ -1,10 +1,12 @@
 <template>
   <div>
     <div v-if="searchKeyword.length || searchTitle.length">
-      <h3>{{ $route.params.searchValue }} 검색 결과</h3>
+      <h4>{{ $route.params.searchValue }} 검색 결과</h4>
       <el-tabs type="border-card">
         <el-tab-pane label="방 제목">
-          <h3 v-show="!searchTitle.length">방 제목에 해당하는 결과가 없습니다.</h3>
+          <div v-show="!searchTitle.length" class="no-search-wrapper">
+            <h3>방 제목에 해당하는 결과가 없습니다.</h3>
+          </div>
           <el-row v-if="searchTitle">
               <el-col :span="6" v-for="(room, index) of searchTitle" :key="index" cols="4" >
             <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
@@ -50,7 +52,9 @@
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="키워드">
-          <h3 v-show="!searchKeyword.length">키워드에 해당하는 결과가 없습니다.</h3>
+          <div v-show="!searchKeyword.length" class="no-search-wrapper">
+            <h3>키워드에 해당하는 결과가 없습니다.</h3>
+          </div>
           <el-row>
             <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index" cols="4" >
             <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
@@ -94,7 +98,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div v-else>
+    <div class="no-search-wrapper" v-else>
       <h3>검색 결과가 없습니다. 다시 검색해주세요.</h3>
     </div>
   </div>
@@ -185,18 +189,28 @@ export default {
   font-weight: bold;
 }
 .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .button {
-    padding: 0;
-    min-height: auto;
+  padding: 0;
+  min-height: auto;
 }
 .image {
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
+}
+.no-search-wrapper {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+h4 {
+  margin-bottom: 30px;
 }
 </style>

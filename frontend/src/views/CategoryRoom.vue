@@ -1,13 +1,14 @@
 <template>
-  <p>{{ $route.params.categoryName }}</p>
-  <el-button type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+  <div class="category-header">
+    <div class="category-name">
+      <h4>{{ $route.params.categoryName }}</h4>
+    </div>
+    <el-button class="category-btn" type="info" round @click="$router.push({ name: 'RoomCategory' })">카테고리별</el-button>
+  </div>
+  <div v-show="!searchCategory.length" class="no-search-wrapper">
+    <h3>해당 카테고리의 방이 없습니다.</h3>
+  </div>
   <el-row>
-    <!-- <el-col :span="6" v-for="(room, index) of searchCategory" :key="index">
-      <el-card class="box-card">
-        <p>{{ room.roomName }}</p>
-      </el-card>
-    </el-col> -->
-    <h3 v-show="!searchCategory.length">해당 카테고리의 방이 없습니다.</h3> 
     <el-col :span="6" v-for="(room, index) of searchCategory" :key="index" cols="4" >
     <!-- <el-col :span="6" v-for="(room, index) of searchKeyword" :key="index"> -->
       <el-card :body-style="{ padding: '0px' }">
@@ -119,8 +120,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 .el-card {
   margin: 0 8px;
   margin-bottom: 40px;
@@ -133,19 +133,45 @@ export default {
   font-weight: bold;
 }
 .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .button {
-    padding: 0;
-    min-height: auto;
+  padding: 0;
+  min-height: auto;
 }
 .image {
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
+}
+.category-header {
+  display: flex;
+  /* justify-content: space-between; */
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 15px;
+}
+h4 {
+  margin-bottom: 0px !important;
+}
+.category-btn {
+  margin-right: 20px !important;
+}
+.category-name {
+  margin-left: 10px;
+  display: flex;
+  margin-right: 15px;
+}
+.no-search-wrapper {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
 }
 </style>
 
