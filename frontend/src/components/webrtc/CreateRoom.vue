@@ -62,25 +62,6 @@
       <el-checkbox v-model="checkedLock" @change="handleCheckbox"></el-checkbox>
       <el-input v-model="form.pwd" v-show="isLocked" placeholder="비밀번호를 입력하세요." onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요.'"></el-input>
     </el-form-item>
-    <!--사진 업로드  -->
-    <!-- <div class="room-file-upload-wrapper">
-      <div v-if="!files.length" class="room-file-upload-example-container">
-          <div class="room-file-notice-item room-file-upload-button">
-            <div class="image-box">
-              <label for="file">일반 사진 등록</label>
-              <input type="file" id="file" ref="files" @change="imageUpload" multiple />
-            </div>
-          </div>
-      </div>
-      <div v-else class="file-preview-content-container">
-        <div class="file-preview-container">
-          <div v-for="(file, index) in files" :key="index" class="file-preview-wrapper">
-            <div class="file-close-button" @click="fileDeleteButton" :name="file.number">x</div>
-            <img :src="file.preview" />
-          </div>
-        </div>
-      </div>
-    </div> -->
       <div class="container">
          <div class="wrapper">
             <div class="image">
