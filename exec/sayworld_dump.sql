@@ -18,6 +18,9 @@
 --
 -- Table structure for table `black_list`
 --
+drop database if exists `ssafy_web_db`;
+create database ssafy_web_db;
+use ssafy_web_db;
 
 DROP TABLE IF EXISTS `black_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
