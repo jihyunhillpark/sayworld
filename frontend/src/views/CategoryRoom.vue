@@ -16,7 +16,7 @@
         <div class="image-wrapper">
         <el-skeleton style="width: 100%">
           <template #template>
-            <el-image :src="state.src">
+            <el-image :src="room.thumbnailUrl">
               <template #placeholder>
                 <div class="image-slot">
                   Loading<span class="dot">...</span>
