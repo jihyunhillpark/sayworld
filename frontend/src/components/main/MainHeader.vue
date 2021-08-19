@@ -2,8 +2,11 @@
   <div class="pinning-header">
     <div class="pinning-header-container">
       <div class="main-header">
-        <div class="ic ic-logo" />
-        <el-switch v-model="toggle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        <div class="ic ic-logo" @click="$router.push({ name: 'Home' })"/>
+        <!-- <el-switch v-model="state.toggle" active-color="#13ce66" inactive-color="#ff4949" @click="changeToggle"></el-switch> -->
+        <input class="tgl tgl-flip" id="cb5" type="checkbox" v-model="checked" @click="changeToggle"/>
+        <label class="tgl-btn" data-tg-off="MOVIE" data-tg-on="BOOK" for="cb5"></label>
+
         <div class="secondary-navigation">
           <div class="nav-element">
             <div class="search-box">
@@ -11,6 +14,7 @@
                 placeholder="검색"
                 prefix-icon="el-icon-search"
                 v-model="state.searchValue"
+                @keypress.enter="searchRoom"
               ></el-input>
             </div>
           </div>
@@ -19,11 +23,11 @@
           <div class="nav-element">
             <el-dropdown>
               <span class="el-dropdown-link">
-                <el-avatar class="custom-avatar" :size="medium" :src="circleUrl"></el-avatar>
+                <el-avatar class="custom-avatar" :size="medium" :src="state.circleUrl"></el-avatar>
               </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item icon="el-icon-user-solid">마이페이지</el-dropdown-item>
+              <template #dropdown >
+                <el-dropdown-menu >
+                  <el-dropdown-item icon="el-icon-user-solid" @click="clickMyPage">마이페이지</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-moon" @click="clickLogout">로그아웃</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -36,59 +40,174 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue"
+import { reactive, computed, watch } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
 export default {
   name: 'MainHeader',
-  data() {
-    return {
-      toggle: true,
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-    }
-  },
   setup(props, { emit }) {
     const store = useStore()
     const router = useRouter()
     const state = reactive({
       searchValue: null,
       isCollapse: true,
-      menuItems: computed(() => {
-        const MenuItems = store.getters["root/getMenus"];
-        let keys = Object.keys(MenuItems);
-        let menuArray = []
-        for (let i = 0; i < keys.length; ++i) {
-          let menuObject = {}
-          menuObject.icon = MenuItems[keys[i]].icon;
-          menuObject.title = MenuItems[keys[i]].name;
-          menuArray.push(menuObject)
-        }
-        return menuArray
-      }),
-      activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
+      title: 'title',
+      keyword: 'keyword',
+      // circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      circleUrl: `https://www.gravatar.com/avatar/${store.state.root.userInfo.userId}?d=retro&s=400`,
     })
+
+    const checked = computed({
+      get: () => Boolean(store.state.root.curPage),
+      set (val) {
+        store.commit('root/SET_CURRENT_PAGE', Number(val))
+      }
+    })
+
+    const changeToggle = () => {
+      if (checked) {
+        store.commit('root/SET_CURRENT_PAGE', 0)
+      } else {
+        store.commit('root/SET_CURRENT_PAGE', 1)
+      }
+      // router.go()
+    }
+
+    const clickMyPage = () => {
+      router.push({ name: "MyPage" })
+    }
 
     const clickLogout = () => {
       if (confirm("로그아웃 하시겠습니까?")) {
-        console.log('로그아웃')
-        localStorage.removeItem('token')
-        router.push({
-          name: 'Start'
-        })
+        localStorage.clear()
+        window.location.reload()
       }
     }
-    return { state, clickLogout }
 
-  }
-
+    const searchRoom = () => {
+      if (state.searchValue) {
+        store.dispatch('root/searchRoom', {searchType: 'title', searchValue: state.searchValue})
+        store.dispatch('root/searchRoom', {searchType: 'keyword', searchValue: state.searchValue})
+      } else {
+        // 검색어 없을 때도 페이지 이동하는게 나은지 아니면 alert 띄우는게 나은지?
+        alert("검색어를 입력하세요.")
+      }
+    }
+    return { state, checked, clickLogout, clickMyPage, searchRoom, changeToggle }
+  },
 
 }
 </script>
 
+<style lang="scss">
+.tgl {
+  display: none;
+
+  // add default box-sizing for this scope
+  &,
+  &:after,
+  &:before,
+  & *,
+  & *:after,
+  & *:before,
+  & + .tgl-btn {
+    box-sizing: border-box;
+    &::selection {
+      background: none;
+    }
+  }
+
+  + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    &:after,
+    &:before {
+      position: relative;
+      display: block;
+      content: "";
+      width: 50%;
+      height: 100%;
+    }
+
+    &:after {
+      left: 0;
+    }
+
+    &:before {
+      display: none;
+    }
+  }
+
+  &:checked + .tgl-btn:after {
+    left: 50%;
+  }
+}
+.tgl-flip {
+  + .tgl-btn {
+    padding: 2px;
+    transition: all 0.2s ease;
+    font-family: sans-serif;
+    perspective: 100px;
+    &:after,
+    &:before {
+      display: inline-block;
+      transition: all 0.4s ease;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      line-height: 2em;
+      font-weight: bold;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      border-radius: 4px;
+    }
+
+    &:after {
+      content: attr(data-tg-on);
+      background: #02c66f;
+      transform: rotateY(-180deg);
+    }
+
+    &:before {
+      background: #f1a4a4;
+      content: attr(data-tg-off);
+    }
+
+    &:active:before {
+      transform: rotateY(-20deg);
+    }
+  }
+
+  &:checked + .tgl-btn {
+    &:before {
+      transform: rotateY(180deg);
+    }
+
+    &:after {
+      transform: rotateY(0);
+      left: 0;
+      background: #7fc6a6;
+    }
+
+    &:active:after {
+      transform: rotateY(20deg);
+    }
+  }
+}
+</style>
 <style>
 .pinning-header {
-  height: 70px;
+  height: 100px;
+  text-align: center;
 }
 .pinning-header .pinning-header-container {
   position: relative;
@@ -100,7 +219,7 @@ export default {
 }
 .pinning-header .pinning-header-container .main-header {
   z-index: 2;
-  height: 70px;
+  height: 100px;
 }
 .pinning-header .main-header {
   position: relative;
@@ -131,6 +250,10 @@ export default {
 .nav-element {
   align-items: center;
   vertical-align: middle;
+}
+.nav-element .search-box {
+  width: 20vw;
+  max-width: 250px;
 }
 .pinning-header .secondary-navigation .nav-element:not(:last-child) {
   margin-right: 15px;

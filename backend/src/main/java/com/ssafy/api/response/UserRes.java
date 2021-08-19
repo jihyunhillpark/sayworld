@@ -15,12 +15,46 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserResponse")
 public class UserRes{
+	@ApiModelProperty(name = "user ID PK")
+	Long userId;
 	@ApiModelProperty(name="User ID")
+<<<<<<< HEAD
 	String userId;
 	
 	public static UserRes of(User user) {
 		UserRes res = new UserRes();
 		res.setUserId(user.getUserId());
+=======
+	String email;
+	@ApiModelProperty(name="User Nickname")
+	String nickname;
+	@ApiModelProperty(name="User gender")
+	String gender;
+	@ApiModelProperty(name="User age")
+	int age;
+	@ApiModelProperty(name="User default Page")
+	int defaultPage;
+	@ApiModelProperty(name="User book tier")
+	int tierBook;
+	@ApiModelProperty(name="User movie tier")
+	int tierMovie;
+	@ApiModelProperty(name="User profile img")
+	String profileImg;
+
+
+
+	public static UserRes of(User user) {
+		UserRes res = new UserRes();
+		res.setUserId(user.getUserId());
+		res.setEmail(user.getEmail());
+		res.setNickname(user.getNickname());
+		res.setAge(user.getAge());
+		res.setDefaultPage(user.getDefaultPage());
+		res.setTierBook(user.getTierBook());
+		res.setTierMovie(user.getTierMovie());
+		res.setProfileImg(user.getProfileImg());
+
+>>>>>>> develop
 		return res;
 	}
 }

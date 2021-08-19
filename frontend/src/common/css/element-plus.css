@@ -29,3 +29,21 @@
 body > .el-container {
   margin-bottom: 40px;
 }
+
+.el-dialog {
+  max-width: 700px;
+  margin: auto;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #6f8cc3;
+  background: #6f8cc3;
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+  color: #6f8cc3;
+}
+
+.el-form-item.is-error .el-input__inner {
+  border-color: #f5bebd;
+}

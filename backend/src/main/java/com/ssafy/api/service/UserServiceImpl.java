@@ -1,7 +1,14 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.InterestReq;
 import com.ssafy.api.request.UserFixPutReq;
 import com.ssafy.api.response.FriendBlackRes;
+import com.ssafy.api.response.InterestRes;
+import com.ssafy.db.entity.BookCategory;
+import com.ssafy.db.entity.MovieCategory;
+import com.ssafy.db.entity.Room;
+import com.ssafy.db.repository.BookRepository;
+import com.ssafy.db.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +30,23 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
-	
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
-	
+	@Autowired
+	BookRepository bookRepository;
+	@Autowired
+	MovieRepository movieRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+<<<<<<< HEAD
 	
+=======
+
+
+
+
+	// 회원가입
+>>>>>>> develop
 	@Override
 	public User createUser(UserRegisterPostReq userRegisterInfo) {
 		User user = new User();
@@ -133,5 +150,75 @@ public class UserServiceImpl implements UserService {
 		Set<User> blackList = me.getBlacks();
 		blackList.remove(black);
 		userRepository.save(me);
+	}
+
+	@Override
+	public List<InterestRes> getInterest(String myEmail){
+		User me = userRepository.findByEmail(myEmail).get();
+		Set<BookCategory> books = me.getBookCategories();
+		Set<MovieCategory> movies = me.getMovieCategories();
+		List<InterestRes> res = new ArrayList<>();
+
+		for(BookCategory book: books){
+			res.add(InterestRes.createBook(book));
+		}
+		for(MovieCategory movie: movies){
+			res.add(InterestRes.createMovie(movie));
+		}
+
+		return res;
+	}
+
+	@Override
+	public void addInterest(String myEmail, List<InterestReq> interestReqs){
+		User me = userRepository.findByEmail(myEmail).get();
+		Set<BookCategory> books = me.getBookCategories();
+		Set<MovieCategory> movies = me.getMovieCategories();
+		for(InterestReq req: interestReqs){
+			// movie
+			if(req.getMovieOrBook() == 0){
+				MovieCategory movieC = movieRepository.findByMovieCategoryId(req.getCategoryId()).get();
+				movies.add(movieC);
+			}
+			// book
+			else {
+				BookCategory bookC = bookRepository.findByBookCategoryId(req.getCategoryId()).get();
+				books.add(bookC);
+			}
+		}
+		userRepository.save(me);
+	}
+
+	@Override
+	public void fixInterest(String myEmail, List<InterestReq> interestReqs){
+		User me = userRepository.findByEmail(myEmail).get();
+		Set<BookCategory> books = me.getBookCategories();
+		Set<MovieCategory> movies = me.getMovieCategories();
+		books.clear();
+		movies.clear();
+
+		for(InterestReq req: interestReqs){
+			// movie
+			if(req.getMovieOrBook() == 0){
+				MovieCategory movieC = movieRepository.findByMovieCategoryId(req.getCategoryId()).get();
+				movies.add(movieC);
+			}
+			// book
+			else {
+				BookCategory bookC = bookRepository.findByBookCategoryId(req.getCategoryId()).get();
+				books.add(bookC);
+			}
+		}
+		userRepository.save(me);
+	}
+	@Override
+	public List<Room> getRoomHistory(String myEmail){
+		List<Room> history = new ArrayList<>();
+		Optional<User> user = userRepository.findByEmail(myEmail);
+		if(user.isPresent()){
+			User selectedUser = user.get();
+			history = selectedUser.getRooms();
+		}
+		return history;
 	}
 }

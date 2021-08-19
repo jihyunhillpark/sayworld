@@ -32,5 +32,26 @@ const IsDesktop = getIsDesktop()
 export default {
   isDesktopPlatform: IsDesktop,
   activeMenu: 'home',
-  menus: menuData
+  menus: menuData,
+  //
+  userInfo: null,
+  token: null,
+  email: null,
+  searchKeyword: [],
+  searchTitle: [],
+  searchCategory: [],
+  curPage: null,
+
+  // openvidu
+  mySessionId : null,
+  roomInfo: undefined,
+
+  OV: undefined,
+  ovToken: null,
+  session: undefined,
+  mainStreamManager: undefined,
+  publisher: {},
+  subscribers: [],
+  roomHistory: [],
+
 }

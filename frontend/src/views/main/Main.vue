@@ -2,14 +2,17 @@
   <el-container class="main-wrapper">
     <main-header :height="`70px`" @openLoginDialog="onOpenLoginDialog" />
     <el-container class="main-container">
-      <el-aside class="hide-on-small" width="240px">
+      <el-aside class="hide-on-small"  style="width: 230px;">
         <MainSidebar />
       </el-aside>
       <el-main>
         <router-view></router-view>
       </el-main>
     </el-container>
+<<<<<<< HEAD
     <main-footer :height="`110px`" />
+=======
+>>>>>>> develop
   </el-container>
   <login-dialog
     :open="loginDialogOpen"

@@ -7,23 +7,31 @@ module.exports = {
     open: true,
     proxy: {
       '/api/v1': {
-        target: 'http://localhost:8443/'
+        target: 'https://localhost:8443/'
       },
       '/webjars': {
-        target: 'http://localhost:8443/'
+        target: 'https://localhost:8443/'
       },
       '/group-call': {
-        target: 'http://localhost:8443/'
+        target: 'https://localhost:8443/'
       },
       '/upload': {
-        target: 'http://localhost:8443/'
+        target: 'https://localhost:8443/'
       }
     },
     historyApiFallback: true,
     hot: true
   },
   css: {
-    requireModuleExtension: false // import 시에 경로에 .module 포함 안해도 됨.
+    requireModuleExtension: false, // import 시에 경로에 .module 포함 안해도 됨.
+    // loaderOptions: {
+    //   sass: {
+    //     data: `
+    //       @import "@/styles/_variables.scss";
+    //       @import "@/styles/_mixins.scss";
+    //     `
+    //   }
+    // }
   },
   transpileDependencies: [
     'element-plus'

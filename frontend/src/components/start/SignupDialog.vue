@@ -1,51 +1,81 @@
 <template>
-  <el-dialog custom-class="signup-dialog" title="회원가입" v-model="state.dialogVisible" @close="handleClose">
-    <el-form :model="state.form" :rules="state.rules" ref="signupForm" :label-position="state.form.align"  @change="checkButton">
-      <el-form-item prop="email" label="이메일" :label-width="state.formLabelWidth" >
-        <el-input v-model="state.form.email" autocomplete="off"></el-input>
-        <!-- <el-button type="primary" size="small" @click="checkDuplicate">중복 확인</el-button> -->
-      </el-form-item>
-      <el-form-item prop="password" label="비밀번호" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.password" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item prop="passwordConfirmation" label="비밀번호 확인" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.passwordConfirmation" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.nickname" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="나이" :label-width="state.formLabelWidth">
-        <el-radio-group v-model="state.form.age">
-          <el-radio label="10">10대</el-radio>
-          <el-radio label="20">20대</el-radio>
-          <el-radio label="30">30대</el-radio><br>
-          <el-radio label="40">40대</el-radio>
-          <el-radio label="50">50대</el-radio>
-          <el-radio label="60">60대 이상</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="성별" :label-width="state.formLabelWidth">
-        <el-radio-group v-model="state.form.gender">
-          <el-radio label="M">남성</el-radio>
-          <el-radio label="F">여성</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="첫 페이지 설정" :label-width="state.formLabelWidth">
-        <el-radio-group v-model="state.form.default_page">
-          <el-radio label="B">책</el-radio>
-          <el-radio label="M">영화</el-radio>
-        </el-radio-group>
-      </el-form-item>
-    </el-form>
+  <el-dialog custom-class="signup-dialog" title="회원가입" v-model="state.dialogVisible" @close="handleClose1">
+    <div class="signup-input" v-show="state.pageNum === 2">
+      <el-form :model="state.form" :rules="state.rules" ref="signupForm" :label-position="state.form.align"  @change="checkButton">
+        <el-form-item prop="email" label="이메일" :label-width="state.formLabelWidth" >
+          <el-input v-model="state.form.email" autocomplete="off"></el-input>
+          <!-- <el-button type="primary" size="small" @click="checkDuplicate">중복 확인</el-button> -->
+        </el-form-item>
+        <el-form-item prop="password" label="비밀번호" :label-width="state.formLabelWidth">
+          <el-input v-model="state.form.password" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item prop="passwordConfirmation" label="비밀번호 확인" :label-width="state.formLabelWidth">
+          <el-input v-model="state.form.passwordConfirmation" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
+          <el-input v-model="state.form.nickname" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="나이" :label-width="state.formLabelWidth">
+          <el-radio-group v-model="state.form.age">
+            <el-radio label="10">10대</el-radio>
+            <el-radio label="20">20대</el-radio>
+            <el-radio label="30">30대</el-radio><br>
+            <el-radio label="40">40대</el-radio>
+            <el-radio label="50">50대</el-radio>
+            <el-radio label="60">60대 이상</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="성별" :label-width="state.formLabelWidth">
+          <el-radio-group v-model="state.form.gender">
+            <el-radio label="M">남성</el-radio>
+            <el-radio label="F">여성</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="첫 페이지 설정" :label-width="state.formLabelWidth">
+          <el-radio-group v-model="state.form.defaultPage">
+            <el-radio label="1">책</el-radio>
+            <el-radio label="0">영화</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="book-input" v-show="state.pageNum === 1">
+      <h2>관심있는 책 장르 3가지를 골라주세요.</h2>
+      <div>
+        <el-row :gutter="12">
+        <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
+        <el-col v-for="(category, idx) in state.bookCategories" :span="6" :key="idx">
+          <el-button :id="`book${idx+1}`" class="categoryBtn" type="info" @click="clickCategory(category.bookCategoryId)" plain>{{ category.bookCategory }}</el-button>
+        </el-col>
+        </el-row>
+      </div>
+    </div>
+    <div class="movie-input" v-show="!state.pageNum">
+      <h2>관심있는 영화 장르 3가지를 골라주세요.</h2>
+      <div>
+        <el-row :gutter="12">
+        <!-- 클릭했을 때 색상 변경 + 완료 버튼 디자인 수정 -->
+        <el-col v-for="(category, idx) in state.movieCategories" :span="6" :key="idx">
+          <el-button :id="`movie${idx+1}`" class="categoryBtn" type="info" @click="clickCategory(category.movieCategoryId)" plain>{{ category.movieCategory }}</el-button>
+        </el-col>
+        </el-row>
+      </div>
+    </div>
     <template #footer>
       <span class="dialog-footer">
+<<<<<<< HEAD
         <el-button type="primary" :disabled="state.signupButton" v-loading.fullscreen.lock="state.fullscreenLoading" @click="clickSignup">가입하기</el-button>
+=======
+        <el-button v-show="state.pageNum === 2" type="primary" :disabled="state.signupButton" @click="clickSignup">다음으로</el-button>
+        <el-button v-show="state.pageNum === 1" type="primary" :disabled="state.selected.length < 3" @click="clickNext">다음으로</el-button>
+        <el-button v-show="!state.pageNum" type="primary" :disabled="state.selected.length < 3" @click="clickNext(), handleClose()">가입하기</el-button>
+>>>>>>> develop
       </span>
     </template>
   </el-dialog>
 </template>
 <script>
-import { reactive, computed, ref, onMounted } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -54,15 +84,28 @@ export default {
     open: {
       type: Boolean,
       default: false
-    }
+    },
+    bookCategories: {
+      type: Array,
+    },
+    movieCategories: {
+      type: Array,
+    },
   },
   setup(props, { emit }) {
     const store = useStore()
     // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
     const signupForm = ref(null)
     const state = reactive({
+<<<<<<< HEAD
      signupButton: true,
       fullscreenLoading: false,
+=======
+      signupButton: true,
+      page: 2,
+      selected: [],
+      isClick: false,
+>>>>>>> develop
       form: {
         email: '',
         password: '',
@@ -70,8 +113,13 @@ export default {
         nickname: '',
         age: '',
         gender: '',
+<<<<<<< HEAD
         default_page: 'B',
         align: 'left',
+=======
+        defaultPage: '',
+        align: 'left'
+>>>>>>> develop
       },
       rules: {
         email: [
@@ -108,9 +156,13 @@ export default {
         ],
       },
       dialogVisible: computed(() => props.open),
+      bookCategories: computed(() => props.bookCategories),
+      movieCategories: computed(() => props.movieCategories),
+      pageNum: computed(() => state.page),
       formLabelWidth: '120px'
     })
 
+<<<<<<< HEAD
     onMounted(() => {
       // console.log(signupForm.value)
     })
@@ -120,6 +172,8 @@ export default {
       console.log('check')
     }
 
+=======
+>>>>>>> develop
     const checkButton = function () {
       signupForm.value.validate((valid) => {
         if (valid) {
@@ -129,7 +183,49 @@ export default {
         }})
     }
 
+    const clickCategory = function (categoryId) {
+      var btn = null
+      if (state.page == 1) {
+        btn = document.getElementById(`book${categoryId}`)
+      } else {
+        btn = document.getElementById(`movie${categoryId}`)
+      }
+      console.log(btn)
+      if (state.selected.indexOf(categoryId) === -1) {
+        state.selected.push(categoryId)
+        state.isClick = true
+        btn.style.backgroundColor = "#909399"
+        btn.style.color = "white"
+      } else {
+        state.selected.splice(state.selected.indexOf(categoryId), 1)
+        state.isClick = false
+        btn.style.backgroundColor = "#f4f4f5"
+        btn.style.color = "#909399"
+      }
+    }
+
+    const clickNext = function () {
+      console.log(state.selected)
+      console.log(state.pageNum)
+      if (state.pageNum === 1 || !state.pageNum) {
+        console.log('실행?')
+        const payload = []
+        for (var category of state.selected) {
+          payload.push({ categoryId: category, movieOrBook: Number(!state.pageNum) })
+        }
+        store.dispatch('root/sendCategory', { category: payload, email: state.form.email })
+        .then((res) => {
+          state.selected = []
+          state.page = state.page - 1
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    }
+
     const clickSignup = function () {
+      state.page = state.page - 1
       // 회원가입 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       signupForm.value.validate((valid) => {
         if (valid) {
@@ -137,21 +233,13 @@ export default {
             { email: state.form.email,
               password: state.form.password,
               nickname: state.form.nickname,
-              age: state.form.age,
+              age: Number(state.form.age),
               gender: state.form.gender,
-              default_page: state.form.default_page,
+              defaultPage: Number(state.form.defaultPage)
           })
-          .then(function ( ) {
-            handleClose()
-            alert('회원 가입이 완료되었습니다.')
-            // store.dispatch('root/requestLogin', { email: state.form.email, password: state.form.password })
-            // .then(function (result) {
-            //   localStorage.setItem('token', result.data.accessToken)
-            //   router.push({ name: 'Main' })
-            // })
-            // .catch(function (err) {
-            //   alert(err)
-            // })
+          .then(function (res) {
+            // handleClose()
+            // alert('회원 가입이 완료되었습니다.')
           })
           .catch(function (err) {
             console.log(err)
@@ -164,25 +252,51 @@ export default {
     }
 
     const handleClose = function () {
+      console.log('닫기')
       state.form.email = ''
       state.form.password = ''
       state.form.passwordConfirmation = ''
       state.form.nickname = ''
       state.form.age = ''
       state.form.gender = ''
-      state.form.default_page = 'B'
+      state.form.defaultPage = ''
+      state.page = 2
+      state.selected = []
+      emit('closeSignupDialog')
+      alert('회원 가입이 완료되었습니다.')
+    }
+
+    const handleClose1 = function () {
+      state.form.email = ''
+      state.form.password = ''
+      state.form.passwordConfirmation = ''
+      state.form.nickname = ''
+      state.form.age = ''
+      state.form.gender = ''
+      state.form.defaultPage = ''
+      state.page = 2
+      state.selected = []
       emit('closeSignupDialog')
     }
 
+<<<<<<< HEAD
     return { signupForm, state, clickSignup, handleClose, checkButton, checkDuplicate }
+=======
+    return { signupForm, state, clickSignup, handleClose, handleClose1, checkButton, clickNext, clickCategory }
+>>>>>>> develop
   }
 }
 </script>
 
-<style>
+<style scoped>
+h2 {
+  padding-bottom: 25px;
+}
 .signup-dialog {
-  width: 430px !important;
-  height: 575px;
+  width: 60vw !important;
+  height: 80vh !important;
+  margin-top: 10vh !important;
+  margin-bottom: 5vh !important;
 }
 .signup-dialog .el-dialog__headerbtn {
   float: right;
@@ -210,5 +324,71 @@ export default {
 }
 .signup-dialog .dialog-footer .el-button {
   width: 120px;
+}
+.categoryBtn {
+  width: 100%;
+  margin-top: 10px;
+  height: 8vw;
+  background-color: #f4f4f5;
+  text-align: center;
+}
+.signup-input {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: 90%;
+  margin: auto;
+  flex-direction: column;
+}
+.book-input, .movie-input {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  margin: auto;
+  flex-direction: column;
+}
+</style>
+<style lang="scss" scoped>
+.el-input {
+  --el-input-focus-border: #92a8d1;
+}
+.el-button--primary {
+  background: #92a8d1;
+  border-color: #92a8d1;
+
+  &:hover,
+  &.active,
+  &:focus {
+    background: lighten(#92a8d1, 7);
+    border-color: lighten(#92a8d1, 7);
+  };
+}
+.el-button--primary.is-disabled {
+  color: white;
+  background-color: #b7c6e1;
+  border-color: #b7c6e1;
+
+  &:hover {
+    background-color: #b7c6e1;
+    border-color: #b7c6e1;
+  }
+}
+.el-form-item.is-error .el-input__inner {
+  border-color: #f5bebd;
+  color: #f1a8a7;
+
+  &:focus {
+    border-color: #f5bebd;
+    color: #f1a8a7;
+  }
+}
+.el-radio__input.is-checked {
+  color: #92a8d1 !important;
+}
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #92a8d1 !important;
+  background: #92a8d1 !important;
 }
 </style>

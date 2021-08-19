@@ -25,13 +25,11 @@ public class CultureServiceImpl implements CultureService{
     @Override
     public List<CultureListRes> getCultureInfo(String email){
         User user = userRepository.findByEmail(email).get();
-
         List<Culture> list = user.getCultures();
 
         List<CultureListRes> resList = new ArrayList<>();
-
         for(Culture culture:list){
-            resList.add(CultureListRes.create(culture));
+            resList.add(CultureListRes.create(culture, email));
         }
 
         return resList;
@@ -40,23 +38,31 @@ public class CultureServiceImpl implements CultureService{
     @Override
     public void postCulture(CulturePostReq culturePostReq, String email) {
         User user = userRepository.findByEmail(email).get();
-        Long userId = user.getUserId();
+        //System.out.println(user);
+
+        List<Culture> userCultures = user.getCultures();
 
         Culture culture = new Culture();
+        culture.setUser(user);
         culture.setCultureCategory(culturePostReq.getCultureCategory());
         culture.setCultureTitle(culturePostReq.getCultureTitle());
-        culture.setUser(user);
-        List<Culture> userCultures = user.getCultures();
-        userCultures.add(culture);
 
+        userCultures.add(culture);
+        //System.out.println(culture.getCultureCategory());
         userRepository.save(user);
+
     }
 
     @Override
-    public void deleteCulture(String email, String cultureTitle, char cultureCategory){
-        User user = userRepository.findByEmail(email).get();
+    public void deleteCulture(String myEmail, String cultureTitle, Long cultureCategory){
+        User user = userRepository.findByEmail(myEmail).get();
         List<Culture> list = user.getCultures();
-        list.remove(cultureRepository.findByCultureTitleAndCultureCategory(cultureTitle, cultureCategory).get());
+
+        Culture culture = cultureRepository.findByCultureTitleAndCultureCategory(cultureTitle, cultureCategory).get();
+        list.remove(culture);
+
+        cultureRepository.delete(culture);
+        userRepository.save(user);
     }
 
 }
