@@ -1,4 +1,6 @@
 <template>
+  <el-page-header @back="GoMyPage" content="문화력 등록">
+  </el-page-header>
   <a>
     <form id="myForm" @submit.prevent="sendPost">
       <a><input type="radio" v-model="state.culture_check" value="책">책 &nbsp;&nbsp;</a>
@@ -7,13 +9,13 @@
       <button size="md" variant="danger" type="submit">검색</button>
     </form>
     </a>
-  <a><button size="md" variant="danger" type="submit" style="float: left" @click="GoMyPage">뒤로가기</button></a>
+
   <a><button size="md" variant="danger" type="submit" style="float: right" @click="RegisterOK">등록하기</button></a>
 
-  <p>목록</p>
+  <br><p>목록</p><br>
 
   <div class="wrapper">
-      <v-card-element v-for="(info, idx) in state.infos" :key="info" >
+      <v-card-element v-for="(info, idx) in state.infos" :key="info" ><br>
         <img :src="info.image">
         <p>{{info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")}}</p>
         <p><input type="checkbox" v-model="state.cultureTitle" :value="info.title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, '')"></p><br>
@@ -127,7 +129,7 @@ export default {
           .then(response => {
             this.info = response.data;
             console.log(this.info)
-            alert("내 문화력(영화)에 등록되었습니다!")
+            alert("내 문화력에 등록되었습니다!")
             window.location.reload()
           })
           .catch(e => {
@@ -182,16 +184,16 @@ li {
 }
 
 img {
-  width: 20%;
-  height: 30%;
-  background: #7fc6a6;
+  width: 40%;
+  height: 60%;
+  background: #cccbb8;
   border-radius: 4px;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  background: #b3c2ab
+  grid-template-rows: 1fr 1fr 1fr;
+  background: #b8cccb;
 }
 </style>
