@@ -1,12 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-<<<<<<< HEAD
-import Home from "@/views/home/home";
-import Main from "@/views/main/Main";
-import Start from "@/views/start/Start";
-import UserCategory from "@/views/user/UserCategory";
-import ConferencesDetail from "@/views/conferences/conference-detail";
-import History from "@/views/history/history";
-=======
 import Home from "@/views/Home";
 import SearchResult from "@/views/SearchResult";
 import Start from "@/views/Start";
@@ -22,7 +14,6 @@ import CultureRegister from "../../components/mypage/CultureRegister";
 import MyBlog from "../../components/mypage/MyBlog";
 import TextEditor from "../../components/mypage/TextEditor"
 import RoomChat from "@/views/RoomChat";
->>>>>>> develop
 
 
 const routes = [
@@ -31,8 +22,6 @@ const routes = [
     name: "UserCategory",
     component: UserCategory
   },
-<<<<<<< HEAD
-=======
   {
     path: "/rooms",
     name: "rooms",
@@ -105,7 +94,6 @@ const routes = [
     component: RoomChat
   }
 
->>>>>>> develop
 ]
 
 const router = createRouter({

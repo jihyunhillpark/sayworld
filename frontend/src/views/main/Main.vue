@@ -1,6 +1,6 @@
 <template>
   <el-container class="main-wrapper">
-    <main-header :height="`70px`" @openLoginDialog="onOpenLoginDialog" />
+    <MainHeader />
     <el-container class="main-container">
       <el-aside class="hide-on-small"  style="width: 230px;">
         <MainSidebar />
@@ -9,42 +9,32 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-<<<<<<< HEAD
-    <main-footer :height="`110px`" />
-=======
->>>>>>> develop
   </el-container>
-  <login-dialog
-    :open="loginDialogOpen"
-    @closeLoginDialog="onCloseLoginDialog"
-  />
 </template>
 <style>
-@import "https://unpkg.com/element-plus/lib/theme-chalk/index.css";
-@import "./main.css";
-@import "../../common/css/common.css";
-@import "../../common/css/element-plus.css";
+  @import "https://unpkg.com/element-plus/lib/theme-chalk/index.css";
+  @import "./main.css";
+  @import "../../common/css/common.css";
+  @import "../../common/css/element-plus.css";
 </style>
 <script>
+  import MainHeader from "@/components/main/MainHeader";
+  import MainSidebar from "@/components/main/MainSidebar";
+  import MainFooter from "@/components/main/MainFooter";
 
-import MainHeader from "@/components/main/MainHeader";
-import MainSidebar from "@/components/main/MainSidebar";
-import MainFooter from "@/components/main/MainFooter";
+  export default {
+    name: "Main",
+    components: {
+      MainHeader,
+      MainSidebar,
+      MainFooter,
+    },
+    data() {
+      return {
+      };
+    },
+    methods: {
 
-export default {
-  name: "Main",
-  components: {
-    MainHeader,
-    MainSidebar,
-    MainFooter,
-    LoginDialog,
-  },
-  data() {
-    return {
-    };
-  },
-  methods: {
-
-  }
-};
+    }
+  };
 </script>
