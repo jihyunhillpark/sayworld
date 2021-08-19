@@ -38,19 +38,15 @@ public class UserServiceImpl implements UserService {
 	MovieRepository movieRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
-<<<<<<< HEAD
-	
-=======
 
 
 
 
 	// 회원가입
->>>>>>> develop
 	@Override
 	public User createUser(UserRegisterPostReq userRegisterInfo) {
 		User user = new User();
-		user.setUserId(userRegisterInfo.getId());
+		user.setEmail(userRegisterInfo.getEmail());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
 		user.setNickname(userRegisterInfo.getNickname());
@@ -78,13 +74,26 @@ public class UserServiceImpl implements UserService {
 		user.setProfileImg(userFixInfo.getProfileImg());
 
 		return userRepository.save(user);
+
 	}
 
+	// 유저 정보 조회
 	@Override
-	public User getUserByUserId(String userId) {
+	public User getUserByEmail(String email) {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		User user = userRepositorySupport.findUserByUserId(userId).get();
-		return user;
+//		User user = userRepositorySupport.findUserByEmail(email).get();
+//		return user;
+
+		Optional<User> user = userRepository.findByEmail(email);
+		return user.get();
+	}
+
+
+	// 회원 탈퇴
+	@Override
+	public void deleteUser(String email){
+		User user = getUserByEmail(email);
+		userRepository.delete(user);
 	}
 
 

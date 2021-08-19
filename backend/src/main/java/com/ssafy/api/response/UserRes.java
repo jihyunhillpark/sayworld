@@ -18,13 +18,6 @@ public class UserRes{
 	@ApiModelProperty(name = "user ID PK")
 	Long userId;
 	@ApiModelProperty(name="User ID")
-<<<<<<< HEAD
-	String userId;
-	
-	public static UserRes of(User user) {
-		UserRes res = new UserRes();
-		res.setUserId(user.getUserId());
-=======
 	String email;
 	@ApiModelProperty(name="User Nickname")
 	String nickname;
@@ -54,7 +47,6 @@ public class UserRes{
 		res.setTierMovie(user.getTierMovie());
 		res.setProfileImg(user.getProfileImg());
 
->>>>>>> develop
 		return res;
 	}
 }

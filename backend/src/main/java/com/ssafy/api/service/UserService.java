@@ -1,10 +1,7 @@
 package com.ssafy.api.service;
 
-<<<<<<< HEAD
-=======
 import com.ssafy.api.request.InterestReq;
 import com.ssafy.api.request.UserFixPutReq;
->>>>>>> develop
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.FriendBlackRes;
 import com.ssafy.api.response.InterestRes;

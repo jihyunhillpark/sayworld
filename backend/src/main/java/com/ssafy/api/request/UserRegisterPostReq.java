@@ -12,12 +12,11 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
-	@ApiModelProperty(name="유저 ID", example="ssafy_web")
-	String id;
-	@ApiModelProperty(name="유저 Password", example="your_password")
+
+	@ApiModelProperty(name="유저 ID(email)", example="helloculsu@naver.com")
+	String email;
+	@ApiModelProperty(name="유저 Password", example="culsu1004!")
 	String password;
-<<<<<<< HEAD
-=======
 	@ApiModelProperty(name="유저 별명", example="철수철수")
 	String nickname;
 	@ApiModelProperty(name="유저 성별", example="M")
@@ -32,5 +31,4 @@ public class UserRegisterPostReq {
 	int tierMovie;
 	@ApiModelProperty(name="유저 프로필사진", example="/url")
 	String profileImg;
->>>>>>> develop
 }

@@ -3,16 +3,10 @@ package com.ssafy.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-<<<<<<< HEAD
-import lombok.Getter;
-import lombok.Setter;
-=======
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
->>>>>>> develop
 
-import javax.persistence.Entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,14 +19,18 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class User extends BaseEntity{
-    String position;
-    String department;
-    String name;
-    String userId;
+@ToString
+@NoArgsConstructor
+//@DynamicUpdate // update 할때 변경된 필드만 적용. 없으면 변경하지 않은 값들은 전부 null로 들어감
+@DynamicInsert
+@Table(name = "user")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성
+    @Column(name = "user_id")
+    Long userId;
 
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "password")
     String password;
     @Column(name = "nickname")
     String nickname;
@@ -50,6 +48,8 @@ public class User extends BaseEntity{
     int tierMovie;
     @Column(name = "profile_img")
     String profileImg;
+
+
 
     // 문화력
     @OneToMany(cascade = CascadeType.ALL)
