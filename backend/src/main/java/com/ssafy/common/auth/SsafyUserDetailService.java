@@ -20,15 +20,15 @@ import com.ssafy.db.repository.UserRepository;
 public class SsafyUserDetailService implements UserDetailsService{
 	@Autowired
 	UserService userService;
-	
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    		User user = userService.getUserByEmail(email);
-    		if(user != null) {
-    			SsafyUserDetails userDetails = new SsafyUserDetails(user);
-    			return userDetails;
-    		}
-    		return null;
-    }
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userService.getUserByEmail(email);
+		if(user != null) {
+			SsafyUserDetails userDetails = new SsafyUserDetails(user);
+			return userDetails;
+		}
+		return null;
+	}
 
 }

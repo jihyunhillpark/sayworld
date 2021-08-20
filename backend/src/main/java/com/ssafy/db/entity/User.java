@@ -49,6 +49,8 @@ public class User {
     @Column(name = "profile_img")
     String profileImg;
 
+
+
     // 문화력
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id" )
