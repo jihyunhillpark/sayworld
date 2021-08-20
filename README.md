@@ -6,12 +6,17 @@
 ![web](https://img.shields.io/badge/platform-web-yellow) ![framework](https://img.shields.io/badge/framework-SpringBoot-9cf) ![library](https://img.shields.io/badge/libray-Vue-orange) ![db](https://img.shields.io/badge/database-MySQL-inactive)
 
 > 책/영화를 기반으로 한 문화생활 공유 화상 플랫폼
-## 👨‍👨‍👦‍👦 팀원
-🧡 **박채린**
-💛 **박지현**
-💚 **박형민**
-💙 **안수빈**
-💜 **정성학**
+## 👨‍💻 팀원
+
+🧡 **박채린** ([@cofls](https://github.com/cofls))
+
+💛 **박지현** ([@jihyunhillpark](https://github.com/jihyunhillpark))
+
+💚 **박형민** ([@npnppn](https://github.com/npnppn))
+
+💙 **안수빈** ([@axxsxbxx](https://github.com/axxsxbxx))
+
+💜 **정성학** ([@jshagold](https://github.com/jshagold))
 
 ## 🎥 프로젝트 개요
 ### 진행 기간
@@ -51,10 +56,12 @@
 7) 생각 정리를 위한 카드 뉴스 형태의 개인 블로그
 
 ### 책과 영화의 분리
-![toggle](https://i.imgur.com/07VLmRO.gif)
+![toggle](https://i.imgur.com/xhruWaY.gif)
 ### 카테고리화 및 검색
 ![search](https://i.imgur.com/WazQk4K.gif)
 ### 화상회의 및 채팅
+
+![meeting](documentation/meeting.gif)
 
 ### 문화력 기록
 ![culture](https://i.imgur.com/QyqziXB.gif)
