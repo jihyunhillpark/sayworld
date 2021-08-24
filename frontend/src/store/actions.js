@@ -3,7 +3,7 @@ import $axios from 'axios'
 import router from '@/common/lib/vue-router.js'
 import { OpenVidu } from 'openvidu-browser'
 
-const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io"
+const OPENVIDU_SERVER_URL = "https://" + "i5a407.p.ssafy.io"+":8447"
 const OPENVIDU_SERVER_SECRET = "MY_SECRET"
 
 export function requestLogin ({ state }, payload) {
