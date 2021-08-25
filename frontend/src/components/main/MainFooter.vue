@@ -8,36 +8,36 @@
   </el-row>
 </template>
 <style>
-.main-footer {
-  height: 80px;
-  position: absolute;
-}
-.main-footer .contents {
-  line-height: 80px;
-  text-align: center;
-  margin: 0 auto;
-}
+  .main-footer {
+    height: 80px;
+    position: absolute;
+  }
+  .main-footer .contents {
+    line-height: 80px;
+    text-align: center;
+    margin: 0 auto;
+  }
 </style>
 <script>
-import { reactive } from 'vue'
-import { useStore } from 'vuex'
+  import { reactive } from 'vue'
+  import { useStore } from 'vuex'
 
-export default {
-  name: 'MainFooter',
+  export default {
+    name: 'MainFooter',
 
-  props: {
-    height: {
-      type: String,
-      default: '80px'
+    props: {
+      height: {
+        type: String,
+        default: '80px'
+      }
+    },
+
+    setup() {
+      const state = reactive({})
+
+      return { state }
     }
-  },
-
-  setup() {
-    const state = reactive({})
-
-    return { state }
   }
-}
 </script>
 <style>
 </style>
