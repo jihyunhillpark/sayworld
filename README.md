@@ -90,7 +90,7 @@
 <br>
 
 ## 📊 서비스 구조도
-![service-architecture](https://i.imgur.com/xSdacUV.png)
+![service-architecture](https://i.imgur.com/5697uFZ.png)
 
 ## 💿 DB 모델링
 ![ERD](https://i.imgur.com/L4UkXiS.png)
@@ -101,6 +101,7 @@
 - vue-cli : 4.5.13
 - IntelliJ : 2021.1.3
 - openvidu : 2.19.0
+- nginx :1.18.0 (Ubuntu)
 
 ## 💻 실행방법
 ### Frontend
