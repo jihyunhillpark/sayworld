@@ -43,7 +43,7 @@
             </div>
             <div class="type_msg">
               <div class="input_msg_write">
-                <input type="text" v-model="state.sendMsg" class="write_msg" placeholder="메세지를 입력해주세요" @keydown.enter="submitMsg"/>
+                <input type="text" v-model="state.sendMsg" class="write_msg" placeholder="메세지를 입력해주세요" @keypress.enter="submitMsg"/>
                 <button class="msg_send_btn" type="button"><i class="fa el-icon-s-promotion" aria-hidden="true" @click="submitMsg"></i></button>
               </div>
             </div>
